@@ -6,6 +6,8 @@ export default {
       colors: {
         hanaGreen: "#008485",
         hanaGray: "#F2F2F2",
+        dark: "#353a4e",
+        dark2: "#454962",
       },
       width: {
         iPhone: "394px",
@@ -13,7 +15,25 @@ export default {
       height: {
         iPhone: "844px",
       },
+      animation: {},
+      keyframes: {
+        bounce: {
+          "0%, 100%": {
+            transform: "translateY(-200%)",
+            animationTimingFunction: "cubic-bezier(0.8, 0, 1, 1)",
+          },
+          "50%": {
+            transform: "translateY(0)",
+            animationTimingFunction: "cubic-bezier(0, 0, 0.2, 1)",
+          },
+        },
+      },
+      animationDelay: {
+        100: "100ms",
+        200: "200ms",
+        300: "300ms",
+      },
     },
+    plugins: [],
   },
-  plugins: [],
 };

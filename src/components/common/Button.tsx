@@ -6,14 +6,14 @@ interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   roundedFull?: boolean;
 }
 
-function Button({
+export const Button = ({
   gray = false,
   disabled = false,
   roundedFull = false,
   className = "",
   children,
   ...props
-}: PropsWithChildren<ButtonProps>) {
+}: PropsWithChildren<ButtonProps>) => {
   const baseClassName =
     "text-white text-nowrap transition-all p-2 px-8 w-fit h-fit";
   // 배경색
@@ -36,6 +36,4 @@ function Button({
       {children}
     </button>
   );
-}
-
-export default Button;
+};
