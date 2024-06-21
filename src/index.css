@@ -1,7 +1,8 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-:root {
+
+/* :root {
   font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
   font-weight: 400;
@@ -35,7 +36,7 @@
   -webkit-border-radius: 8px;
   border-radius: 8px;
   -webkit-box-shadow: inset 0 0 4px rgba(0, 0, 0, 0.1);
-}
+} */
 
 body {
   margin: 0;
@@ -44,7 +45,7 @@ body {
   min-height: 100vh;
 }
 
-.w-iPhone {
+/* .w-iPhone {
   width: 394px;
 }
 .h-iPhone {
@@ -55,4 +56,4 @@ body {
   @supports (-webkit-touch-callout: none) {
     height: calc(100vh - 2rem);
   }
-}
+} */
