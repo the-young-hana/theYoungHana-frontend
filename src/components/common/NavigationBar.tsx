@@ -8,72 +8,74 @@ import { Link, useLocation } from "react-router-dom";
 export const NavigationBar = () => {
   const location = useLocation();
   return (
-    <div className="sticky bottom-0 flex w-iPhone justify-around bg-white">
-      <Link to="/studentCard">
-        <div
-          className={cn(
-            "flex flex-col gap-1 justify-center items-center font-semibold ",
-            location.pathname.includes("student")
-              ? " text-hanaGreen"
-              : " text-dark",
-          )}
-        >
-          <FaIdCard size={25} />
-          학생증
-        </div>
-      </Link>
-      <Link to="/event">
-        <div
-          className={cn(
-            "flex flex-col gap-1 justify-center items-center font-semibold ",
-            location.pathname.includes("event")
-              ? " text-hanaGreen"
-              : " text-dark",
-          )}
-        >
-          <FaBullhorn size={25} />
-          이벤트
-        </div>
-      </Link>
-      <Link to="/story">
-        <div
-          className={cn(
-            "flex flex-col gap-1 justify-center items-center font-semibold ",
-            location.pathname.includes("story")
-              ? " text-hanaGreen"
-              : " text-dark",
-          )}
-        >
-          <IoBookmarks size={25} />
-          스토리
-        </div>
-      </Link>
-      <Link to="/reward">
-        <div
-          className={cn(
-            "flex flex-col gap-1 justify-center items-center font-semibold ",
-            location.pathname.includes("reward")
-              ? " text-hanaGreen"
-              : " text-dark",
-          )}
-        >
-          <FaCircleDollarToSlot size={25} />
-          리워드
-        </div>
-      </Link>
-      <Link to="/knowledge">
-        <div
-          className={cn(
-            "flex flex-col gap-1 justify-center items-center font-semibold ",
-            location.pathname.includes("knowledge")
-              ? " text-hanaGreen"
-              : " text-dark",
-          )}
-        >
-          <PiPiggyBankFill size={25} />
-          금융상식
-        </div>
-      </Link>
+    <div className="absolute left-0 bottom-0 ">
+      <div className="flex w-iPhone justify-between bg-white px-5 pb-9 pt-5 -2xl border border-t">
+        <Link to="/studentCard">
+          <div
+            className={cn(
+              "flex flex-col gap-1 justify-center items-center font-semibold text-sm",
+              location.pathname.includes("student")
+                ? " text-hanaGreen scale-110"
+                : " text-dark",
+            )}
+          >
+            <FaIdCard size={25} />
+            학생증
+          </div>
+        </Link>
+        <Link to="/event">
+          <div
+            className={cn(
+              "flex flex-col gap-1 justify-center items-center font-semibold text-sm",
+              location.pathname.includes("event")
+                ? " text-hanaGreen scale-110"
+                : " text-dark",
+            )}
+          >
+            <FaBullhorn size={25} />
+            이벤트
+          </div>
+        </Link>
+        <Link to="/story">
+          <div
+            className={cn(
+              "flex flex-col gap-1 justify-center items-center font-semibold text-sm",
+              location.pathname.includes("story")
+                ? " text-hanaGreen scale-110"
+                : " text-dark",
+            )}
+          >
+            <IoBookmarks size={25} />
+            스토리
+          </div>
+        </Link>
+        <Link to="/reward">
+          <div
+            className={cn(
+              "flex flex-col gap-1 justify-center items-center font-semibold text-sm",
+              location.pathname.includes("reward")
+                ? " text-hanaGreen scale-110"
+                : " text-dark",
+            )}
+          >
+            <FaCircleDollarToSlot size={25} />
+            리워드
+          </div>
+        </Link>
+        <Link to="/knowledge">
+          <div
+            className={cn(
+              "flex flex-col gap-1 justify-center items-center font-semibold text-sm",
+              location.pathname.includes("knowledge")
+                ? " text-hanaGreen scale-110"
+                : " text-dark",
+            )}
+          >
+            <PiPiggyBankFill size={25} />
+            금융상식
+          </div>
+        </Link>
+      </div>
     </div>
   );
 };
