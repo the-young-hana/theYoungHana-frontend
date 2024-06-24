@@ -19,7 +19,7 @@ function StatusBar({ className = "", white = false }: StatusBarProps) {
   return (
     <div
       className={cn(
-        "flex items-center gap-1 py-2 px-8 font-bold text-lg w-full",
+        "flex items-center gap-1 py-2 px-8 font-bold text-lg w-full bg-hanaBgGray",
         white ? "text-white" : "text-black",
         className,
       )}

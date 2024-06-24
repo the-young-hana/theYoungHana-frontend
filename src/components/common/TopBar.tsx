@@ -7,19 +7,24 @@ interface IProps {
   title?: string;
   isBack?: boolean;
   path?: string;
+  back?: boolean;
 }
 
 export const TopBar: FC<IProps> = ({
   title = "",
   isBack = true,
   path = "/",
+  back,
 }) => {
   const navigate = useNavigate();
 
   return (
-    <div className="absolute left-0 top-12 flex justify-between items-center px-5 w-iPhone h-12">
+    <div className="absolute left-0 top-12 flex justify-between items-center px-5 w-iPhone h-12 bg-hanaBgGray">
       {isBack && (
-        <div onClick={() => navigate(path)} className="cursor-pointer z-10">
+        <div
+          onClick={() => (!back ? navigate(path) : navigate(-1))}
+          className="cursor-pointer z-10"
+        >
           <IoIosArrowBack size={18} />
         </div>
       )}

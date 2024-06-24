@@ -6,6 +6,7 @@ export default {
       colors: {
         hanaGreen: "#008485",
         hanaGray: "#F2F2F2",
+        hanaBgGray: "#F9F9FB",
         dark: "#353a4e",
         dark2: "#454962",
       },
@@ -14,6 +15,9 @@ export default {
       },
       height: {
         iPhone: "844px",
+      },
+      minHeight: {
+        "bottom-screen": "calc(100% - 107px)",
       },
       animation: {},
       keyframes: {
