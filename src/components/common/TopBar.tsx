@@ -33,7 +33,9 @@ export const TopBar: FC<IProps> = ({
         {title}
       </div>
       <div className="flex gap-2">
-        <GoHome size={20} />
+        <div className="cursor-pointer z-10" onClick={() => navigate("/")}>
+          <GoHome size={20} />
+        </div>
         <IoIosMenu size={20} />
       </div>
     </div>

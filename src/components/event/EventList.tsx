@@ -28,7 +28,10 @@ export const EventList: FC<IProps> = ({
   };
 
   return (
-    <div className="border-b-2 mx-5 px-3 py-3" onClick={moveToDetail}>
+    <div
+      className="border-b-2 mx-5 px-3 py-3 cursor-pointer"
+      onClick={moveToDetail}
+    >
       <div className="flex gap-2 text-nowrap font-semibold">
         <div>[{category}]</div>
         <div className=" text-ellipsis overflow-hidden">{title}</div>

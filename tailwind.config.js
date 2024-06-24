@@ -6,7 +6,8 @@ export default {
       colors: {
         hanaGreen: "#008485",
         hanaGray: "#F2F2F2",
-        hanaBgGray: "#F9F9FB",
+        hanaGray2: "#979797",
+        hanaBgGray: "#F9F9fB",
         dark: "#353a4e",
         dark2: "#454962",
       },
@@ -18,6 +19,9 @@ export default {
       },
       minHeight: {
         "bottom-screen": "calc(100% - 107px)",
+      },
+      dropShadow: {
+        "3xl": ["2px 4px 3px rgba(0, 0, 0, 0.4)"],
       },
       animation: {},
       keyframes: {

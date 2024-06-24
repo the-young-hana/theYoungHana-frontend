@@ -17,7 +17,7 @@ export const Button = ({
   const baseClassName =
     "text-white text-nowrap transition-all p-2 px-8 w-fit h-fit";
   // 배경색
-  const bgClassName = disabled || gray ? "bg-hanaGray" : "bg-hanaGreen";
+  const bgClassName = disabled || gray ? "bg-hanaGray2" : "bg-hanaGreen";
   // 마우스커서
   const cursorClassName = disabled ? "cursor-default" : "";
   // 코너 라운드 처리

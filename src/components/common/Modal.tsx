@@ -63,7 +63,7 @@ function Modal(modalProps: ModalProps) {
   );
 
   const XButtonClassName = cn(
-    "-translate-x-4 -translate-y-4 p-4",
+    "-translate-x-4 -translate-y-4 p-4 pb-0",
     dark ? "text-white" : "text-black",
   );
 
@@ -75,7 +75,10 @@ function Modal(modalProps: ModalProps) {
         <button className="w-full h-full" onClick={onBackdropClick} />
         {/* 스테이터스바 */}
         {!hideBackDrop && (
-          <StatusBar className="absolute top-0 pointer-events-none" white />
+          <StatusBar
+            className="absolute top-0 pointer-events-none bg-transparent"
+            white
+          />
         )}
         {/* 모달 */}
         <div className={modalClassName} {...props}>
