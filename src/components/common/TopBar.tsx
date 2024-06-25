@@ -2,12 +2,15 @@ import { FC } from "react";
 import { IoIosArrowBack, IoIosMenu } from "react-icons/io";
 import { GoHome } from "react-icons/go";
 import { useNavigate } from "react-router-dom";
+import cn from "../../utils/cn";
 
 interface IProps {
   title?: string;
   isBack?: boolean;
   path?: string;
   back?: boolean;
+  bgdark?: boolean;
+  white?: boolean;
 }
 
 export const TopBar: FC<IProps> = ({
@@ -15,11 +18,18 @@ export const TopBar: FC<IProps> = ({
   isBack = true,
   path = "/",
   back,
+  bgdark = false,
+  white = false,
 }) => {
   const navigate = useNavigate();
 
   return (
-    <div className="absolute left-0 top-12 flex justify-between items-center px-5 w-iPhone h-12 bg-hanaBgGray">
+    <div
+      className={cn(
+        "absolute left-0 top-12 flex justify-between items-center px-5 w-iPhone h-12 bg-hanaBgGray",
+        bgdark ? "bg-dark" : "",
+      )}
+    >
       {isBack && (
         <div
           onClick={() => (!back ? navigate(path) : navigate(-1))}
@@ -34,9 +44,9 @@ export const TopBar: FC<IProps> = ({
       </div>
       <div className="flex gap-2">
         <div className="cursor-pointer z-10" onClick={() => navigate("/")}>
-          <GoHome size={20} />
+          <GoHome size={20} color={white ? "#ffffff" : "#000000"} />
         </div>
-        <IoIosMenu size={20} />
+        <IoIosMenu size={20} color={white ? "#ffffff" : "#000000"} />
       </div>
     </div>
   );

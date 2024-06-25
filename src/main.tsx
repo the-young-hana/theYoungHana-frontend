@@ -13,6 +13,7 @@ import IPhoneFrame from "./components/common/IPhoneFrame.tsx";
 import { EventDetail } from "./pages/event/EventDetail.tsx";
 import { PostEvent } from "./pages/event/PostEvent.tsx";
 import { EventWinner } from "./pages/event/EventWinner.tsx";
+import { Login } from "./pages/Login.tsx";
 const router = createBrowserRouter([
   {
     path: "/",
@@ -22,6 +23,7 @@ const router = createBrowserRouter([
         element: <IPhoneFrame />,
         children: [
           { path: "", element: <Home /> },
+          { path: "login", element: <Login /> },
           { path: "studentCard", element: <StudentCard /> },
           { path: "event", element: <Event /> },
           { path: "event/eventDetail", element: <EventDetail /> },
