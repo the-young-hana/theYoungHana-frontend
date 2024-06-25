@@ -1,13 +1,14 @@
 import { FC } from "react";
 import { IoIosArrowBack, IoIosMenu } from "react-icons/io";
 import { GoHome } from "react-icons/go";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import cn from "../../utils/cn";
 
 interface IProps {
   title?: string;
   isBack?: boolean;
   path?: string;
+  back?: boolean;
   bgdark?: boolean;
   white?: boolean;
 }
@@ -16,6 +17,7 @@ export const TopBar: FC<IProps> = ({
   title = "",
   isBack = true,
   path = "/",
+  back,
   bgdark = false,
   white = false,
 }) => {
@@ -24,13 +26,16 @@ export const TopBar: FC<IProps> = ({
   return (
     <div
       className={cn(
-        "absolute left-0 top-12 flex justify-between items-center px-5 w-iPhone h-12",
+        "absolute left-0 top-12 flex justify-between items-center px-5 w-iPhone h-12 bg-hanaBgGray",
         bgdark ? "bg-dark" : "",
       )}
     >
       {isBack && (
-        <div onClick={() => navigate(path)} className="cursor-pointer z-10">
-          <IoIosArrowBack size={25} color={white ? "#ffffff" : "#000000"} />
+        <div
+          onClick={() => (!back ? navigate(path) : navigate(-1))}
+          className="cursor-pointer z-10"
+        >
+          <IoIosArrowBack size={18} />
         </div>
       )}
 
@@ -38,10 +43,10 @@ export const TopBar: FC<IProps> = ({
         {title}
       </div>
       <div className="flex gap-2">
-        <Link to="/">
-          <GoHome size={28} color={white ? "#ffffff" : "#000000"} />
-        </Link>
-        <IoIosMenu size={28} color={white ? "#ffffff" : "#000000"} />
+        <div className="cursor-pointer z-10" onClick={() => navigate("/")}>
+          <GoHome size={20} color={white ? "#ffffff" : "#000000"} />
+        </div>
+        <IoIosMenu size={20} color={white ? "#ffffff" : "#000000"} />
       </div>
     </div>
   );
