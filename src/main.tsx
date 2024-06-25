@@ -10,6 +10,7 @@ import { Reward } from "./pages/reward/Reward";
 import { Knowledge } from "./pages/knowledge/Knowledge";
 import { Event } from "./pages/event/Event";
 import IPhoneFrame from "./components/common/IPhoneFrame.tsx";
+import { Login } from "./pages/Login.tsx";
 const router = createBrowserRouter([
   {
     path: "/",
@@ -19,6 +20,7 @@ const router = createBrowserRouter([
         element: <IPhoneFrame />,
         children: [
           { path: "", element: <Home /> },
+          { path: "login", element: <Login /> },
           { path: "studentCard", element: <StudentCard /> },
           { path: "event", element: <Event /> },
           { path: "story", element: <Story /> },
