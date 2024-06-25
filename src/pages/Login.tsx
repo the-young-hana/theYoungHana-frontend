@@ -26,7 +26,7 @@ export const Login = () => {
   return (
     <>
       <div className="flex flex-col justify-between h-full bg-dark">
-        <StatusBar className="absolute top-0 z-20 bg-dark font-medium" white />
+        <StatusBar className="absolute top-0 z-20 !bg-dark font-medium" white />
         <TopBar white bgdark />
         <div className="flex flex-col items-center w-full">
           <span className="mb-8 text-xl text-white"> 간편비밀번호 입력 </span>

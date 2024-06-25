@@ -15,13 +15,13 @@ export const Home = () => {
   return (
     <>
       {/* 상단 바로가기메뉴 (이름, 원큐지갑, QR, 알림) */}
-      <div className="flex flex-row gap-1 px-6 pt-14 pb-4 w-full absolute top-0 z-10 backdrop-blur-md">
+      <div className="flex flex-row gap-1 px-6 pt-14 pb-4 w-full absolute top-0 z-10 bg-hanaBgGray">
         <div className="mr-1 font-bold underline-offset-4">
           <div className="flex flex-row gap-3 items-center">
             <Link to="/login">
               <span className="underline text-lg font-bold"> 로그인</span>
             </Link>
-            <div className="text-sm border-2 border-black rounded-full px-2 font-bold text-center py-0.5">
+            <div className="text-sm border border-black rounded-full px-2 font-bold text-center py-0.5">
               전체계좌
             </div>
           </div>
@@ -29,7 +29,7 @@ export const Home = () => {
       </div>
 
       <div
-        className="flex flex-col items-center w-full h-full overflow-y-auto overflow-x-hidden bg-gray-50"
+        className="flex flex-col items-center w-full h-full overflow-y-auto overflow-x-hidden bg-hanaBgGray"
         onScroll={(e) => {
           const scrollTop = e.currentTarget.scrollTop;
           setShowTabBar(lastScrollTop > scrollTop || scrollTop <= 0);

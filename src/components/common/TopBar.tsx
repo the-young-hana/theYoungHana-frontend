@@ -27,7 +27,7 @@ export const TopBar: FC<IProps> = ({
     <div
       className={cn(
         "absolute left-0 top-12 flex justify-between items-center px-5 w-iPhone h-12 bg-hanaBgGray",
-        bgdark ? "bg-dark" : "",
+        bgdark ? "!bg-dark" : "",
       )}
     >
       {isBack && (
@@ -35,7 +35,7 @@ export const TopBar: FC<IProps> = ({
           onClick={() => (!back ? navigate(path) : navigate(-1))}
           className="cursor-pointer z-10"
         >
-          <IoIosArrowBack size={18} />
+          <IoIosArrowBack size={18} color={white ? "#ffffff" : "#000000"} />
         </div>
       )}
 
