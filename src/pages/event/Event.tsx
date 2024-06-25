@@ -1,8 +1,12 @@
 import { useState } from "react";
 import { NavigationBar } from "../../components/common/NavigationBar";
 import { TopBar } from "../../components/common/TopBar";
-import { EventBar } from "../../components/event/EventBar";
+
 import { EventList } from "../../components/event/EventList";
+import { Button } from "../../components/common/Button";
+import { FiPlus } from "react-icons/fi";
+import { useNavigate } from "react-router-dom";
+import { MenuBar } from "../../components/common/MenuBar";
 
 const lists = [
   {
@@ -100,13 +104,14 @@ const endLists = [
   },
 ];
 export const Event = () => {
-  const [end, setEnd] = useState<boolean>(false);
+  const navigate = useNavigate();
+  const [ing, setIng] = useState<boolean>(true);
   return (
     <>
       <TopBar title="이벤트" />
       <div className="bg-white min-h-bottom-screen mb-[107px]">
-        <EventBar end={end} setEnd={setEnd} />
-        {!end ? (
+        <MenuBar menu1="진행중" menu2="종료" one={ing} setOne={setIng} />
+        {ing ? (
           <>
             {lists.map((list, index) => (
               <div key={index}>
@@ -135,6 +140,13 @@ export const Event = () => {
             ))}
           </>
         )}
+        <Button
+          roundedFull
+          className="absolute bottom-32 right-5 !p-2 drop-shadow-3xl"
+          onClick={() => navigate("/event/post")}
+        >
+          <FiPlus size={52} />
+        </Button>
       </div>
 
       <NavigationBar />

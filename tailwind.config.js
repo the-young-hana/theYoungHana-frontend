@@ -6,7 +6,7 @@ export default {
       colors: {
         hanaGreen: "#008485",
         hanaGray: "#F2F2F2",
-        hanaGray2: "#979797",
+        hanaGray2: "#B5B5B5",
         hanaBgGray: "#F9F9fB",
         dark: "#353a4e",
         dark2: "#454962",
