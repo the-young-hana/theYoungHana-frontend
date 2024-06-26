@@ -1,12 +1,12 @@
 import { useState } from "react";
 import { NavigationBar } from "../../components/common/NavigationBar";
 import { TopBar } from "../../components/common/TopBar";
-
 import { EventList } from "../../components/event/EventList";
 import { Button } from "../../components/common/Button";
 import { FiPlus } from "react-icons/fi";
 import { useNavigate } from "react-router-dom";
 import { MenuBar } from "../../components/common/MenuBar";
+import { IoSearch } from "react-icons/io5";
 
 const lists = [
   {
@@ -111,6 +111,20 @@ export const Event = () => {
       <TopBar title="이벤트" />
       <div className="bg-white min-h-bottom-screen mb-[107px]">
         <MenuBar menu1="진행중" menu2="종료" one={ing} setOne={setIng} />
+        <div className="flex justify-center w-full bg-gray-100">
+          <div className="flex  items-center w-full bg-white mx-7 my-3 rounded-xl py-3 px-5">
+            <input
+              type="text"
+              placeholder="이벤트명을 입력하세요"
+              className="w-full"
+            />
+            <IoSearch
+              size={23}
+              onClick={() => console.log("검색")}
+              className="cursor-pointer"
+            />
+          </div>
+        </div>
         {ing ? (
           <>
             {lists.map((list, index) => (

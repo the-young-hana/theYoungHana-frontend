@@ -31,7 +31,7 @@ const router = createBrowserRouter([
           { path: "login", element: <Login /> },
           { path: "studentCard", element: <StudentCard /> },
           { path: "event", element: <Event /> },
-          { path: "event/eventDetail", element: <EventDetail /> },
+          { path: "event/eventDetail/:eventId", element: <EventDetail /> },
           { path: "event/post", element: <PostEvent /> },
           { path: "event/winner", element: <EventWinner /> },
           { path: "story", element: <Story /> },

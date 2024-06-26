@@ -1,12 +1,15 @@
-import { useLocation } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { TopBar } from "../../components/common/TopBar";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Scrollbar } from "swiper/modules";
 import { Button } from "../../components/common/Button";
 import { useState } from "react";
 import Modal from "../../components/common/Modal";
+import { CiMenuKebab } from "react-icons/ci";
 
 const eventDetail = {
+  isMine: true,
+  event_idx: 0,
   event_start_datetime: "2024.06.01",
   event_end_date_time: "2024.06.05",
   event_fee: 0,
@@ -17,23 +20,34 @@ const eventDetail = {
 단, 미리 신청하거나 중복신청은 불가하니 그 점 유의해주세요!`,
 };
 export const EventDetail = () => {
-  const location = useLocation();
+  const navigate = useNavigate();
+  const [isUDModalOpen, setIsUDModalOpen] = useState<boolean>(false);
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+  const [delModalOpen, setDelModalOpen] = useState<boolean>(false);
 
-  const locationState = location.state as {
-    event_id: number;
+  const handelUDModal = () => {
+    setIsUDModalOpen((prev) => !prev);
   };
 
   const handleModal = () => {
     setIsModalOpen((prev) => !prev);
   };
 
+  const handleDelModal = () => {
+    setIsUDModalOpen(false);
+    setDelModalOpen((prev) => !prev);
+  };
+
+  const onClickDelete = () => {
+    handleDelModal();
+  };
+
   return (
     <>
-      <TopBar title={"2024년도 1학기 간식사업"} back />
+      <TopBar title={"2024년도 1학기 간식사업"} path={"/event"} />
       <div className="min-h-full bg-white pb-28">
         {/* 이미지 */}
-        <div className="pt-10 ">
+        <div className="pt-10">
           <Swiper
             slidesPerView={1.1}
             centeredSlides
@@ -53,7 +67,15 @@ export const EventDetail = () => {
         </div>
 
         {/* 내용 */}
-        <div className="flex flex-col gap-4 px-5 py-8">
+        <div className="relative flex flex-col gap-4 px-5 pt-8">
+          {eventDetail.isMine && (
+            <div
+              className="absolute right-2 cursor-pointer"
+              onClick={handelUDModal}
+            >
+              <CiMenuKebab size={20} />
+            </div>
+          )}
           <div className="flex gap-4">
             <Button
               roundedFull
@@ -90,6 +112,7 @@ export const EventDetail = () => {
             <div className="w-4/5 text-sm">{eventDetail.event_content}</div>
           </div>
         </div>
+
         {/* 버튼 */}
         <div className="absolute bottom-10 left-1/2 -translate-x-1/2">
           <Button
@@ -101,6 +124,22 @@ export const EventDetail = () => {
           </Button>
         </div>
       </div>
+      <Modal
+        show={isUDModalOpen}
+        onClose={handelUDModal}
+        modalType="sheet"
+        className="!px-5"
+      >
+        <div
+          className="p-2 border-b-2 cursor-pointer"
+          onClick={() => navigate(`/event/post?id=${eventDetail.event_idx}`)}
+        >
+          수정
+        </div>
+        <div className="p-2 border-b-2 cursor-pointer" onClick={onClickDelete}>
+          삭제
+        </div>
+      </Modal>
       <Modal show={isModalOpen} onClose={handleModal}>
         <div className="flex flex-col justify-center items-center gap-6">
           <div className="font-bold text-xl">응모가 완료되었습니다</div>
@@ -115,6 +154,14 @@ export const EventDetail = () => {
               네, 알려주세요
             </Button>
           </div>
+        </div>
+      </Modal>
+      <Modal show={delModalOpen} onClose={() => navigate("/event")}>
+        <div className="flex flex-col items-center px-5">
+          <div className="mx-5 mb-7 text-lg">삭제되었습니다</div>
+          <Button gray onClick={() => navigate("/event")} className="w-full">
+            확인
+          </Button>
         </div>
       </Modal>
     </>
