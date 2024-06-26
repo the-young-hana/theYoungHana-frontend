@@ -44,7 +44,9 @@ export const Knowledge = () => {
               />
               <div className="text-end flex flex-col items-end justify-center">
                 <p className="font-bold text-gray-500">{product.title}</p>
-                <p className="text-lg font-medium">{product.content}</p>
+                <p className="text-lg font-medium whitespace-pre-wrap">
+                  {product.content}
+                </p>
               </div>
               <div className="absolute top-0 left-2 font-extrabold text-[32px] opacity-5">
                 0{index + 1}

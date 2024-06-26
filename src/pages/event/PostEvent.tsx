@@ -6,14 +6,24 @@ import { HiOutlinePhoto } from "react-icons/hi2";
 import { IoIosClose } from "react-icons/io";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { EventForm } from "../../components/event/EventForm";
+import { useNavigate, useSearchParams } from "react-router-dom";
+import Modal from "../../components/common/Modal";
 
 export const PostEvent = () => {
+  const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
   const [type, setType] = useState<string>("신청");
   const imgRef = useRef<HTMLInputElement | null>(null);
   const [images, setImages] = useState<string[]>([]);
+  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+  const eventId = searchParams.get("id");
 
   const changeType = (type: string) => {
     setType(type);
+  };
+
+  const handleModal = () => {
+    setIsModalOpen((prev) => !prev);
   };
 
   const uploadBtnClick = useCallback(() => {
@@ -127,10 +137,26 @@ export const PostEvent = () => {
           <Button
             roundedFull
             className="font-bold text-xl !px-28 py-4 drop-shadow-3xl"
+            onClick={handleModal}
           >
-            등록
+            {!eventId ? "등록" : "수정"}
           </Button>
         </div>
+
+        <Modal show={isModalOpen} onClose={() => navigate("/event")}>
+          <div className="flex flex-col items-center px-5">
+            <div className="mx-5 mb-7 text-lg">
+              {!eventId ? "등록되었습니다." : "수정되었습니다."}
+            </div>
+            <Button
+              gray
+              onClick={() => navigate("/event/eventDetail/1")}
+              className="w-full"
+            >
+              확인
+            </Button>
+          </div>
+        </Modal>
       </div>
     </>
   );
