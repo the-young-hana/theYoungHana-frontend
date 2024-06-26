@@ -41,7 +41,10 @@ const router = createBrowserRouter([
           { path: "reward/quiz", element: <Quiz /> },
           { path: "knowledge", element: <Knowledge /> },
           { path: "knowledge/list", element: <KnowledgeList /> },
-          { path: "knowledge/detail", element: <KnowledgeDetail /> },
+          {
+            path: "knowledge/detail/:knowledgeId",
+            element: <KnowledgeDetail />,
+          },
         ],
       },
     ],
