@@ -17,6 +17,8 @@ import { Login } from "./pages/Login.tsx";
 import { Ranking } from "./pages/reward/Ranking.tsx";
 import { Gift } from "./pages/reward/Gift.tsx";
 import { Quiz } from "./pages/reward/Quiz.tsx";
+import { KnowledgeList } from "./pages/knowledge/KnowledgeList.tsx";
+import { KnowledgeDetail } from "./pages/knowledge/KnowledgeDetail.tsx";
 const router = createBrowserRouter([
   {
     path: "/",
@@ -38,6 +40,8 @@ const router = createBrowserRouter([
           { path: "reward/gift", element: <Gift /> },
           { path: "reward/quiz", element: <Quiz /> },
           { path: "knowledge", element: <Knowledge /> },
+          { path: "knowledge/list", element: <KnowledgeList /> },
+          { path: "knowledge/detail", element: <KnowledgeDetail /> },
         ],
       },
     ],
