@@ -63,7 +63,9 @@ export const KnowledgeList = () => {
         {knowledgeList.map((knowledge) => (
           <div
             className="w-full flex justify-between bg-white rounded-xl p-3 gap-3 cursor-pointer"
-            onClick={() => navigate("/knowledge/detail")}
+            onClick={() =>
+              navigate(`/knowledge/detail/${knowledge.knowledgeIdx}`)
+            }
           >
             <div className="flex flex-col gap-2">
               <p className="font-bold">{knowledge.knowledgeTitle}</p>
