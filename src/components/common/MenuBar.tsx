@@ -14,7 +14,7 @@ export const MenuBar: FC<IProps> = ({ menu1, menu2, one, setOne }) => {
   };
 
   return (
-    <div className="flex w-full justify-around py-2 bg-hanaBgGray">
+    <div className="absolute top-24 flex w-full justify-around pt-2 bg-hanaBgGray border-b border-hanaGray2">
       <div
         className={cn(
           one ? "font-bold border-b-[3px] text-hanaGreen border-hanaGreen" : "",
