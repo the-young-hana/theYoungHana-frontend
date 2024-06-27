@@ -88,7 +88,7 @@ export const EventForm: FC<IProps> = ({ type }) => {
           </LocalizationProvider>
         </div>
       )}
-      <div className="flex justify-between">
+      <div className="flex justify-between text-nowrap">
         <p className="font-bold">참가비</p>
         <div>
           <input
