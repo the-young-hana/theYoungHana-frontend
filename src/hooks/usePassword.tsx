@@ -1,7 +1,7 @@
 import { useState } from "react";
 
 const usePassword = () => {
-  const [password, setPassword] = useState("");
+  const [password, setPassword] = useState<string>("");
 
   const append = (number: number) => {
     setPassword((password) => {

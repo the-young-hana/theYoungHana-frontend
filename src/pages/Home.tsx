@@ -6,25 +6,50 @@ import "swiper/css/scrollbar";
 import cn from "../utils/cn";
 import { IoIosArrowForward } from "react-icons/io";
 import { Button } from "../components/common/Button";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { getCookie, removeCookie } from "../utils/cookie";
+import { AiOutlineUser } from "react-icons/ai";
 
 export const Home = () => {
   // 스크롤 감지해서 탭바 보여주기
+  const navigate = useNavigate();
   const [lastScrollTop, setLastScrollTop] = useState<number>(0);
   const [showTabBar, setShowTabBar] = useState<boolean>(true);
+  const isExistToken = getCookie("accessToken");
+
+  const logout = () => {
+    removeCookie("accessToken");
+    removeCookie("deptIdx");
+    removeCookie("refreshToken");
+    navigate("/");
+  };
+
   return (
     <>
       {/* 상단 바로가기메뉴 (이름, 원큐지갑, QR, 알림) */}
       <div className="flex flex-row gap-1 px-6 pt-14 pb-4 w-full absolute top-0 z-10 bg-hanaBgGray">
-        <div className="mr-1 font-bold underline-offset-4">
+        <div className="w-full flex justify-between items-center mr-1 font-bold underline-offset-4">
           <div className="flex flex-row gap-3 items-center">
-            <Link to="/login">
-              <span className="underline text-lg font-bold"> 로그인</span>
-            </Link>
+            {isExistToken ? (
+              <AiOutlineUser size={30} />
+            ) : (
+              <Link to="/login">
+                <span className="underline text-lg font-bold"> 로그인</span>
+              </Link>
+            )}
+
             <div className="text-sm border border-black rounded-full px-2 font-bold text-center py-0.5">
               전체계좌
             </div>
           </div>
+          {isExistToken && (
+            <div
+              className="underline text-gray-400 text-sm font-medium cursor-pointer"
+              onClick={logout}
+            >
+              로그아웃
+            </div>
+          )}
         </div>
       </div>
 
@@ -142,15 +167,19 @@ export const Home = () => {
             </div>
             <div className="text-gray-400 text-sm">자세히 보기</div>
           </div>
-          <Link to="/studentCard">
-            <div className="w-40 h-40 rounded-xl bg-white shadow-md p-5">
-              <img src="images/backpack.svg" className="w-7" />
-              <div className="font-extrabold my-3">
-                대학생활 동반자 더영하나
-              </div>
-              <div className="text-gray-400 text-sm">자세히 보기</div>
-            </div>
-          </Link>
+
+          <div
+            className="w-40 h-40 rounded-xl bg-white shadow-md p-5 cursor-pointer"
+            onClick={
+              isExistToken
+                ? () => navigate("/studentCard")
+                : () => navigate("/login")
+            }
+          >
+            <img src="images/backpack.svg" className="w-7" />
+            <div className="font-extrabold my-3">대학생활 동반자 더영하나</div>
+            <div className="text-gray-400 text-sm">자세히 보기</div>
+          </div>
         </div>
 
         {/* 카드 리스트 */}

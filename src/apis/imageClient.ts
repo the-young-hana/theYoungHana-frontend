@@ -35,7 +35,7 @@ export class ImageClient {
 
     newInstance.interceptors.request.use(
       (config) => {
-        const TOKEN = getCookie("token");
+        const TOKEN = getCookie("accessToken");
         if (TOKEN) {
           config.headers["Authorization"] = `Bearer ${TOKEN}`;
         }

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import usePassword from "../hooks/usePassword";
 import { TopBar } from "../components/common/TopBar";
 import { Keypad } from "../components/common/Keypad";
@@ -6,22 +6,42 @@ import { Loading } from "../components/common/Loading";
 import Check from "../components/common/Check";
 import cn from "../utils/cn";
 import StatusBar from "../components/common/StatusBar";
+import { ApiClient } from "../apis/apiClient";
+import { setCookie } from "../utils/cookie";
+import { useNavigate } from "react-router-dom";
 
 export const Login = () => {
+  const navigate = useNavigate();
   const { password, append, remove, clear } = usePassword();
   const [autoLogin, toggleAutoLogin] = useState<boolean>(true);
+  const [loading, setLoading] = useState<boolean>(false);
+  const [wrong, setWrong] = useState<boolean>(false);
 
-  //비밀번호 6글자 되면 로그인 트리거
-  // useEffect(() => {
-  //   if (password.length == 6) {
-  //     const loginReqtDto: LoginReqDto = {
-  //       memberIdx: member.memberIdx,
-  //       memberLoginPw: password,
-  //       fcmToken: localStorage.getItem("fcmToken"),
-  //     };
-  //     trigger(loginReqtDto);
-  //   }
-  // }, [password]);
+  const login = async (pwd: string) => {
+    try {
+      setLoading(true);
+      const res = await ApiClient.getInstance().postLogin(pwd);
+      console.log(res);
+      if (res.data) {
+        setCookie("deptIdx", res.data.deptIdx.toString());
+        setCookie("accessToken", res.data.accessToken);
+        setCookie("refreshToken", res.data.refreshToken);
+        navigate("/");
+      }
+    } catch (error) {
+      setWrong(true);
+      clear();
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // 비밀번호 6글자 되면 로그인 트리거
+  useEffect(() => {
+    if (password.length == 6) {
+      login(password);
+    }
+  }, [password]);
 
   return (
     <>
@@ -29,7 +49,12 @@ export const Login = () => {
         <StatusBar className="absolute top-0 z-20 !bg-dark font-medium" white />
         <TopBar white bgdark />
         <div className="flex flex-col items-center w-full pt-4">
-          <span className="mb-8 text-xl text-white"> 간편비밀번호 입력 </span>
+          <span className="mb-4 text-xl text-white"> 간편비밀번호 입력 </span>
+          {wrong && (
+            <p className="mb-8 text-white font-thin">
+              비밀번호를 다시 입력하세요.
+            </p>
+          )}
           <div className="flex flex-row gap-4 mb-8">
             {[0, 1, 2, 3, 4, 5].map((index) => (
               <div
@@ -63,7 +88,7 @@ export const Login = () => {
           onDone={() => {}}
         />
       </div>
-      <Loading show={false} label="로그인 중 ..." />
+      <Loading show={loading} label="로그인 중 ..." />
     </>
   );
 };

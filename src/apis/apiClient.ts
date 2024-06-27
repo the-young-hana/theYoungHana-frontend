@@ -1,10 +1,11 @@
 import axios, { AxiosInstance } from "axios";
 import { API_BASE_URL } from "./url";
 import { getCookie } from "../utils/cookie";
-import { usersApi } from "./interfaces/usersApi";
-import { LoginReqType, LoginType } from "../types/users";
 
-export class ApiClient implements usersApi {
+import { usersApi } from "./interfaces/usersApi";
+import { studentCardApi } from "./interfaces/studentCardApi";
+import { knowledgeApi } from "./interfaces/knowledge";
+export class ApiClient implements usersApi, studentCardApi, knowledgeApi {
   private static instance: ApiClient;
   private axiosInstance: AxiosInstance;
 
@@ -12,11 +13,33 @@ export class ApiClient implements usersApi {
     this.axiosInstance = this.createAxiosInstance();
   }
 
-  async postLogin(user: LoginReqType) {
-    const response = await this.axiosInstance.request<LoginType>({
+  async postLogin(password: string) {
+    const response = await this.axiosInstance.request<
+      DataResponseType<LoginType>
+    >({
       method: "post",
-      url: "/users/login",
-      data: user,
+      url: "/member/login",
+      data: { password },
+    });
+    return response.data;
+  }
+
+  async getStudentCard() {
+    const response = await this.axiosInstance.request<
+      DataResponseType<StudentCardType>
+    >({
+      method: "get",
+      url: "/students",
+    });
+    return response.data;
+  }
+
+  async getKnowledge() {
+    const response = await this.axiosInstance.request<
+      DataResponseType<KnowledgeReadType>
+    >({
+      method: "get",
+      url: "/knowledges",
     });
     return response.data;
   }
@@ -46,7 +69,7 @@ export class ApiClient implements usersApi {
 
     newInstance.interceptors.request.use(
       (config) => {
-        const TOKEN = getCookie("token");
+        const TOKEN = getCookie("accessToken");
         if (TOKEN) {
           config.headers["Authorization"] = `Bearer ${TOKEN}`;
         }

@@ -5,6 +5,7 @@ import { AiOutlineThunderbolt } from "react-icons/ai";
 import { GrPowerReset } from "react-icons/gr";
 import { useEffect, useState } from "react";
 import "./StudentCard.css"; // 추가된 CSS 파일
+import { ApiClient } from "../../apis/apiClient";
 
 export const StudentCard = () => {
   const SECONDS = 30000;
@@ -12,8 +13,40 @@ export const StudentCard = () => {
   const [isFlipped, setIsFlipped] = useState<boolean>(false);
   const [timeLeft, setTimeLeft] = useState<number>(SECONDS);
   const [isRefresh, setIsRefresh] = useState<boolean>(false);
+  const [loading, setLoading] = useState<boolean>(false);
 
   const second = String(Math.floor((timeLeft / 1000) % 60)).padStart(2, "0");
+
+  useEffect(() => {
+    const getStudentCard = async () => {
+      try {
+        setLoading(true);
+        const res = await ApiClient.getInstance().getStudentCard();
+        console.log(res);
+        if (res.data) {
+        }
+      } catch (error) {
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    const getKnowledge = async () => {
+      try {
+        setLoading(true);
+        const res = await ApiClient.getInstance().getKnowledge();
+        console.log(res);
+        if (res.data) {
+        }
+      } catch (error) {
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    getKnowledge();
+    getStudentCard();
+  }, []);
 
   const handleCardClick = () => {
     setIsFlipped((prev) => !prev);
