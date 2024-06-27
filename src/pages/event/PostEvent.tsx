@@ -117,7 +117,7 @@ export const PostEvent = () => {
           <textarea className="border rounded-xl resize-none w-full h-28 p-2" />
         </div>
 
-        <div className="">
+        <div className="z-0">
           <Swiper slidesPerView={"auto"}>
             {images.map((image, id) => (
               <SwiperSlide key={id} className="relative !w-fit mr-3">

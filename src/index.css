@@ -79,9 +79,6 @@ body {
     color: #000000;
     background-color: #ffffff;
   }
-  a:hover {
-    color: #008485;
-  }
 }
 
 @media (prefers-color-scheme: dark) {
@@ -93,9 +90,6 @@ body {
   }
   :root {
     color: #000000;
-  }
-  a:hover {
-    color: #747bff;
   }
   select {
     background-color: white;
