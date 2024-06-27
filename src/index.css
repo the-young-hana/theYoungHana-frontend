@@ -56,7 +56,7 @@ body {
   height: 844px;
 }
 .h-screen-plus-12 {
-  height: calc(100vh + 74px);
+  height: calc(100vh + 67px);
   @supports (-webkit-touch-callout: none) {
     height: calc(100vh - 2rem);
   }
