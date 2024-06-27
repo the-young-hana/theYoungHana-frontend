@@ -57,10 +57,17 @@ body {
 }
 .h-screen-plus-12 {
   height: calc(100vh + 67px);
-  @supports (-webkit-touch-callout: none) {
+  /* @supports (-webkit-touch-callout: none) {
     height: calc(100vh - 2rem);
+  } */
+}
+.h-full {
+  height: 100%;
+  @supports (-webkit-touch-callout: none) {
+    height: -webkit-fill-available;
   }
 }
+
 @media (min-width: 394px) {
   .iPhone\:\!h-iPhone {
     height: 844px !important;
