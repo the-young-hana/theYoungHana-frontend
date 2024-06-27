@@ -15,7 +15,7 @@ export const Button = ({
   ...props
 }: PropsWithChildren<ButtonProps>) => {
   const baseClassName =
-    "text-white text-nowrap transition-all p-2 px-8 w-fit h-fit";
+    "text-white text-nowrap transition-all p-2 px-8 w-fit h-fit text-nowrap";
   // 배경색
   const bgClassName = disabled || gray ? "bg-hanaGray2" : "bg-hanaGreen";
   // 마우스커서
