@@ -84,7 +84,7 @@ const Stories = () => {
       <ul className="w-full max-w-md flex flex-col gap-4">
         {data.map((transaction, index) => (
           <li key={transaction.storyId}>
-            <div className="p-4 rounded-2xl border bg-white drop-shadow-2.5xl">
+            <div className="p-4 rounded-2xl border bg-white drop-shadow-2.5xl cursor-pointer">
               {/* 스토리 이름 */}
               <div className="flex items-center gap-2">
                 <img
