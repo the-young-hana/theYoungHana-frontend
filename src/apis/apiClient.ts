@@ -4,8 +4,9 @@ import { usersApi } from "./interfaces/usersApi";
 import { studentCardApi } from "./interfaces/studentCardApi";
 import { knowledgeApi } from "./interfaces/knowledge";
 import { rewardApi } from "./interfaces/rewardApi";
+import storiesApi from "./interfaces/storiesApi";
 export class ApiClient
-  implements usersApi, studentCardApi, knowledgeApi, rewardApi
+  implements usersApi, studentCardApi, knowledgeApi, rewardApi, storiesApi
 {
   private static instance: ApiClient;
   private axiosInstance: AxiosInstance;
@@ -82,6 +83,25 @@ export class ApiClient
     >({
       method: "get",
       url: `knowledges/${knowledgeIdx}`,
+    });
+    return response.data;
+  }
+
+  // --------------------------------------student
+
+  // --------------------------------------event
+
+  // --------------------------------------knowledge
+
+  // --------------------------------------notice
+
+  // --------------------------------------story
+  async getTransactions(filter: GetTransactionsReqType) {
+    const response = await this.axiosInstance.request<
+      DataResponseType<GetTransactionsResType>
+    >({
+      method: "get",
+      url: `transactions/${filter.deptIdx}?start=${filter.start}&end=${filter.end}&type=${filter.type}&sort=${filter.sort}&page=${filter.page}`,
     });
     return response.data;
   }

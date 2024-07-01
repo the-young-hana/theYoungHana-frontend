@@ -5,6 +5,7 @@ export default {
     extend: {
       colors: {
         hanaGreen: "#008485",
+        hanaRed: "#D70037",
         hanaGray: "#F2F2F2",
         hanaGray2: "#B5B5B5",
         hanaBgGray: "#F9F9fB",
@@ -21,6 +22,7 @@ export default {
         "bottom-screen": "calc(100% - 107px)",
       },
       dropShadow: {
+        "2.5xl": ["2px 4px 3px rgba(0, 0, 0, 0.1)"],
         "3xl": ["2px 4px 3px rgba(0, 0, 0, 0.4)"],
         base: ["2px 4px 3px rgba(0, 0, 0, 0.1)"],
       },
