@@ -4,6 +4,7 @@ interface StudentCardType {
   studentId: string;
   studentCollege: string;
   studentDept: string;
-  studentCardImage: string;
+  studentCardFrontImage: string;
+  studentCardBackImage: string;
   isVertical: true;
 }

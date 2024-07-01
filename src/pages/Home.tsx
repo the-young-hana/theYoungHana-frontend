@@ -27,7 +27,7 @@ export const Home = () => {
   return (
     <>
       {/* 상단 바로가기메뉴 (이름, 원큐지갑, QR, 알림) */}
-      <div className="flex flex-row gap-1 px-6 pt-14 pb-4 w-full absolute top-0 z-10 bg-hanaBgGray">
+      <div className="flex flex-row gap-1 px-6 pt-4 sm:pt-14 pb-4 w-full absolute top-0 z-10 bg-hanaBgGray">
         <div className="w-full flex justify-between items-center mr-1 font-bold underline-offset-4">
           <div className="flex flex-row gap-3 items-center">
             {isExistToken ? (

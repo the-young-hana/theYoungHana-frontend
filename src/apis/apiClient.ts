@@ -1,11 +1,12 @@
 import axios, { AxiosInstance } from "axios";
-import { API_BASE_URL } from "./url";
 import { getCookie } from "../utils/cookie";
-
 import { usersApi } from "./interfaces/usersApi";
 import { studentCardApi } from "./interfaces/studentCardApi";
 import { knowledgeApi } from "./interfaces/knowledge";
-export class ApiClient implements usersApi, studentCardApi, knowledgeApi {
+import { rewardApi } from "./interfaces/rewardApi";
+export class ApiClient
+  implements usersApi, studentCardApi, knowledgeApi, rewardApi
+{
   private static instance: ApiClient;
   private axiosInstance: AxiosInstance;
 
@@ -34,12 +35,53 @@ export class ApiClient implements usersApi, studentCardApi, knowledgeApi {
     return response.data;
   }
 
+  async getStudentQR() {
+    const response = await this.axiosInstance.request<
+      DataResponseType<{ qrImage: string }>
+    >({
+      method: "get",
+      url: "/students/qr",
+    });
+    return response.data;
+  }
+
+  async getQuiz() {
+    const response = await this.axiosInstance.request<
+      DataResponseType<QuizType>
+    >({
+      method: "get",
+      url: "/rewards/quiz",
+    });
+    return response.data;
+  }
+
+  async postQuizAnswer(quizData: QuizAnswerReqType) {
+    const response = await this.axiosInstance.request<
+      DataResponseType<QuizAnswerType>
+    >({
+      method: "post",
+      url: "/rewards/quiz",
+      data: quizData,
+    });
+    return response.data;
+  }
+
   async getKnowledge() {
     const response = await this.axiosInstance.request<
-      DataResponseType<KnowledgeReadType>
+      DataResponseType<KnowledgeType[]>
     >({
       method: "get",
       url: "/knowledges",
+    });
+    return response.data;
+  }
+
+  async getKnowledgeDetail(knowledgeIdx: number) {
+    const response = await this.axiosInstance.request<
+      DataResponseType<KnowledgeDetailType>
+    >({
+      method: "get",
+      url: `knowledges/${knowledgeIdx}`,
     });
     return response.data;
   }
@@ -62,7 +104,7 @@ export class ApiClient implements usersApi, studentCardApi, knowledgeApi {
     };
 
     const newInstance = axios.create({
-      baseURL: API_BASE_URL,
+      baseURL: import.meta.env.VITE_API_BASE_URL,
       timeout: 100000,
       headers,
     });

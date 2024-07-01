@@ -26,7 +26,7 @@ export const TopBar: FC<IProps> = ({
   return (
     <div
       className={cn(
-        "absolute left-0 top-12 flex justify-between items-center px-5 w-iPhone h-12 bg-hanaBgGray",
+        "absolute left-0 top-0 sm:top-12 flex justify-between items-center px-5 w-iPhone h-12 bg-hanaBgGray",
         bgdark ? "!bg-dark" : "",
       )}
     >
