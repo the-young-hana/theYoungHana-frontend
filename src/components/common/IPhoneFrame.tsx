@@ -1,4 +1,4 @@
-import { HTMLAttributes, useEffect, useState } from "react";
+import { HTMLAttributes } from "react";
 import cn from "../../utils/cn";
 import StatusBar from "./StatusBar";
 import { Outlet, useLocation } from "react-router-dom";
@@ -22,15 +22,15 @@ function IPhoneFrame({ className = "", children, ...props }: IPhoneFrameProps) {
         {/* 시계, 배터리, 와이파이 */}
         <StatusBar className="absolute z-20" />
 
-        <div
+        {/* <div
           className={cn(
             location.pathname === "/story" || location.pathname === "/event"
-              ? "mt-[132px]"
+              ? ""
               : "mt-24",
             "w-full h-full overflow-auto",
           )}
-        >
-          {/* <div className="mt-24 w-full h-full overflow-auto"> */}
+        > */}
+        <div className="mt-12 w-full h-full overflow-auto">
           <Outlet />
         </div>
 

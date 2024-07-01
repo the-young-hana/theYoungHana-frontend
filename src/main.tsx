@@ -14,6 +14,9 @@ import { EventDetail } from "./pages/event/EventDetail.tsx";
 import { PostEvent } from "./pages/event/PostEvent.tsx";
 import { EventWinner } from "./pages/event/EventWinner.tsx";
 import { Login } from "./pages/Login.tsx";
+import Stories from "./pages/story/Stories.tsx";
+import Transactions from "./pages/story/Transactions.tsx";
+
 const router = createBrowserRouter([
   {
     path: "/",
@@ -29,7 +32,14 @@ const router = createBrowserRouter([
           { path: "event/eventDetail", element: <EventDetail /> },
           { path: "event/post", element: <PostEvent /> },
           { path: "event/winner", element: <EventWinner /> },
-          { path: "story", element: <Story /> },
+          {
+            path: "story",
+            element: <Story />,
+            children: [
+              { path: ":deptIdx/stories", element: <Stories /> },
+              { path: ":deptIdx/transactions", element: <Transactions /> },
+            ],
+          },
           { path: "reward", element: <Reward /> },
           { path: "knowledge", element: <Knowledge /> },
         ],

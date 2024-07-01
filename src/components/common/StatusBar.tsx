@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
-import currentTime from "../../utils/currentTime";
 import cn from "../../utils/cn";
+import { currentTime } from "../../utils/date";
 
 interface StatusBarProps {
   white?: boolean;
