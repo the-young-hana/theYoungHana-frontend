@@ -28,6 +28,7 @@ export class ImageClient {
 
     const newInstance = axios.create({
       baseURL: import.meta.env.API_BASE_URL,
+      withCredentials: true,
       timeout: 100000,
       headers,
     });
