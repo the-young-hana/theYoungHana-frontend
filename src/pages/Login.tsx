@@ -24,7 +24,7 @@ export const Login = () => {
       console.log(res);
       if (res.data) {
         setCookie("deptIdx", res.data.deptIdx.toString());
-        setCookie("accessToken", res.data.accessToken);
+        // setCookie("accessToken", res.data.accessToken);
         setCookie("refreshToken", res.data.refreshToken);
         navigate("/");
       }
