@@ -36,7 +36,7 @@ export const NavigationBar = () => {
             이벤트
           </div>
         </Link>
-        <Link to="/story">
+        <Link to="/story/1/stories">
           <div
             className={cn(
               "flex flex-col gap-1 justify-center items-center font-semibold text-sm",

@@ -7,18 +7,20 @@ import { onMessage } from "firebase/messaging";
 import Notification from "./Notification";
 
 interface IPhoneFrameProps extends HTMLAttributes<HTMLDivElement> {}
+
 function IPhoneFrame({ className = "", children, ...props }: IPhoneFrameProps) {
   const location = useLocation();
+
+  const baseClassName =
+    "relative flex flex-col items-center w-iPhone h-iPhone shadowed rounded-3xl border-2 border-black overflow-hidden box-content";
+
+  const processedClassName = cn(baseClassName, className);
 
   const [showNotification, setShowNotification] = useState(false);
   const [notification, setNotification] = useState({
     title: "",
     body: "",
   });
-
-  const baseClassName =
-    "relative flex flex-col items-center w-iPhone h-screen-plus-12 iPhone:!h-iPhone -translate-y-12 shadowed !gap-0 rounded-3xl border-2 border-black overflow-hidden box-content";
-  const processedClassName = cn(baseClassName, className);
 
   useEffect(() => {
     generateToken();
@@ -39,23 +41,23 @@ function IPhoneFrame({ className = "", children, ...props }: IPhoneFrameProps) {
       <div className={processedClassName} {...props}>
         {/* 다이나믹 아일랜드 */}
         <div className="absolute top-3 transition-all ease-in-out rounded-full w-28 hover:w-48 h-8 bg-black z-50" />
+
+        {/* 시계, 배터리, 와이파이 */}
         <StatusBar className="absolute z-20" />
 
-        <div
+        {/* <div
           className={cn(
             location.pathname === "/story" || location.pathname === "/event"
-              ? "mt-[132px]"
+              ? ""
               : "mt-24",
             "w-full h-full overflow-auto",
           )}
-        >
-          {/* <div className="mt-24 w-full h-full overflow-auto"> */}
-          {showNotification && (
-            <Notification title={notification.title} body={notification.body} />
-          )}
+        > */}
+        <div className="mt-12 w-full h-full overflow-auto">
           <Outlet />
         </div>
-        {/* 홈바 */}
+
+        {/* 인디케이터 / 홈바 */}
         <div className="absolute bottom-2 transition-all ease-in-out rounded-full w-48 hover:scale-105 h-[5px] bg-black z-50" />
       </div>
     </div>

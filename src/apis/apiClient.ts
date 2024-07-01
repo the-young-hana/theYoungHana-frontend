@@ -3,8 +3,9 @@ import { API_BASE_URL } from "./url";
 import { getCookie } from "../utils/cookie";
 import { usersApi } from "./interfaces/usersApi";
 import { LoginReqType, LoginType } from "../types/users";
+import storiesApi from "./interfaces/storiesApi";
 
-export class ApiClient implements usersApi {
+export class ApiClient implements usersApi, storiesApi {
   private static instance: ApiClient;
   private axiosInstance: AxiosInstance;
 
@@ -12,11 +13,31 @@ export class ApiClient implements usersApi {
     this.axiosInstance = this.createAxiosInstance();
   }
 
+  // --------------------------------------user
   async postLogin(user: LoginReqType) {
     const response = await this.axiosInstance.request<LoginType>({
       method: "post",
       url: "/users/login",
       data: user,
+    });
+    return response.data;
+  }
+
+  // --------------------------------------student
+
+  // --------------------------------------event
+
+  // --------------------------------------knowledge
+
+  // --------------------------------------notice
+
+  // --------------------------------------story
+  async getTransactions(filter: GetTransactionsReqType) {
+    const response = await this.axiosInstance.request<
+      DataResponseType<GetTransactionsResType>
+    >({
+      method: "get",
+      url: `transactions/${filter.deptIdx}?start=${filter.start}&end=${filter.end}&type=${filter.type}&sort=${filter.sort}&page=${filter.page}`,
     });
     return response.data;
   }
