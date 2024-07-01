@@ -1,11 +1,13 @@
 import axios, { AxiosInstance } from "axios";
-import { API_BASE_URL } from "./url";
 import { getCookie } from "../utils/cookie";
 import { usersApi } from "./interfaces/usersApi";
-import { LoginReqType, LoginType } from "../types/users";
+import { studentCardApi } from "./interfaces/studentCardApi";
+import { knowledgeApi } from "./interfaces/knowledge";
+import { rewardApi } from "./interfaces/rewardApi";
 import storiesApi from "./interfaces/storiesApi";
-
-export class ApiClient implements usersApi, storiesApi {
+export class ApiClient
+  implements usersApi, studentCardApi, knowledgeApi, rewardApi, storiesApi
+{
   private static instance: ApiClient;
   private axiosInstance: AxiosInstance;
 
@@ -13,12 +15,93 @@ export class ApiClient implements usersApi, storiesApi {
     this.axiosInstance = this.createAxiosInstance();
   }
 
-  // --------------------------------------user
-  async postLogin(user: LoginReqType) {
-    const response = await this.axiosInstance.request<LoginType>({
+  async postLogin(password: string) {
+    const response = await this.axiosInstance.request<
+      DataResponseType<LoginType>
+    >({
       method: "post",
-      url: "/users/login",
-      data: user,
+      url: "/member/login",
+      data: { password },
+    });
+    return response.data;
+  }
+
+  async getStudentCard() {
+    const response = await this.axiosInstance.request<
+      DataResponseType<StudentCardType>
+    >({
+      method: "get",
+      url: "/students",
+    });
+    return response.data;
+  }
+
+  async getStudentQR() {
+    const response = await this.axiosInstance.request<
+      DataResponseType<{ qrImage: string }>
+    >({
+      method: "get",
+      url: "/students/qr",
+    });
+    return response.data;
+  }
+
+  async getQuiz() {
+    const response = await this.axiosInstance.request<
+      DataResponseType<QuizType>
+    >({
+      method: "get",
+      url: "/rewards/quiz",
+    });
+    return response.data;
+  }
+
+  async postQuizAnswer(quizData: QuizAnswerReqType) {
+    const response = await this.axiosInstance.request<
+      DataResponseType<QuizAnswerType>
+    >({
+      method: "post",
+      url: "/rewards/quiz",
+      data: quizData,
+    });
+    return response.data;
+  }
+
+  async getKnowledge() {
+    const response = await this.axiosInstance.request<
+      DataResponseType<KnowledgeType[]>
+    >({
+      method: "get",
+      url: "/knowledges",
+    });
+    return response.data;
+  }
+
+  async getKnowledgeDetail(knowledgeIdx: number) {
+    const response = await this.axiosInstance.request<
+      DataResponseType<KnowledgeDetailType>
+    >({
+      method: "get",
+      url: `knowledges/${knowledgeIdx}`,
+    });
+    return response.data;
+  }
+
+  // --------------------------------------student
+
+  // --------------------------------------event
+
+  // --------------------------------------knowledge
+
+  // --------------------------------------notice
+
+  // --------------------------------------story
+  async getTransactions(filter: GetTransactionsReqType) {
+    const response = await this.axiosInstance.request<
+      DataResponseType<GetTransactionsResType>
+    >({
+      method: "get",
+      url: `transactions/${filter.deptIdx}?start=${filter.start}&end=${filter.end}&type=${filter.type}&sort=${filter.sort}&page=${filter.page}`,
     });
     return response.data;
   }
@@ -60,14 +143,14 @@ export class ApiClient implements usersApi, storiesApi {
     };
 
     const newInstance = axios.create({
-      baseURL: API_BASE_URL,
+      baseURL: import.meta.env.VITE_API_BASE_URL,
       timeout: 100000,
       headers,
     });
 
     newInstance.interceptors.request.use(
       (config) => {
-        const TOKEN = getCookie("token");
+        const TOKEN = getCookie("accessToken");
         if (TOKEN) {
           config.headers["Authorization"] = `Bearer ${TOKEN}`;
         }

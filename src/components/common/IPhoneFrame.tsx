@@ -12,7 +12,7 @@ function IPhoneFrame({ className = "", children, ...props }: IPhoneFrameProps) {
   const location = useLocation();
 
   const baseClassName =
-    "relative flex flex-col items-center w-iPhone h-iPhone shadowed rounded-3xl border-2 border-black overflow-hidden box-content";
+    "relative flex flex-col items-center w-iPhone h-screen-support-safari sm:!h-iPhone shadowed sm:rounded-3xl sm:border-2 border-black overflow-hidden box-content";
 
   const processedClassName = cn(baseClassName, className);
 
@@ -37,13 +37,13 @@ function IPhoneFrame({ className = "", children, ...props }: IPhoneFrameProps) {
   }, []);
 
   return (
-    <div className="w-screen h-screen flex flex-col bg-hanaGray justify-center items-center overflow-hidden">
+    <div className="w-screen h-screen-support-safari flex flex-col bg-hanaGray justify-center items-center overflow-hidden">
       <div className={processedClassName} {...props}>
         {/* 다이나믹 아일랜드 */}
-        <div className="absolute top-3 transition-all ease-in-out rounded-full w-28 hover:w-48 h-8 bg-black z-50" />
+        <div className="hidden sm:flex absolute top-3 transition-all ease-in-out rounded-full w-28 hover:w-48 h-8 bg-black z-50" />
 
         {/* 시계, 배터리, 와이파이 */}
-        <StatusBar className="absolute z-20" />
+        <StatusBar className="hidden sm:flex absolute z-20" />
 
         {/* <div
           className={cn(
@@ -53,12 +53,12 @@ function IPhoneFrame({ className = "", children, ...props }: IPhoneFrameProps) {
             "w-full h-full overflow-auto",
           )}
         > */}
-        <div className="mt-12 w-full h-full overflow-auto">
+        <div className="mt-12 sm:mt-[95px] w-full h-full overflow-auto">
           <Outlet />
         </div>
 
         {/* 인디케이터 / 홈바 */}
-        <div className="absolute bottom-2 transition-all ease-in-out rounded-full w-48 hover:scale-105 h-[5px] bg-black z-50" />
+        <div className="hidden sm:flex absolute bottom-2 transition-all ease-in-out rounded-full w-48 hover:scale-105 h-[5px] bg-black z-50" />
       </div>
     </div>
   );

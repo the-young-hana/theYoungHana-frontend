@@ -29,7 +29,8 @@ export default {
       animation: {
         tada: "tada 1.3s ease-in-out 0.5s infinite",
         zoomOut: "zoom-out 1.5s ease-in-out 0s 1",
-        zoomIn: "zoom-in 1.5s ease-out 0.5s 1",
+        zoomIn: "zoom-in 1.5s ease-out 0s 1",
+        zoomIn2: "zoom-in 0.5s ease-out 0s 1",
       },
       keyframes: {
         bounce: {

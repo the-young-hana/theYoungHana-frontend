@@ -1,66 +1,35 @@
 import { useNavigate } from "react-router-dom";
 import { TopBar } from "../../components/common/TopBar";
-
-const knowledgeList = [
-  {
-    knowledgeIdx: 0,
-    knowledgeTitle: "대학생도 연말정산 해야 하나요?",
-    knowledgeSummary:
-      "아르바이트를 하고 있다면 연말정산 대상자일 수 있어요. 하지만 아르바이...",
-    knowledgeImage: "/images/investment.svg",
-  },
-  {
-    knowledgeIdx: 1,
-    knowledgeTitle: "대학생도 연말정산 해야 하나요?",
-    knowledgeSummary:
-      "아르바이트를 하고 있다면 연말정산 대상자일 수 있어요. 하지만 아르바이...",
-    knowledgeImage: "/images/investment.svg",
-  },
-  {
-    knowledgeIdx: 2,
-    knowledgeTitle: "대학생도 연말정산 해야 하나요?",
-    knowledgeSummary:
-      "아르바이트를 하고 있다면 연말정산 대상자일 수 있어요. 하지만 아르바이...",
-    knowledgeImage: "/images/investment.svg",
-  },
-  {
-    knowledgeIdx: 3,
-    knowledgeTitle: "대학생도 연말정산 해야 하나요?",
-    knowledgeSummary:
-      "아르바이트를 하고 있다면 연말정산 대상자일 수 있어요. 하지만 아르바이...",
-    knowledgeImage: "/images/investment.svg",
-  },
-  {
-    knowledgeIdx: 4,
-    knowledgeTitle: "대학생도 연말정산 해야 하나요?",
-    knowledgeSummary:
-      "아르바이트를 하고 있다면 연말정산 대상자일 수 있어요. 하지만 아르바이...",
-    knowledgeImage: "/images/investment.svg",
-  },
-  {
-    knowledgeIdx: 5,
-    knowledgeTitle: "대학생도 연말정산 해야 하나요?",
-    knowledgeSummary:
-      "아르바이트를 하고 있다면 연말정산 대상자일 수 있어요. 하지만 아르바이...",
-    knowledgeImage: "/images/investment.svg",
-  },
-  {
-    knowledgeIdx: 6,
-    knowledgeTitle: "대학생도 연말정산 해야 하나요?",
-    knowledgeSummary:
-      "아르바이트를 하고 있다면 연말정산 대상자일 수 있어요. 하지만 아르바이...",
-    knowledgeImage: "/images/investment.svg",
-  },
-];
+import { useEffect, useState } from "react";
+import { ApiClient } from "../../apis/apiClient";
 
 export const KnowledgeList = () => {
   const navigate = useNavigate();
+  const [, setLoading] = useState<boolean>(false);
+  const [knowledges, setKnowledges] = useState<KnowledgeType[]>([]);
+
+  useEffect(() => {
+    const getKnowledge = async () => {
+      try {
+        setLoading(true);
+        const res = await ApiClient.getInstance().getKnowledge();
+        if (res.data) {
+          setKnowledges(res.data);
+        }
+      } catch (error) {
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    getKnowledge();
+  }, []);
 
   return (
     <>
       <TopBar title="재테크 꿀팁" back />
       <div className="flex flex-col gap-3 min-h-full items-center px-5 py-7">
-        {knowledgeList.map((knowledge) => (
+        {knowledges.map((knowledge) => (
           <div
             className="w-full flex justify-between bg-white rounded-xl p-3 gap-3 cursor-pointer"
             onClick={() =>

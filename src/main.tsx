@@ -51,7 +51,7 @@ const router = createBrowserRouter([
           { path: "knowledge", element: <Knowledge /> },
           { path: "knowledge/list", element: <KnowledgeList /> },
           {
-            path: "knowledge/detail/:knowledgeId",
+            path: "knowledge/detail/:knowledgeIdx",
             element: <KnowledgeDetail />,
           },
         ],

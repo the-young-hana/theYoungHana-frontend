@@ -1,5 +1,4 @@
 import axios, { AxiosInstance } from "axios";
-import { API_BASE_URL } from "./url";
 import { getCookie } from "../utils/cookie";
 
 export class ImageClient {
@@ -28,14 +27,14 @@ export class ImageClient {
     };
 
     const newInstance = axios.create({
-      baseURL: API_BASE_URL,
+      baseURL: import.meta.env.API_BASE_URL,
       timeout: 100000,
       headers,
     });
 
     newInstance.interceptors.request.use(
       (config) => {
-        const TOKEN = getCookie("token");
+        const TOKEN = getCookie("accessToken");
         if (TOKEN) {
           config.headers["Authorization"] = `Bearer ${TOKEN}`;
         }
