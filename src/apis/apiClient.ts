@@ -124,6 +124,7 @@ export class ApiClient
 
     const newInstance = axios.create({
       baseURL: import.meta.env.VITE_API_BASE_URL,
+      withCredentials: true,
       timeout: 100000,
       headers,
     });
