@@ -106,6 +106,25 @@ export class ApiClient
     return response.data;
   }
 
+  // --------------------------------------student
+
+  // --------------------------------------event
+
+  // --------------------------------------knowledge
+
+  // --------------------------------------notice
+
+  // --------------------------------------story
+  async getTransactions(filter: GetTransactionsReqType) {
+    const response = await this.axiosInstance.request<
+      DataResponseType<GetTransactionsResType>
+    >({
+      method: "get",
+      url: `transactions/${filter.deptIdx}?start=${filter.start}&end=${filter.end}&type=${filter.type}&sort=${filter.sort}&page=${filter.page}`,
+    });
+    return response.data;
+  }
+
   static getInstance(): ApiClient {
     return this.instance || (this.instance = new this());
   }
