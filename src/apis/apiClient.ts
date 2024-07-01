@@ -131,10 +131,10 @@ export class ApiClient
 
     newInstance.interceptors.request.use(
       (config) => {
-        const TOKEN = getCookie("accessToken");
-        if (TOKEN) {
-          config.headers["Authorization"] = `Bearer ${TOKEN}`;
-        }
+        // const TOKEN = getCookie("accessToken");
+        // if (TOKEN) {
+        //   config.headers["Authorization"] = `Bearer ${TOKEN}`;
+        // }
 
         config.headers["Content-Type"] = "application/json";
         return config;
