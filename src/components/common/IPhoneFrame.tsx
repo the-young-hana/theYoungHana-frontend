@@ -37,7 +37,7 @@ function IPhoneFrame({ className = "", children, ...props }: IPhoneFrameProps) {
   }, []);
 
   return (
-    <div className="w-screen h-screen-plus-12 flex flex-col bg-hanaGray justify-center items-center overflow-hidden">
+    <div className="w-screen h-screen flex flex-col bg-hanaGray justify-center items-center overflow-hidden">
       <div className={processedClassName} {...props}>
         {/* 다이나믹 아일랜드 */}
         <div className="absolute top-3 transition-all ease-in-out rounded-full w-28 hover:w-48 h-8 bg-black z-50" />
