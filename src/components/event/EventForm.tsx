@@ -6,10 +6,10 @@ import cn from "../../utils/cn";
 
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
-import { DatePicker } from "@mui/x-date-pickers/DatePicker";
-import { DateTimePicker } from "@mui/x-date-pickers";
 import {
-  DateRangePicker,
+  MobileDatePicker,
+  MobileDateTimePicker,
+  MobileDateRangePicker,
   SingleInputDateRangeField,
 } from "@mui/x-date-pickers-pro";
 
@@ -53,14 +53,14 @@ export const EventForm: FC<IProps> = ({ type }) => {
         <input
           type="text"
           placeholder="제목"
-          className="text-end font-medium"
+          className="text-end font-medium w-52"
         />
       </div>
       <div className="flex justify-between items-center">
         <p className="font-bold">신청 시작</p>
         <LocalizationProvider dateAdapter={AdapterDayjs}>
-          <DateTimePicker
-            format="YYYY-MM-DD HH:MM"
+          <MobileDateTimePicker
+            format="YYYY-MM-DD HH:mm"
             label="신청 시작"
             slotProps={{ textField: { size: "small" } }}
           />
@@ -69,8 +69,8 @@ export const EventForm: FC<IProps> = ({ type }) => {
       <div className="flex justify-between items-center">
         <p className="font-bold">신청 마감</p>
         <LocalizationProvider dateAdapter={AdapterDayjs}>
-          <DateTimePicker
-            format="YYYY-MM-DD HH:MM"
+          <MobileDateTimePicker
+            format="YYYY-MM-DD HH:mm"
             label="신청 마감"
             slotProps={{ textField: { size: "small" } }}
           />
@@ -80,7 +80,7 @@ export const EventForm: FC<IProps> = ({ type }) => {
         <div className="flex justify-between items-center">
           <p className="font-bold">발표 날짜</p>
           <LocalizationProvider dateAdapter={AdapterDayjs}>
-            <DatePicker
+            <MobileDatePicker
               format="YYYY-MM-DD"
               label="발표 날짜"
               slotProps={{ textField: { size: "small" } }}
@@ -88,13 +88,13 @@ export const EventForm: FC<IProps> = ({ type }) => {
           </LocalizationProvider>
         </div>
       )}
-      <div className="flex justify-between">
+      <div className="flex justify-between text-nowrap">
         <p className="font-bold">참가비</p>
         <div>
           <input
             type="number"
             placeholder="0"
-            className="text-end font-medium"
+            className="text-end font-medium w-52"
           />
           <span>원</span>
         </div>
@@ -102,7 +102,7 @@ export const EventForm: FC<IProps> = ({ type }) => {
       <div className="flex justify-between items-center">
         <p className="font-bold">입금기간</p>
         <LocalizationProvider dateAdapter={AdapterDayjs}>
-          <DateRangePicker
+          <MobileDateRangePicker
             format="YYYY-MM-DD"
             label="입금 기간"
             slots={{ field: SingleInputDateRangeField }}
@@ -160,13 +160,13 @@ export const EventForm: FC<IProps> = ({ type }) => {
         </>
       )}
       {type === "선착" && (
-        <div className="flex justify-between">
+        <div className="flex justify-between text-nowrap">
           <p className="font-bold">인원수</p>
           <div>
             <input
               type="text"
               placeholder="0"
-              className="text-end font-medium"
+              className="text-end font-medium w-52"
             />
             <span>명</span>
           </div>

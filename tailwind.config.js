@@ -24,8 +24,13 @@ export default {
       dropShadow: {
         "2.5xl": ["2px 4px 3px rgba(0, 0, 0, 0.1)"],
         "3xl": ["2px 4px 3px rgba(0, 0, 0, 0.4)"],
+        base: ["2px 4px 3px rgba(0, 0, 0, 0.1)"],
       },
-      animation: {},
+      animation: {
+        tada: "tada 1.3s ease-in-out 0.5s infinite",
+        zoomOut: "zoom-out 1.5s ease-in-out 0s 1",
+        zoomIn: "zoom-in 1.5s ease-out 0.5s 1",
+      },
       keyframes: {
         bounce: {
           "0%, 100%": {
@@ -35,6 +40,49 @@ export default {
           "50%": {
             transform: "translateY(0)",
             animationTimingFunction: "cubic-bezier(0, 0, 0.2, 1)",
+          },
+        },
+        tada: {
+          "0%": {
+            transform: "scale3d(1, 1, 1)",
+          },
+          "10%, 20%": {
+            transform: "scale3d(0.9, 0.9, 0.9) rotate3d(0, 0, 1, -3deg)",
+          },
+          "30%, 50%, 70%, 90%": {
+            transform: "scale3d(1.1, 1.1, 1.1) rotate3d(0, 0, 1, 3deg)",
+          },
+          "40%, 60%, 80%": {
+            transform: "scale3d(1.1, 1.1, 1.1) rotate3d(0, 0, 1, -3deg)",
+          },
+          "100%": {
+            transform: "scale3d(1, 1, 1)",
+          },
+        },
+        "zoom-out": {
+          "0%": {
+            opacity: 1,
+          },
+          "15%": {
+            opacity: 0.8,
+            transform: "scale3d(1.1, 1.1, 1.1)",
+          },
+          "100%": {
+            opacity: 0,
+            transform: "scale3d(0, 0, 0)",
+          },
+        },
+        "zoom-in": {
+          "0%": {
+            opacity: 0,
+            transform: "scale3d(0, 0, 0)",
+          },
+          "80%": {
+            opacity: 0.8,
+            transform: "scale3d(1.1, 1.1, 1.1)",
+          },
+          "100%": {
+            opacity: 1,
           },
         },
       },

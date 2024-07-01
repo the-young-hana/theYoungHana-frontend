@@ -26,7 +26,7 @@ function Modal(modalProps: ModalProps) {
   } = modalProps;
   // 백드롭 클래스네임
   const backdropBaseClassName =
-    "absolute top-0 flex flex-col justify-center items-center left-0 w-iPhone h-iPhone z-40 rounded-3xl transition-opacity overflow-hidden";
+    "absolute top-0 h-screen-plus-12 iPhone:!h-iPhone flex flex-col justify-center items-center left-0 w-iPhone h-iPhone z-40 rounded-3xl transition-opacity overflow-hidden";
   const backdropShowClassName = show
     ? "opacity-100"
     : "delay-100 opacity-0  pointer-events-none";

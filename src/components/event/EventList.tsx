@@ -20,11 +20,7 @@ export const EventList: FC<IProps> = ({
   const navigate = useNavigate();
 
   const moveToDetail = () => {
-    navigate("/event/eventDetail", {
-      state: {
-        event_id: eventId,
-      },
-    });
+    navigate(`/event/eventDetail/${eventId}`);
   };
 
   return (
