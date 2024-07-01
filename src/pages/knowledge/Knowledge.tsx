@@ -17,9 +17,9 @@ const products = [
 
 export const Knowledge = () => {
   return (
-    <div>
+    <>
       <TopBar title="금융상식" />
-      <div className="mb-[107px] flex flex-col gap-5 min-h-full justify-center items-center p-8">
+      <div className=" mt-12 mb-[107px] flex flex-col gap-5 min-h-full justify-center items-center p-8">
         <div className="w-full flex bg-[#EF5489] rounded-xl px-5 py-8 justify-between">
           <div className="flex flex-col gap-2">
             <p className="text-white font-semibold text-2xl">
@@ -56,6 +56,6 @@ export const Knowledge = () => {
         </div>
       </div>
       <NavigationBar />
-    </div>
+    </>
   );
 };

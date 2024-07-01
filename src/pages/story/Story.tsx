@@ -8,18 +8,21 @@ export const Story = () => {
   const { deptIdx } = useParams();
 
   return (
-    <section>
+    <>
       <TopBar title="스토리" />
-      <MenuBar
-        menu1="스토리"
-        menu2="거래내역"
-        // path1={`${deptIdx}/stories`}
-        // path2={`${deptIdx}/transactions`}
-        path1="1/stories"
-        path2="1/transactions"
-      />
-      <Outlet />
+      <div className="min-h-bottom-screen mt-12 mb-[107px]">
+        <MenuBar
+          menu1="스토리"
+          menu2="거래내역"
+          // path1={`${deptIdx}/stories`}
+          // path2={`${deptIdx}/transactions`}
+          path1="1/stories"
+          path2="1/transactions"
+        />
+        <Outlet />
+      </div>
+
       <NavigationBar />
-    </section>
+    </>
   );
 };

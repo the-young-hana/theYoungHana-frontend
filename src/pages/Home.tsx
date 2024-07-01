@@ -54,7 +54,7 @@ export const Home = () => {
       </div>
 
       <div
-        className="flex flex-col items-center w-full h-full overflow-y-auto overflow-x-hidden bg-hanaBgGray"
+        className="flex flex-col items-center w-full h-full overflow-y-auto overflow-x-hidden bg-hanaBgGray mt-12"
         onScroll={(e) => {
           const scrollTop = e.currentTarget.scrollTop;
           setShowTabBar(lastScrollTop > scrollTop || scrollTop <= 0);

@@ -28,7 +28,10 @@ export const MenuBar: FC<IProps> = ({ menu1, menu2, path1, path2 }) => {
   };
 
   useEffect(() => {
-    if (window.location.href.includes("stories")) {
+    if (
+      window.location.href.includes("stories") ||
+      window.location.href.includes("ing")
+    ) {
       setIsSelected(true);
     } else {
       setIsSelected(false);

@@ -51,7 +51,7 @@ export const Login = () => {
           white
         />
         <TopBar white bgdark />
-        <div className="flex flex-col items-center w-full pt-4">
+        <div className="flex flex-col items-center w-full pt-4 mt-12">
           <span className="mb-4 text-xl text-white"> 간편비밀번호 입력 </span>
           {wrong && (
             <p className="mb-8 text-white font-thin">

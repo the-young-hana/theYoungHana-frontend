@@ -44,17 +44,17 @@ export const EventDetail = () => {
 
   return (
     <>
-      <TopBar title={"2024년도 1학기 간식사업"} path={"/event"} />
+      <TopBar title={"2024년도 1학기 간식사업"} path={"/event/ing"} />
       <div className="min-h-full bg-white pb-28">
         {/* 이미지 */}
-        <div className="pt-10">
+        <div className="mt-12 pt-5">
           <Swiper
             slidesPerView={1.1}
             centeredSlides
             scrollbar
             modules={[Scrollbar]}
           >
-            <SwiperSlide className="">
+            <SwiperSlide className="mb-5">
               <img src="/images/event_img.png" />
             </SwiperSlide>
             <SwiperSlide>
@@ -156,10 +156,14 @@ export const EventDetail = () => {
           </div>
         </div>
       </Modal>
-      <Modal show={delModalOpen} onClose={() => navigate("/event")}>
+      <Modal show={delModalOpen} onClose={() => navigate("/event/ing")}>
         <div className="flex flex-col items-center px-5">
           <div className="mx-5 mb-7 text-lg">삭제되었습니다</div>
-          <Button gray onClick={() => navigate("/event")} className="w-full">
+          <Button
+            gray
+            onClick={() => navigate("/event/ing")}
+            className="w-full"
+          >
             확인
           </Button>
         </div>

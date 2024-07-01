@@ -8,7 +8,7 @@ export const Reward = () => {
   return (
     <>
       <TopBar title="리워드" />
-      <div className="bg-white min-h-bottom-screen mb-[107px] flex flex-col gap-5 items-center p-8">
+      <div className="bg-white min-h-bottom-screen mt-12 mb-[107px] flex flex-col gap-5 items-center p-8">
         <div className="w-full border flex flex-col justify-center items-center px-2 pt-5 rounded-2xl bg-gradient-to-b from-[#C8FFA7] to-[#FEFFC7] drop-shadow-base">
           <p className="text-center mb-1 font-semibold text-xl">
             7월 1주차 <br />

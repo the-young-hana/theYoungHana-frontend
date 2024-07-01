@@ -23,7 +23,7 @@ export const NavigationBar = () => {
             학생증
           </div>
         </Link>
-        <Link to="/event">
+        <Link to="/event/ing">
           <div
             className={cn(
               "flex flex-col gap-1 justify-center items-center font-semibold text-sm",
