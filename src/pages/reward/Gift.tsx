@@ -51,7 +51,7 @@ export const Gift = () => {
   return (
     <>
       <TopBar title="선물상자" back />
-      <div className="bg-white min-h-full flex flex-col gap-5 items-center p-8 overflow-hidden">
+      <div className="bg-white min-h-full flex flex-col gap-5 items-center p-8 overflow-hidden mt-12">
         <img
           id="rewardGift"
           src="/images/reward_gift.svg"

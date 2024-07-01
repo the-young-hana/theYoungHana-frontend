@@ -53,7 +53,7 @@ function IPhoneFrame({ className = "", children, ...props }: IPhoneFrameProps) {
             "w-full h-full overflow-auto",
           )}
         > */}
-        <div className="mt-12 sm:mt-[95px] w-full h-full overflow-auto">
+        <div className="sm:mt-12 w-full h-full overflow-auto">
           <Outlet />
         </div>
 

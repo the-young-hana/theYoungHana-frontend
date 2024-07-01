@@ -21,6 +21,8 @@ import { Gift } from "./pages/reward/Gift.tsx";
 import { Quiz } from "./pages/reward/Quiz.tsx";
 import { KnowledgeList } from "./pages/knowledge/KnowledgeList.tsx";
 import { KnowledgeDetail } from "./pages/knowledge/KnowledgeDetail.tsx";
+import { EventIng } from "./pages/event/EventIng.tsx";
+import { EventEnd } from "./pages/event/EventEnd.tsx";
 const router = createBrowserRouter([
   {
     path: "/",
@@ -32,7 +34,15 @@ const router = createBrowserRouter([
           { path: "", element: <Home /> },
           { path: "login", element: <Login /> },
           { path: "studentCard", element: <StudentCard /> },
-          { path: "event", element: <Event /> },
+          {
+            path: "event",
+            element: <Event />,
+            children: [
+              { path: "ing", element: <EventIng /> },
+              { path: "end", element: <EventEnd /> },
+            ],
+          },
+
           { path: "event/eventDetail/:eventId", element: <EventDetail /> },
           { path: "event/post", element: <PostEvent /> },
           { path: "event/winner", element: <EventWinner /> },

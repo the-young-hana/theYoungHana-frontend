@@ -19,7 +19,7 @@ export default {
         iPhone: "844px",
       },
       minHeight: {
-        "bottom-screen": "calc(100% - 107px)",
+        "bottom-screen": "calc(100% - 155px)",
       },
       dropShadow: {
         "2.5xl": ["2px 4px 3px rgba(0, 0, 0, 0.1)"],

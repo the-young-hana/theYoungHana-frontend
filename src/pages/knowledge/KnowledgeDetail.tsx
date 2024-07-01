@@ -31,7 +31,7 @@ export const KnowledgeDetail = () => {
   return (
     <>
       <TopBar title="재테크 꿀팁" back />
-      <div className="bg-white min-h-full flex flex-col items-center">
+      <div className="bg-white min-h-full flex flex-col items-center mt-12">
         {knowledgeDetail && (
           <div className="mx-3 ">
             <div className="my-5 flex flex-col gap-2 border-b-2 border-hanaGray2 pb-2">

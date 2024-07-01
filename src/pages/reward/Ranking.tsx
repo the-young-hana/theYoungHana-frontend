@@ -46,7 +46,7 @@ export const Ranking = () => {
   return (
     <>
       <TopBar title="랭킹" back />
-      <div className="w-full flex flex-col items-center justify-center gap-4 p-8">
+      <div className="w-full flex flex-col items-center justify-center gap-4 p-8 mt-8">
         <img src="/images/reward_trophy.svg" className="" />
         {rank.map((ranking) => (
           <div

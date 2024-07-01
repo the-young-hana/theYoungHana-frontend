@@ -15,6 +15,7 @@ export class ApiClient
     this.axiosInstance = this.createAxiosInstance();
   }
 
+  // --------------------------------------user
   async postLogin(password: string) {
     const response = await this.axiosInstance.request<
       DataResponseType<LoginType>
@@ -26,6 +27,7 @@ export class ApiClient
     return response.data;
   }
 
+  // --------------------------------------student
   async getStudentCard() {
     const response = await this.axiosInstance.request<
       DataResponseType<StudentCardType>
@@ -46,6 +48,21 @@ export class ApiClient
     return response.data;
   }
 
+  // --------------------------------------event
+
+  // --------------------------------------notice
+
+  // --------------------------------------story
+  async getTransactions(filter: GetTransactionsReqType) {
+    const response = await this.axiosInstance.request<
+      DataResponseType<GetTransactionsResType>
+    >({
+      method: "get",
+      url: `transactions/${filter.deptIdx}?start=${filter.start}&end=${filter.end}&type=${filter.type}&sort=${filter.sort}&page=${filter.page}`,
+    });
+    return response.data;
+  }
+  // --------------------------------------reward
   async getQuiz() {
     const response = await this.axiosInstance.request<
       DataResponseType<QuizType>
@@ -67,6 +84,7 @@ export class ApiClient
     return response.data;
   }
 
+  // --------------------------------------knowledge
   async getKnowledge() {
     const response = await this.axiosInstance.request<
       DataResponseType<KnowledgeType[]>
@@ -83,44 +101,6 @@ export class ApiClient
     >({
       method: "get",
       url: `knowledges/${knowledgeIdx}`,
-    });
-    return response.data;
-  }
-
-  // --------------------------------------student
-
-  // --------------------------------------event
-
-  // --------------------------------------knowledge
-
-  // --------------------------------------notice
-
-  // --------------------------------------story
-  async getTransactions(filter: GetTransactionsReqType) {
-    const response = await this.axiosInstance.request<
-      DataResponseType<GetTransactionsResType>
-    >({
-      method: "get",
-      url: `transactions/${filter.deptIdx}?start=${filter.start}&end=${filter.end}&type=${filter.type}&sort=${filter.sort}&page=${filter.page}`,
-    });
-    return response.data;
-  }
-
-  // --------------------------------------student
-
-  // --------------------------------------event
-
-  // --------------------------------------knowledge
-
-  // --------------------------------------notice
-
-  // --------------------------------------story
-  async getTransactions(filter: GetTransactionsReqType) {
-    const response = await this.axiosInstance.request<
-      DataResponseType<GetTransactionsResType>
-    >({
-      method: "get",
-      url: `transactions/${filter.deptIdx}?start=${filter.start}&end=${filter.end}&type=${filter.type}&sort=${filter.sort}&page=${filter.page}`,
     });
     return response.data;
   }

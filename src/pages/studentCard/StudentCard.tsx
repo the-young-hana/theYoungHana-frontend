@@ -80,7 +80,7 @@ export const StudentCard = () => {
   return (
     <>
       <TopBar title="더영하나" />
-      <div className="flex flex-col justify-between items-center h-full pt-2 pb-[110px]">
+      <div className="flex flex-col justify-between items-center pt-2 min-h-bottom-screen  mt-12 mb-[107px]">
         <div className="flex justify-between items-center px-5 w-full">
           <img src="/images/logo.png" className="h-10" />
           <div className="flex gap-2 items-center">

@@ -28,7 +28,7 @@ export const KnowledgeList = () => {
   return (
     <>
       <TopBar title="재테크 꿀팁" back />
-      <div className="flex flex-col gap-3 min-h-full items-center px-5 py-7">
+      <div className="flex flex-col gap-3 min-h-full items-center px-5 py-7 mt-12">
         {knowledges.map((knowledge) => (
           <div
             className="w-full flex justify-between bg-white rounded-xl p-3 gap-3 cursor-pointer"
