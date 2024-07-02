@@ -5,83 +5,42 @@ import { Button } from "../../components/common/Button";
 import { FiPlus } from "react-icons/fi";
 import { useNavigate } from "react-router-dom";
 import { IoSearch } from "react-icons/io5";
+import { useEffect, useRef, useState } from "react";
+import { ApiClient } from "../../apis/apiClient";
+import { formatter2 } from "../../utils/dateTimeformat";
 
-const endLists = [
-  {
-    category: "공지",
-    title: "컴퓨터공학과 1학기 종강총회",
-    type: "선착",
-    date: "24년 6월 13일",
-  },
-  {
-    category: "응모",
-    title: "근화제 컴퓨터공학과 주점 좌석 추첨",
-    type: "응모",
-    date: "24년 4월 22일",
-  },
-  {
-    category: "행사",
-    title: "2024 IT 전공 연합 엠티 신청",
-    type: "응모",
-    date: "24년 4월 22일",
-  },
-  {
-    category: "공지",
-    title: "컴퓨터공학과 1학기 종강총회",
-    type: "신청",
-    date: "24년 4월 12일",
-  },
-  {
-    category: "공지",
-    title: "컴퓨터공학과 1학기 종강총회",
-    type: "선착",
-    date: "24년 6월 13일",
-  },
-  {
-    category: "응모",
-    title: "근화제 컴퓨터공학과 주점 좌석 추첨",
-    type: "응모",
-    date: "24년 4월 22일",
-  },
-  {
-    category: "행사",
-    title: "2024 IT 전공 연합 엠티 신청",
-    type: "응모",
-    date: "24년 4월 22일",
-  },
-  {
-    category: "공지",
-    title: "컴퓨터공학과 1학기 종강총회",
-    type: "신청",
-    date: "24년 4월 12일",
-  },
-  {
-    category: "공지",
-    title: "컴퓨터공학과 1학기 종강총회",
-    type: "선착",
-    date: "24년 6월 13일",
-  },
-  {
-    category: "응모",
-    title: "근화제 컴퓨터공학과 주점 좌석 추첨",
-    type: "응모",
-    date: "24년 4월 22일",
-  },
-  {
-    category: "행사",
-    title: "2024 IT 전공 연합 엠티 신청",
-    type: "응모",
-    date: "24년 4월 22일",
-  },
-  {
-    category: "공지",
-    title: "컴퓨터공학과 1학기 종강총회",
-    type: "신청",
-    date: "24년 4월 12일",
-  },
-];
 export const EventEnd = () => {
   const navigate = useNavigate();
+  const [, setLoading] = useState<boolean>(false);
+  const [eventList, setEventList] = useState<EventListType[]>();
+  const searchRef = useRef<HTMLInputElement | null>(null);
+
+  const getEventList = async (keyword: string) => {
+    try {
+      setLoading(true);
+      const res = await ApiClient.getInstance().getEventList({
+        value: keyword,
+        isEnd: true,
+        page: 1,
+      });
+      if (res.data) {
+        console.log(res.data);
+        setEventList(res.data);
+      }
+    } catch (error) {
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    getEventList("");
+  }, []);
+
+  const onClickSearch = () => {
+    const keyword = searchRef.current!.value;
+    getEventList(keyword);
+  };
 
   return (
     <>
@@ -92,26 +51,28 @@ export const EventEnd = () => {
               type="text"
               placeholder="이벤트명을 입력하세요"
               className="w-full"
+              ref={searchRef}
             />
             <IoSearch
               size={23}
-              onClick={() => console.log("검색")}
+              onClick={onClickSearch}
               className="cursor-pointer"
             />
           </div>
         </div>
 
-        {endLists.map((list, index) => (
-          <div key={index}>
-            <EventList
-              eventId={index}
-              category={list.category}
-              title={list.title}
-              type={list.type}
-              date={list.date}
-            />
-          </div>
-        ))}
+        {eventList &&
+          eventList.map((list, index) => (
+            <div key={index}>
+              <EventList
+                eventId={list.eventIdx}
+                category={list.eventType}
+                title={list.eventTitle}
+                type={list.eventType}
+                date={formatter2(list.eventStart)}
+              />
+            </div>
+          ))}
 
         <Button
           roundedFull

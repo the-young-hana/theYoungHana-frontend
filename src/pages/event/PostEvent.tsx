@@ -1,4 +1,4 @@
-import { useCallback, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { Button } from "../../components/common/Button";
 import { TopBar } from "../../components/common/TopBar";
 import cn from "../../utils/cn";
@@ -8,6 +8,7 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import { EventForm } from "../../components/event/EventForm";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import Modal from "../../components/common/Modal";
+import { ApiClient } from "../../apis/apiClient";
 
 export const PostEvent = () => {
   const navigate = useNavigate();
@@ -16,7 +17,27 @@ export const PostEvent = () => {
   const imgRef = useRef<HTMLInputElement | null>(null);
   const [images, setImages] = useState<string[]>([]);
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+  const [, setLoading] = useState<boolean>(false);
+  const [eventDetail, setEventDetail] = useState<EventDetailType>();
   const eventId = searchParams.get("id");
+
+  const getEventDetail = async () => {
+    try {
+      setLoading(true);
+      const res = await ApiClient.getInstance().getEventDetail(Number(eventId));
+      if (res.data) {
+        setEventDetail(res.data);
+        setImages(res.data.eventImageList);
+      }
+    } catch (error) {
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    if (eventId) getEventDetail();
+  }, []);
 
   const changeType = (type: string) => {
     setType(type);
@@ -57,8 +78,11 @@ export const PostEvent = () => {
 
   return (
     <>
-      <TopBar title="새 이벤트" back />
-      <div className="min-h-full bg-white p-5 pb-28 flex flex-col gap-4">
+      <TopBar
+        title="새 이벤트"
+        path={eventId ? `/event/eventDetail/${eventId}` : "/event/Ing"}
+      />
+      <div className="min-h-full bg-white p-5 pb-28 flex flex-col gap-4 mt-12">
         <div className="flex justify-between ">
           <p className="font-bold">구분</p>
           <div className="flex gap-2">
@@ -94,7 +118,11 @@ export const PostEvent = () => {
             </Button>
           </div>
         </div>
-        <EventForm type={type} />
+        {eventDetail ? (
+          <EventForm type={type} eventDetail={eventDetail} />
+        ) : (
+          <EventForm type={type} />
+        )}
 
         {/* 상세 */}
         <input
@@ -114,7 +142,10 @@ export const PostEvent = () => {
         </Button>
         <div>
           <p className="pl-2 font-semibold">상세</p>
-          <textarea className="border rounded-xl resize-none w-full h-28 p-2" />
+          <textarea
+            className="border rounded-xl resize-none w-full h-28 p-2"
+            defaultValue={eventDetail?.eventContent}
+          />
         </div>
 
         <div className="z-0">

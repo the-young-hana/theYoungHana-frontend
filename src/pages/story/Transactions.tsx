@@ -449,15 +449,17 @@ const Transactions = () => {
       </Modal>
       <Modal
         show={isShow.isCalendarModalOpen}
-        className="absolute bottom-40 w-80"
+        className="absolute bottom-40 !w-80 !h-fit"
         onClose={handleCalendarModal}
       >
-        <Schedule
-          value={isShow.isStartClicked ? condition.start : condition.end}
-          isEndClicked={isShow.isEndClicked}
-          disabledDate={condition.start}
-          onDateChange={handleDateChage}
-        />
+        <div className="-translate-y-6">
+          <Schedule
+            value={isShow.isStartClicked ? condition.start : condition.end}
+            isEndClicked={isShow.isEndClicked}
+            disabledDate={condition.start}
+            onDateChange={handleDateChage}
+          />
+        </div>
       </Modal>
     </div>
   );

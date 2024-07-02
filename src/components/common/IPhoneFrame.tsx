@@ -54,6 +54,9 @@ function IPhoneFrame({ className = "", children, ...props }: IPhoneFrameProps) {
           )}
         > */}
         <div className="sm:mt-12 w-full h-full overflow-auto">
+          {showNotification && (
+            <Notification title={notification.title} body={notification.body} />
+          )}
           <Outlet />
         </div>
 
