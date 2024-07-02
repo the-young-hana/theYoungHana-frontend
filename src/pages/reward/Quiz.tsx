@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { ApiClient } from "../../apis/apiClient";
 
-export const Quiz = () => {
+export default function Quiz() {
   const navigate = useNavigate();
   const [isAnswer, setIsAnswer] = useState<boolean>(false);
   const [, setLoading] = useState<boolean>(false);
@@ -109,4 +109,4 @@ export const Quiz = () => {
       </div>
     </>
   );
-};
+}

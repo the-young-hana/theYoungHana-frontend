@@ -3,7 +3,7 @@ import { TopBar } from "../../components/common/TopBar";
 import { useEffect, useState } from "react";
 import { ApiClient } from "../../apis/apiClient";
 
-export const KnowledgeList = () => {
+export default function KnowledgeList() {
   const navigate = useNavigate();
   const [, setLoading] = useState<boolean>(false);
   const [knowledges, setKnowledges] = useState<KnowledgeType[]>([]);
@@ -46,4 +46,4 @@ export const KnowledgeList = () => {
       </div>
     </>
   );
-};
+}

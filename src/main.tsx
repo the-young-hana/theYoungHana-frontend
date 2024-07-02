@@ -1,28 +1,31 @@
-import React from "react";
+import React, { lazy } from "react";
 import ReactDOM from "react-dom/client";
 import App from "./App.tsx";
 import "./index.css";
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
-import { Home } from "./pages/Home";
-import { StudentCard } from "./pages/studentCard/StudentCard";
-import { Story } from "./pages/story/Story";
-import { Reward } from "./pages/reward/Reward";
-import { Knowledge } from "./pages/knowledge/Knowledge";
-import { Event } from "./pages/event/Event";
+
 import IPhoneFrame from "./components/common/IPhoneFrame.tsx";
-import { EventDetail } from "./pages/event/EventDetail.tsx";
-import { PostEvent } from "./pages/event/PostEvent.tsx";
-import { EventWinner } from "./pages/event/EventWinner.tsx";
-import { Login } from "./pages/Login.tsx";
-import Stories from "./pages/story/Stories.tsx";
-import Transactions from "./pages/story/Transactions.tsx";
-import { Ranking } from "./pages/reward/Ranking.tsx";
-import { Gift } from "./pages/reward/Gift.tsx";
-import { Quiz } from "./pages/reward/Quiz.tsx";
-import { KnowledgeList } from "./pages/knowledge/KnowledgeList.tsx";
-import { KnowledgeDetail } from "./pages/knowledge/KnowledgeDetail.tsx";
-import { EventIng } from "./pages/event/EventIng.tsx";
-import { EventEnd } from "./pages/event/EventEnd.tsx";
+
+const Home = lazy(() => import("./pages/Home"));
+const StudentCard = lazy(() => import("./pages/studentCard/StudentCard"));
+const Story = lazy(() => import("./pages/story/Story"));
+const Reward = lazy(() => import("./pages/reward/Reward"));
+const Knowledge = lazy(() => import("./pages/knowledge/Knowledge"));
+const Event = lazy(() => import("./pages/event/Event"));
+const EventDetail = lazy(() => import("./pages/event/EventDetail"));
+const PostEvent = lazy(() => import("./pages/event/PostEvent"));
+const EventWinner = lazy(() => import("./pages/event/EventWinner"));
+const Login = lazy(() => import("./pages/Login"));
+const Stories = lazy(() => import("./pages/story/Stories"));
+const Transactions = lazy(() => import("./pages/story/Transactions"));
+const Ranking = lazy(() => import("./pages/reward/Ranking"));
+const Gift = lazy(() => import("./pages/reward/Gift"));
+const Quiz = lazy(() => import("./pages/reward/Quiz"));
+const KnowledgeList = lazy(() => import("./pages/knowledge/KnowledgeList"));
+const KnowledgeDetail = lazy(() => import("./pages/knowledge/KnowledgeDetail"));
+const EventIng = lazy(() => import("./pages/event/EventIng"));
+const EventEnd = lazy(() => import("./pages/event/EventEnd"));
+
 const router = createBrowserRouter([
   {
     path: "/",

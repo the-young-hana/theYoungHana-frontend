@@ -10,7 +10,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { getCookie, removeCookie } from "../utils/cookie";
 import { AiOutlineUser } from "react-icons/ai";
 
-export const Home = () => {
+export default function Home() {
   // 스크롤 감지해서 탭바 보여주기
   const navigate = useNavigate();
   const [lastScrollTop, setLastScrollTop] = useState<number>(0);
@@ -142,11 +142,8 @@ export const Home = () => {
                     <span className="text-xl font-bold">자산을 관리하세요</span>
                     <IoIosArrowForward />
                   </div>
-                  <img
-                    className="h-24"
-                    src={`/images/account.png`}
-                    alt="account"
-                  />
+                  <div className="h-24"></div>
+
                   <div className="flex flex-row gap-1 justify-center w-full font-bold mt-2">
                     <Button className="w-1/2 !bg-gray-200 !text-black">
                       자산등록
@@ -161,7 +158,7 @@ export const Home = () => {
 
         <div className="flex gap-4">
           <div className="w-36 h-40 rounded-xl bg-white shadow-md p-5">
-            <img src="images/hana.svg" className="w-9" />
+            <img src="images/hana.svg" className="w-9 h-fit" />
             <div className="font-extrabold my-3">
               하나금융그룹 신용대출 조회
             </div>
@@ -176,7 +173,7 @@ export const Home = () => {
                 : () => navigate("/login")
             }
           >
-            <img src="images/backpack.svg" className="w-7" />
+            <img src="images/backpack.svg" className="w-7 h-fit" />
             <div className="font-extrabold my-3">대학생활 동반자 더영하나</div>
             <div className="text-gray-400 text-sm">자세히 보기</div>
           </div>
@@ -297,4 +294,4 @@ export const Home = () => {
       </div>
     </>
   );
-};
+}

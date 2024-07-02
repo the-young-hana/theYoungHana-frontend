@@ -9,7 +9,7 @@ import { CiMenuKebab } from "react-icons/ci";
 import { ApiClient } from "../../apis/apiClient";
 import { formatter2 } from "../../utils/dateTimeformat";
 
-export const EventDetail = () => {
+export default function EventDetail() {
   const navigate = useNavigate();
   const params = useParams();
   const [isUDModalOpen, setIsUDModalOpen] = useState<boolean>(false);
@@ -185,4 +185,4 @@ export const EventDetail = () => {
       </Modal>
     </>
   );
-};
+}

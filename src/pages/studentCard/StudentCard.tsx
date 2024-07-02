@@ -7,7 +7,7 @@ import { useEffect, useState } from "react";
 import "./StudentCard.css"; // 추가된 CSS 파일
 import { ApiClient } from "../../apis/apiClient";
 
-export const StudentCard = () => {
+export default function StudentCard() {
   const SECONDS = 30000;
   const INTERVAL = 1000;
   const [isFlipped, setIsFlipped] = useState<boolean>(false);
@@ -23,7 +23,6 @@ export const StudentCard = () => {
     try {
       setLoading(true);
       const res = await ApiClient.getInstance().getStudentCard();
-      console.log(res);
       if (res.data) {
         setStudentCard(res.data);
       }
@@ -135,4 +134,4 @@ export const StudentCard = () => {
       </div>
     </>
   );
-};
+}

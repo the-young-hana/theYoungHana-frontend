@@ -4,7 +4,7 @@ import { MenuBar } from "../../components/common/MenuBar";
 import { NavigationBar } from "../../components/common/NavigationBar";
 import { TopBar } from "../../components/common/TopBar";
 
-export const Story = () => {
+export default function Story() {
   const { deptIdx } = useParams();
 
   return (
@@ -25,4 +25,4 @@ export const Story = () => {
       <NavigationBar />
     </>
   );
-};
+}

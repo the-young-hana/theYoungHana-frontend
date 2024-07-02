@@ -1,5 +1,4 @@
 import { NavigationBar } from "../../components/common/NavigationBar";
-import { TopBar } from "../../components/common/TopBar";
 import { EventList } from "../../components/event/EventList";
 import { Button } from "../../components/common/Button";
 import { FiPlus } from "react-icons/fi";
@@ -9,7 +8,7 @@ import { useEffect, useRef, useState } from "react";
 import { ApiClient } from "../../apis/apiClient";
 import { formatter2 } from "../../utils/dateTimeformat";
 
-export const EventEnd = () => {
+export default function EventEnd() {
   const navigate = useNavigate();
   const [, setLoading] = useState<boolean>(false);
   const [eventList, setEventList] = useState<EventListType[]>();
@@ -86,4 +85,4 @@ export const EventEnd = () => {
       <NavigationBar />
     </>
   );
-};
+}

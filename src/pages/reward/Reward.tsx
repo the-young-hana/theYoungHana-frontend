@@ -3,11 +3,36 @@ import { NavigationBar } from "../../components/common/NavigationBar";
 import { TopBar } from "../../components/common/TopBar";
 import { useEffect, useState } from "react";
 import { ApiClient } from "../../apis/apiClient";
+import useImagePreloader from "../../hooks/useImagePreloader";
+import { Loading } from "../../components/common/Loading";
+import cn from "../../utils/cn";
 
-export const Reward = () => {
+const arrImg = [
+  "/images/reward_main.png",
+  "/images/health.png",
+  "/images/stamp.svg",
+  "/images/reward_gift.svg",
+  "/images/reward_quiz.svg",
+];
+export default function Reward() {
   const navigate = useNavigate();
   const [, setLoading] = useState<boolean>(false);
   const [reward, setReward] = useState<RewardsType>();
+  const imagesLoaded = useImagePreloader(arrImg);
+  const [animation, setAnimation] = useState<number>(0);
+
+  useEffect(() => {
+    const timerId = setInterval(() => {
+      setAnimation((prev) => prev + 1);
+    }, 400);
+    const timeoutId = setTimeout(() => {
+      clearInterval(timerId);
+    }, 3000);
+    return () => {
+      clearInterval(timerId);
+      clearTimeout(timeoutId);
+    };
+  }, []);
 
   const getRewards = async () => {
     try {
@@ -30,9 +55,14 @@ export const Reward = () => {
     <>
       <TopBar title="리워드" />
       <div className="bg-white min-h-bottom-screen mt-12 mb-[107px] flex flex-col gap-5 items-center p-8">
-        {reward && (
-          <>
-            <div className="w-full border flex flex-col justify-center items-center px-2 pt-5 rounded-2xl bg-gradient-to-b from-[#C8FFA7] to-[#FEFFC7] drop-shadow-base">
+        {reward && imagesLoaded ? (
+          <div className="flex flex-col gap-5">
+            <div
+              className={cn(
+                "w-full border flex flex-col justify-center items-center px-2 pt-5 rounded-2xl bg-gradient-to-b from-[#C8FFA7] to-[#FEFFC7] drop-shadow-base animate-slideinup1",
+                animation <= 1 ? "opacity-0" : "opacity-1",
+              )}
+            >
               <p className="text-center mb-1 font-semibold text-xl">
                 7월 1주차 <br />
                 학과 리워드 랭킹
@@ -43,7 +73,12 @@ export const Reward = () => {
 
               <img src="/images/reward_main.png" alt="" />
             </div>
-            <div className="w-full flex justify-between items-center font-bold pl-2 pr-3 py-1 rounded-2xl bg-gradient-to-b to-[#FEFFD0] from-[#FBE77E] drop-shadow-base">
+            <div
+              className={cn(
+                "w-full flex justify-between items-center font-bold pl-2 pr-3 py-1 rounded-2xl bg-gradient-to-b to-[#FEFFD0] from-[#FBE77E] drop-shadow-base animate-slideinup2",
+                animation <= 2 ? "opacity-0" : "opacity-1",
+              )}
+            >
               <img src="/images/health.png" />
               <div className="text-lg">내 기여도</div>
               <div className="text-lg">
@@ -53,7 +88,12 @@ export const Reward = () => {
                 </span>
               </div>
             </div>
-            <div className="w-full flex justify-between gap-4 font-extrabold text-gray-600 text-xl">
+            <div
+              className={cn(
+                "w-full flex justify-between gap-4 font-extrabold text-gray-600 text-xl animate-slideinup3",
+                animation <= 3 ? "opacity-0" : "opacity-1",
+              )}
+            >
               <div className="relative w-1/2">
                 {reward.hasParticipatedInPresent && (
                   <div className="absolute bg-white bg-opacity-60 w-full h-full">
@@ -96,10 +136,12 @@ export const Reward = () => {
                 </div>
               </div>
             </div>
-          </>
+          </div>
+        ) : (
+          <Loading show={true} back={false} />
         )}
       </div>
       <NavigationBar />
     </>
   );
-};
+}

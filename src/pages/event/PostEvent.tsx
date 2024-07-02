@@ -10,7 +10,7 @@ import { useNavigate, useSearchParams } from "react-router-dom";
 import Modal from "../../components/common/Modal";
 import { ApiClient } from "../../apis/apiClient";
 
-export const PostEvent = () => {
+export default function PostEvent() {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const [type, setType] = useState<string>("신청");
@@ -20,6 +20,11 @@ export const PostEvent = () => {
   const [, setLoading] = useState<boolean>(false);
   const [eventDetail, setEventDetail] = useState<EventDetailType>();
   const eventId = searchParams.get("id");
+  const contentRef = useRef<HTMLTextAreaElement | null>(null);
+
+  const handleTextArea = () => {
+    console.log(contentRef.current?.value);
+  };
 
   const getEventDetail = async () => {
     try {
@@ -145,6 +150,8 @@ export const PostEvent = () => {
           <textarea
             className="border rounded-xl resize-none w-full h-28 p-2"
             defaultValue={eventDetail?.eventContent}
+            onBlur={handleTextArea}
+            ref={contentRef}
           />
         </div>
 
@@ -191,4 +198,4 @@ export const PostEvent = () => {
       </div>
     </>
   );
-};
+}
