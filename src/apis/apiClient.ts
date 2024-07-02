@@ -2,11 +2,18 @@ import axios, { AxiosInstance } from "axios";
 import { getCookie } from "../utils/cookie";
 import { usersApi } from "./interfaces/usersApi";
 import { studentCardApi } from "./interfaces/studentCardApi";
-import { knowledgeApi } from "./interfaces/knowledge";
+import { knowledgeApi } from "./interfaces/knowledgeApi";
 import { rewardApi } from "./interfaces/rewardApi";
 import storiesApi from "./interfaces/storiesApi";
+import { eventApi } from "./interfaces/eventApi";
 export class ApiClient
-  implements usersApi, studentCardApi, knowledgeApi, rewardApi, storiesApi
+  implements
+    usersApi,
+    studentCardApi,
+    knowledgeApi,
+    rewardApi,
+    storiesApi,
+    eventApi
 {
   private static instance: ApiClient;
   private axiosInstance: AxiosInstance;
@@ -49,6 +56,25 @@ export class ApiClient
   }
 
   // --------------------------------------event
+  async getEventList(eventReqData: EventListReqType) {
+    const response = await this.axiosInstance.request<
+      DataResponseType<EventListType[]>
+    >({
+      method: "get",
+      url: `/events?value=${eventReqData.value}&isEnd=${eventReqData.isEnd}&page=${eventReqData.page}`,
+    });
+    return response.data;
+  }
+
+  async getEventDetail(eventIdx: number) {
+    const response = await this.axiosInstance.request<
+      DataResponseType<EventDetailType>
+    >({
+      method: "get",
+      url: `/events/${eventIdx}`,
+    });
+    return response.data;
+  }
 
   // --------------------------------------notice
 
@@ -62,7 +88,38 @@ export class ApiClient
     });
     return response.data;
   }
+
   // --------------------------------------reward
+  async getRewards() {
+    const response = await this.axiosInstance.request<
+      DataResponseType<RewardsType>
+    >({
+      method: "get",
+      url: "/rewards",
+    });
+    return response.data;
+  }
+
+  async getRanking(page: number) {
+    const response = await this.axiosInstance.request<
+      DataResponseType<RankingType[]>
+    >({
+      method: "get",
+      url: `/rewards/rank?page=${page}`,
+    });
+    return response.data;
+  }
+
+  async getPresent() {
+    const response = await this.axiosInstance.request<
+      DataResponseType<{ point: number }>
+    >({
+      method: "get",
+      url: `/rewards/present`,
+    });
+    return response.data;
+  }
+
   async getQuiz() {
     const response = await this.axiosInstance.request<
       DataResponseType<QuizType>
@@ -131,10 +188,10 @@ export class ApiClient
 
     newInstance.interceptors.request.use(
       (config) => {
-        // const TOKEN = getCookie("accessToken");
-        // if (TOKEN) {
-        //   config.headers["Authorization"] = `Bearer ${TOKEN}`;
-        // }
+        const TOKEN = getCookie("accessToken");
+        if (TOKEN) {
+          config.headers["Authorization"] = `Bearer ${TOKEN}`;
+        }
 
         config.headers["Content-Type"] = "application/json";
         return config;

@@ -3,6 +3,7 @@ import { Button } from "../../components/common/Button";
 import { TopBar } from "../../components/common/TopBar";
 import cn from "../../utils/cn";
 import { useNavigate } from "react-router-dom";
+import { ApiClient } from "../../apis/apiClient";
 
 export const Gift = () => {
   const [giftAnimation, setGiftAnimation] = useState<string>("animate-tada");
@@ -10,6 +11,21 @@ export const Gift = () => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [isMoneyVisible, setIsMoneyVisible] = useState<boolean>(false);
   const navigate = useNavigate();
+  const [, setLoading] = useState<boolean>(false);
+  const [point, setPoint] = useState<number>();
+
+  const getPresent = async () => {
+    try {
+      setLoading(true);
+      const res = await ApiClient.getInstance().getPresent();
+      if (res.data) {
+        setPoint(res.data.point);
+      }
+    } catch (error) {
+    } finally {
+      setLoading(false);
+    }
+  };
 
   useEffect(() => {
     const moneyElement = document.getElementById("rewardMoney");
@@ -46,6 +62,7 @@ export const Gift = () => {
 
   const clickOpen = () => {
     setGiftAnimation("animate-zoomOut");
+    getPresent();
   };
 
   return (
@@ -67,7 +84,7 @@ export const Gift = () => {
             )}
           >
             <img src="/images/reward_money.svg" className="w-80 mt-4" />
-            <p className="font-bold text-2xl">21P 당첨!</p>
+            <p className="font-bold text-2xl">{point}P 당첨!</p>
           </div>
         )}
 
