@@ -1,5 +1,5 @@
 import React, { FC } from "react";
-import Calendar from "react-calendar";
+import Calendar, { CalendarProps } from "react-calendar";
 import "./schedule.css";
 
 interface ScheduleType {
@@ -7,6 +7,7 @@ interface ScheduleType {
   isEndClicked?: boolean;
   disabledDate?: string;
   onDateChange: (newDate: Date) => void;
+  isDisabled?: boolean;
 }
 
 const Schedule: FC<ScheduleType> = ({
@@ -14,27 +15,35 @@ const Schedule: FC<ScheduleType> = ({
   isEndClicked,
   disabledDate,
   onDateChange,
+  isDisabled = true,
 }) => {
-  const disabledFutureDates = ({ date }: { date: Date }) => {
+  const disabledFutureDates: CalendarProps["tileDisabled"] = ({ date }) => {
     const today = new Date();
     today.setHours(0, 0, 0, 0);
-    // 미래 날짜 비활성화
+
+    if (!isDisabled) return false;
+
     if (date > today) {
       return true;
     }
 
-    // isEndClicked가 true일 때 disabledDate 이전 날짜 비활성화
-    if (isEndClicked && date < new Date(disabledDate!)) {
+    if (isEndClicked && disabledDate && date < new Date(disabledDate)) {
       return true;
     }
 
     return false;
   };
 
+  const handleDateChange: CalendarProps["onChange"] = (value) => {
+    if (value instanceof Date) {
+      onDateChange(value);
+    }
+  };
+
   return (
     <Calendar
       value={value}
-      onChange={onDateChange}
+      onChange={handleDateChange}
       calendarType="gregory"
       prev2Label={false}
       next2Label={false}
