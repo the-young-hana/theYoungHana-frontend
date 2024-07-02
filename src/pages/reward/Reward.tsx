@@ -1,11 +1,11 @@
+import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import ApiClient from "../../apis/apiClient";
+import cn from "../../utils/cn";
+import useImagePreloader from "../../hooks/useImagePreloader";
 import { NavigationBar } from "../../components/common/NavigationBar";
 import { TopBar } from "../../components/common/TopBar";
-import { useEffect, useState } from "react";
-import { ApiClient } from "../../apis/apiClient";
-import useImagePreloader from "../../hooks/useImagePreloader";
 import { Loading } from "../../components/common/Loading";
-import cn from "../../utils/cn";
 
 const arrImg = [
   "/images/reward_main.png",

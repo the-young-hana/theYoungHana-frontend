@@ -3,7 +3,7 @@ import { useParams } from "react-router-dom";
 import { IoIosArrowDown } from "react-icons/io";
 import { IoAlertCircleOutline } from "react-icons/io5";
 import { MdOutlineCalendarMonth } from "react-icons/md";
-import { ApiClient } from "../../apis/apiClient";
+import ApiClient from "../../apis/apiClient";
 import { ago, dateToString, today } from "../../utils/date";
 import cn from "../../utils/cn";
 import Modal from "../../components/common/Modal";

@@ -6,7 +6,10 @@ import { knowledgeApi } from "./interfaces/knowledgeApi";
 import { rewardApi } from "./interfaces/rewardApi";
 import storiesApi from "./interfaces/storiesApi";
 import { eventApi } from "./interfaces/eventApi";
-export class ApiClient
+
+const FCMTOKEN = getCookie("fcm");
+
+class ApiClient
   implements
     usersApi,
     studentCardApi,
@@ -30,6 +33,7 @@ export class ApiClient
       method: "post",
       url: "/member/login",
       data: { password },
+      headers: FCMTOKEN ? { Authorization: `${FCMTOKEN}` } : {},
     });
     return response.data;
   }
@@ -205,3 +209,5 @@ export class ApiClient
     return newInstance;
   };
 }
+
+export default ApiClient;
