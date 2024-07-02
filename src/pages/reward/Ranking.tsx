@@ -4,7 +4,7 @@ import cn from "../../utils/cn";
 import { getCookie } from "../../utils/cookie";
 import { ApiClient } from "../../apis/apiClient";
 
-export const Ranking = () => {
+export default function Ranking() {
   const deptIdx = getCookie("deptIdx");
   const [, setLoading] = useState<boolean>(false);
   const [ranking, setRanking] = useState<RankingType[]>();
@@ -72,4 +72,4 @@ export const Ranking = () => {
       </div>
     </>
   );
-};
+}

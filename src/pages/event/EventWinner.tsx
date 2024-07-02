@@ -45,7 +45,7 @@ const eventWinner = [
   },
 ];
 
-export const EventWinner = () => {
+export default function EventWinner() {
   return (
     <>
       <TopBar title="당첨자 명단" back />
@@ -76,4 +76,4 @@ export const EventWinner = () => {
       </div>
     </>
   );
-};
+}

@@ -10,7 +10,7 @@ import { ApiClient } from "../apis/apiClient";
 import { setCookie } from "../utils/cookie";
 import { useNavigate } from "react-router-dom";
 
-export const Login = () => {
+export default function Login() {
   const navigate = useNavigate();
   const { password, append, remove, clear } = usePassword();
   const [autoLogin, toggleAutoLogin] = useState<boolean>(true);
@@ -94,4 +94,4 @@ export const Login = () => {
       <Loading show={loading} label="로그인 중 ..." />
     </>
   );
-};
+}

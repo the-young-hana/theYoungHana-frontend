@@ -1,10 +1,11 @@
-import { HTMLAttributes, useEffect, useState } from "react";
+import { HTMLAttributes, Suspense, useEffect, useState } from "react";
 import cn from "../../utils/cn";
 import StatusBar from "./StatusBar";
 import { Outlet, useLocation } from "react-router-dom";
 import { generateToken, messaging } from "../../utils/firebase";
 import { onMessage } from "firebase/messaging";
 import Notification from "./Notification";
+import { Loading } from "./Loading";
 
 interface IPhoneFrameProps extends HTMLAttributes<HTMLDivElement> {}
 
@@ -39,13 +40,14 @@ function IPhoneFrame({ className = "", children, ...props }: IPhoneFrameProps) {
   return (
     <div className="w-screen h-screen-support-safari flex flex-col bg-hanaGray justify-center items-center overflow-hidden">
       <div className={processedClassName} {...props}>
-        {/* 다이나믹 아일랜드 */}
-        <div className="hidden sm:flex absolute top-3 transition-all ease-in-out rounded-full w-28 hover:w-48 h-8 bg-black z-50" />
+        <Suspense fallback={<Loading show={true} back={false} />}>
+          {/* 다이나믹 아일랜드 */}
+          <div className="hidden sm:flex absolute top-3 transition-all ease-in-out rounded-full w-28 hover:w-48 h-8 bg-black z-50" />
 
-        {/* 시계, 배터리, 와이파이 */}
-        <StatusBar className="hidden sm:flex absolute z-20" />
+          {/* 시계, 배터리, 와이파이 */}
+          <StatusBar className="hidden sm:flex absolute z-20" />
 
-        {/* <div
+          {/* <div
           className={cn(
             location.pathname === "/story" || location.pathname === "/event"
               ? ""
@@ -53,15 +55,19 @@ function IPhoneFrame({ className = "", children, ...props }: IPhoneFrameProps) {
             "w-full h-full overflow-auto",
           )}
         > */}
-        <div className="sm:mt-12 w-full h-full overflow-auto">
-          {showNotification && (
-            <Notification title={notification.title} body={notification.body} />
-          )}
-          <Outlet />
-        </div>
+          <div className="sm:mt-12 w-full h-full overflow-auto">
+            {showNotification && (
+              <Notification
+                title={notification.title}
+                body={notification.body}
+              />
+            )}
+            <Outlet />
+          </div>
 
-        {/* 인디케이터 / 홈바 */}
-        <div className="hidden sm:flex absolute bottom-2 transition-all ease-in-out rounded-full w-48 hover:scale-105 h-[5px] bg-black z-50" />
+          {/* 인디케이터 / 홈바 */}
+          <div className="hidden sm:flex absolute bottom-2 transition-all ease-in-out rounded-full w-48 hover:scale-105 h-[5px] bg-black z-50" />
+        </Suspense>
       </div>
     </div>
   );

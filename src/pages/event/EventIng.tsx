@@ -8,7 +8,7 @@ import { IoSearch } from "react-icons/io5";
 import { ApiClient } from "../../apis/apiClient";
 import { formatter2 } from "../../utils/dateTimeformat";
 
-export const EventIng = () => {
+export default function EventIng() {
   const navigate = useNavigate();
   const [, setLoading] = useState<boolean>(false);
   const [eventList, setEventList] = useState<EventListType[]>();
@@ -86,4 +86,4 @@ export const EventIng = () => {
       <NavigationBar />
     </>
   );
-};
+}

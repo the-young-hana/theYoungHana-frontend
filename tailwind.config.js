@@ -31,6 +31,9 @@ export default {
         zoomOut: "zoom-out 1.5s ease-in-out 0s 1",
         zoomIn: "zoom-in 1.5s ease-out 0s 1",
         zoomIn2: "zoom-in 0.5s ease-out 0s 1",
+        slideinup1: "slide-in-up 0.6s ease-in-out 0.3s 1",
+        slideinup2: "slide-in-up 0.6s ease-in-out 0.9s 1",
+        slideinup3: "slide-in-up 0.6s ease-in-out 1.5s 1",
       },
       keyframes: {
         bounce: {
@@ -84,6 +87,15 @@ export default {
           },
           "100%": {
             opacity: 1,
+          },
+        },
+        "slide-in-up": {
+          "0%": {
+            visibility: "visible",
+            transform: "translate3d(0, 10%, 0)",
+          },
+          "100%": {
+            transform: "translate3d(0, 0, 0)",
           },
         },
       },

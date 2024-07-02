@@ -5,7 +5,7 @@ import cn from "../../utils/cn";
 import { useNavigate } from "react-router-dom";
 import { ApiClient } from "../../apis/apiClient";
 
-export const Gift = () => {
+export default function Gift() {
   const [giftAnimation, setGiftAnimation] = useState<string>("animate-tada");
   const [moneyAnimation, setMoneyAnimation] = useState<string>("");
   const [isOpen, setIsOpen] = useState<boolean>(false);
@@ -101,4 +101,4 @@ export const Gift = () => {
       </div>
     </>
   );
-};
+}

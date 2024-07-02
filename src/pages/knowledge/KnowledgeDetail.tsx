@@ -4,7 +4,7 @@ import { ApiClient } from "../../apis/apiClient";
 import { useLocation, useParams } from "react-router-dom";
 import { formatter2 } from "../../utils/dateTimeformat";
 
-export const KnowledgeDetail = () => {
+export default function KnowledgeDetail() {
   const [, setLoading] = useState<boolean>(false);
   const [knowledgeDetail, setKnowledgeDetail] = useState<KnowledgeDetailType>();
   const param = useParams();
@@ -52,4 +52,4 @@ export const KnowledgeDetail = () => {
       </div>
     </>
   );
-};
+}
