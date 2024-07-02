@@ -1,7 +1,7 @@
 import { useNavigate } from "react-router-dom";
+import ApiClient from "../../apis/apiClient";
 import { TopBar } from "../../components/common/TopBar";
 import { useEffect, useState } from "react";
-import { ApiClient } from "../../apis/apiClient";
 
 export default function KnowledgeList() {
   const navigate = useNavigate();

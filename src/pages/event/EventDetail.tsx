@@ -1,4 +1,5 @@
 import { useNavigate, useParams } from "react-router-dom";
+import ApiClient from "../../apis/apiClient";
 import { TopBar } from "../../components/common/TopBar";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Scrollbar } from "swiper/modules";
@@ -6,7 +7,6 @@ import { Button } from "../../components/common/Button";
 import { useEffect, useState } from "react";
 import Modal from "../../components/common/Modal";
 import { CiMenuKebab } from "react-icons/ci";
-import { ApiClient } from "../../apis/apiClient";
 import { formatter2 } from "../../utils/dateTimeformat";
 
 export default function EventDetail() {

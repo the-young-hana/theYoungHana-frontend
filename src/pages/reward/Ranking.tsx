@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
-import { TopBar } from "../../components/common/TopBar";
+import ApiClient from "../../apis/apiClient";
 import cn from "../../utils/cn";
 import { getCookie } from "../../utils/cookie";
-import { ApiClient } from "../../apis/apiClient";
+import { TopBar } from "../../components/common/TopBar";
 
 export default function Ranking() {
   const deptIdx = getCookie("deptIdx");

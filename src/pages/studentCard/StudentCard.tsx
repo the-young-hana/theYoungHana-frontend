@@ -1,11 +1,11 @@
-import { NavigationBar } from "../../components/common/NavigationBar";
-import { TopBar } from "../../components/common/TopBar";
-import { FiSearch } from "react-icons/fi";
+import { useEffect, useState } from "react";
 import { AiOutlineThunderbolt } from "react-icons/ai";
 import { GrPowerReset } from "react-icons/gr";
-import { useEffect, useState } from "react";
+import { FiSearch } from "react-icons/fi";
+import ApiClient from "../../apis/apiClient";
+import { NavigationBar } from "../../components/common/NavigationBar";
+import { TopBar } from "../../components/common/TopBar";
 import "./StudentCard.css"; // 추가된 CSS 파일
-import { ApiClient } from "../../apis/apiClient";
 
 export default function StudentCard() {
   const SECONDS = 30000;
