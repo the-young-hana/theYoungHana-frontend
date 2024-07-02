@@ -19,35 +19,34 @@ export const StudentCard = () => {
 
   const second = String(Math.floor((timeLeft / 1000) % 60)).padStart(2, "0");
 
+  const getStudentCard = async () => {
+    try {
+      setLoading(true);
+      const res = await ApiClient.getInstance().getStudentCard();
+      console.log(res);
+      if (res.data) {
+        setStudentCard(res.data);
+      }
+    } catch (error) {
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const getStudentQR = async () => {
+    try {
+      setLoading(true);
+      const res = await ApiClient.getInstance().getStudentQR();
+      if (res.data) {
+        setStudentQR(res.data);
+      }
+    } catch (error) {
+    } finally {
+      setLoading(false);
+    }
+  };
+
   useEffect(() => {
-    const getStudentCard = async () => {
-      try {
-        setLoading(true);
-        const res = await ApiClient.getInstance().getStudentCard();
-        console.log(res);
-        if (res.data) {
-          setStudentCard(res.data);
-        }
-      } catch (error) {
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    const getStudentQR = async () => {
-      try {
-        setLoading(true);
-        const res = await ApiClient.getInstance().getStudentQR();
-        console.log(res);
-        if (res.data) {
-          setStudentQR(res.data);
-        }
-      } catch (error) {
-      } finally {
-        setLoading(false);
-      }
-    };
-
     getStudentCard();
     getStudentQR();
   }, []);
@@ -131,7 +130,7 @@ export const StudentCard = () => {
           </div>
         </div>
 
-        <img src="/images/univLogo.png" className="h-16" />
+        <img src={studentCard?.studentCollegeImage} className="h-12 mb-4" />
         <NavigationBar />
       </div>
     </>

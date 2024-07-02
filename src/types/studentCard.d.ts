@@ -3,6 +3,7 @@ interface StudentCardType {
   studentName: string;
   studentId: string;
   studentCollege: string;
+  studentCollegeImage: string;
   studentDept: string;
   studentCardFrontImage: string;
   studentCardBackImage: string;
