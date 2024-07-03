@@ -5,6 +5,7 @@ import "./index.css";
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 
 import IPhoneFrame from "./components/common/IPhoneFrame.tsx";
+import StoryDetail from "./pages/story/StoryDetail.tsx";
 
 const Home = lazy(() => import("./pages/Home"));
 const StudentCard = lazy(() => import("./pages/studentCard/StudentCard"));
@@ -57,6 +58,7 @@ const router = createBrowserRouter([
               { path: ":deptIdx/transactions", element: <Transactions /> },
             ],
           },
+          { path: "story/detail/:storyIdx", element: <StoryDetail /> },
           { path: "reward", element: <Reward /> },
           { path: "reward/ranking", element: <Ranking /> },
           { path: "reward/gift", element: <Gift /> },

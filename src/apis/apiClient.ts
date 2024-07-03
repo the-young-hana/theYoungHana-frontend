@@ -32,8 +32,7 @@ class ApiClient
     >({
       method: "post",
       url: "/member/login",
-      data: { password },
-      headers: FCMTOKEN ? { Authorization: `${FCMTOKEN}` } : {},
+      data: { password, fcmToken: FCMTOKEN },
     });
     return response.data;
   }
@@ -89,6 +88,36 @@ class ApiClient
     >({
       method: "get",
       url: `transactions/${filter.deptIdx}?start=${filter.start}&end=${filter.end}&type=${filter.type}&sort=${filter.sort}&page=${filter.page}`,
+    });
+    return response.data;
+  }
+
+  async getStories(deptIdx: number, page: number) {
+    const response = await this.axiosInstance.request<
+      DataResponseType<GetStoriesResType[]>
+    >({
+      method: "get",
+      url: `stories/${deptIdx}?page=${page}`,
+    });
+    return response.data;
+  }
+
+  async getStoryDetail(storyIdx: number) {
+    const response = await this.axiosInstance.request<
+      DataResponseType<getStoryDetailResType>
+    >({
+      method: "get",
+      url: `stories/${storyIdx}/detail`,
+    });
+    return response.data;
+  }
+
+  async addLikeNum(storyIdx: number) {
+    const response = await this.axiosInstance.request<
+      DataResponseType<getStoryDetailResType>
+    >({
+      method: "post",
+      url: `stories/${storyIdx}/likes`,
     });
     return response.data;
   }

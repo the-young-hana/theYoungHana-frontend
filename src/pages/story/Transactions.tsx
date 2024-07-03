@@ -9,6 +9,7 @@ import cn from "../../utils/cn";
 import Modal from "../../components/common/Modal";
 import { Button } from "../../components/common/Button";
 import Schedule from "../../components/common/Schedule";
+import { Loading } from "../../components/common/Loading";
 
 const Transactions = () => {
   const data: GetTransactionsResType = {
@@ -130,8 +131,8 @@ const Transactions = () => {
   const getTransactions = async () => {
     try {
       const res = await ApiClient.getInstance().getTransactions(filter);
-      // setTransactions(res.data);
-      setTransactions(data);
+      setTransactions(res.data);
+      // setTransactions(data);
 
       const sum = transactions?.deptAccountTransactionsByDate.reduce(
         (acc, transaction) => acc + transaction.transactions.length,
@@ -236,6 +237,10 @@ const Transactions = () => {
     }));
     getTransactions();
   }, [filter]);
+
+  if (!transactions) {
+    return <Loading show={true} />;
+  }
 
   return (
     <div className="flex flex-col gap-4 my-8 mb-[105px]">
