@@ -24,9 +24,6 @@ class ApiClient
   constructor() {
     this.axiosInstance = this.createAxiosInstance();
   }
-  deleteEvent(eventIdx: number): Promise<DataResponseType<unknown>> {
-    throw new Error("Method not implemented.");
-  }
 
   // --------------------------------------user
   async postLogin(password: string) {
@@ -62,12 +59,12 @@ class ApiClient
   }
 
   // --------------------------------------event
-  async getEventList(eventReqData: EventListReqType) {
+  async getEventList(eventListData: EventListReqType) {
     const response = await this.axiosInstance.request<
       DataResponseType<EventListType[]>
     >({
       method: "get",
-      url: `/events?value=${eventReqData.value}&isEnd=${eventReqData.isEnd}&page=${eventReqData.page}`,
+      url: `/events?value=${eventListData.value}&isEnd=${eventListData.isEnd}&page=${eventListData.page}`,
     });
     return response.data;
   }
@@ -77,6 +74,16 @@ class ApiClient
       DataResponseType<EventDetailType>
     >({
       method: "get",
+      url: `/events/${eventIdx}`,
+    });
+    return response.data;
+  }
+
+  async deleteEvent(eventIdx: number) {
+    const response = await this.axiosInstance.request<
+      DataResponseType<unknown>
+    >({
+      method: "delete",
       url: `/events/${eventIdx}`,
     });
     return response.data;
