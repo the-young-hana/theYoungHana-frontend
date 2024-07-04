@@ -6,7 +6,7 @@ import { FiPlus } from "react-icons/fi";
 import { useNavigate } from "react-router-dom";
 import { IoSearch } from "react-icons/io5";
 import { useEffect, useRef, useState } from "react";
-import { formatter2 } from "../../utils/dateTimeformat";
+import { dateToString } from "../../utils/date";
 
 export default function EventEnd() {
   const navigate = useNavigate();
@@ -68,7 +68,7 @@ export default function EventEnd() {
                 category={list.eventType}
                 title={list.eventTitle}
                 type={list.eventType}
-                date={formatter2(list.eventStart)}
+                date={dateToString(new Date(list.eventStart))}
               />
             </div>
           ))}

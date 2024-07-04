@@ -3,8 +3,8 @@ import ReactDOM from "react-dom/client";
 import App from "./App.tsx";
 import "./index.css";
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
-
 import IPhoneFrame from "./components/common/IPhoneFrame.tsx";
+import { EventContextProvider } from "./context/EventContext.tsx";
 
 const Home = lazy(() => import("./pages/Home"));
 const StudentCard = lazy(() => import("./pages/studentCard/StudentCard"));
@@ -75,6 +75,8 @@ const router = createBrowserRouter([
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
-    <RouterProvider router={router} />
+    <EventContextProvider>
+      <RouterProvider router={router} />
+    </EventContextProvider>
   </React.StrictMode>,
 );

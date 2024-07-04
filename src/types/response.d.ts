@@ -7,6 +7,6 @@ interface BaseResponseType {
   timestamp: string;
 }
 
-interface DataResponseType<T> extends Required<BaseResponseType> {
+interface DataResponseType<T> extends zRequired<BaseResponseType> {
   data?: T;
 }

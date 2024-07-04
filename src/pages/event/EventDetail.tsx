@@ -7,7 +7,8 @@ import { Button } from "../../components/common/Button";
 import { useEffect, useState } from "react";
 import Modal from "../../components/common/Modal";
 import { CiMenuKebab } from "react-icons/ci";
-import { formatter2 } from "../../utils/dateTimeformat";
+import "swiper/css";
+import { dateToString } from "../../utils/date";
 
 export default function EventDetail() {
   const navigate = useNavigate();
@@ -17,23 +18,36 @@ export default function EventDetail() {
   const [delModalOpen, setDelModalOpen] = useState<boolean>(false);
   const [, setLoading] = useState<boolean>(false);
   const [eventDetail, setEventDetail] = useState<EventDetailType>();
+  const [delFailModalOpen, setDelFailModalOpen] = useState<boolean>(false);
+
+  const getEventDetail = async () => {
+    try {
+      setLoading(true);
+      const res = await ApiClient.getInstance().getEventDetail(
+        Number(params.eventId),
+      );
+      if (res.data) {
+        setEventDetail(res.data);
+      }
+    } catch (error) {
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const deleteEvent = async () => {
+    try {
+      setLoading(true);
+      await ApiClient.getInstance().deleteEvent(Number(params.eventId));
+      setDelModalOpen(true);
+    } catch (error) {
+      setDelFailModalOpen(true);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   useEffect(() => {
-    const getEventDetail = async () => {
-      try {
-        setLoading(true);
-        const res = await ApiClient.getInstance().getEventDetail(
-          Number(params.eventId),
-        );
-        if (res.data) {
-          console.log(res.data);
-          setEventDetail(res.data);
-        }
-      } catch (error) {
-      } finally {
-        setLoading(false);
-      }
-    };
     getEventDetail();
   }, []);
 
@@ -45,32 +59,40 @@ export default function EventDetail() {
     setIsModalOpen((prev) => !prev);
   };
 
-  const handleDelModal = () => {
+  const handleMoveToList = (success: boolean) => {
+    setDelFailModalOpen(false);
     setIsUDModalOpen(false);
-    setDelModalOpen((prev) => !prev);
+
+    if (success) {
+      setDelModalOpen((prev) => !prev);
+      navigate("/event/ing");
+    }
   };
 
   const onClickDelete = () => {
-    handleDelModal();
+    deleteEvent();
   };
 
   return (
     <>
-      <TopBar title={"2024년도 1학기 간식사업"} path={"/event/ing"} />
-      <div className="min-h-full bg-white pb-28">
+      <TopBar path={"/event/ing"} />
+      <div className="min-h-full bg-white pb-28 mt-12">
         {eventDetail && (
           <>
             {/* 이미지 */}
             <div className="mt-12 pt-5">
               <Swiper
-                slidesPerView={1.1}
+                slidesPerView={1}
                 centeredSlides
                 scrollbar
                 modules={[Scrollbar]}
               >
                 {eventDetail.eventImageList.map((img, index) => (
-                  <SwiperSlide className="mb-5" key={index}>
-                    <img src={img} />
+                  <SwiperSlide key={index}>
+                    <img
+                      src={img}
+                      className="flex w-full h-full object-contain"
+                    />
                   </SwiperSlide>
                 ))}
               </Swiper>
@@ -78,15 +100,28 @@ export default function EventDetail() {
 
             {/* 내용 */}
             <div className="relative flex flex-col gap-4 px-5 pt-8">
-              {!eventDetail.isMine && (
-                <div
-                  className="absolute right-2 cursor-pointer"
-                  onClick={handelUDModal}
-                >
-                  <CiMenuKebab size={20} />
+              {eventDetail.isMine && (
+                <div className="w-full flex justify-end">
+                  <CiMenuKebab
+                    size={20}
+                    onClick={handelUDModal}
+                    className="cursor-pointer"
+                  />
                 </div>
               )}
-              <div className="flex gap-4">
+              <div className="flex gap-4 items-center">
+                <Button
+                  roundedFull
+                  disabled
+                  className="!bg-dark2 text-xs !w-20 !px-0 !py-2"
+                >
+                  제목
+                </Button>
+                <div className="w-4/5 text-sm font-bold">
+                  {eventDetail.eventTitle}
+                </div>
+              </div>
+              <div className="flex gap-4 items-center">
                 <Button
                   roundedFull
                   disabled
@@ -95,11 +130,11 @@ export default function EventDetail() {
                   신청기간
                 </Button>
                 <div className="w-4/5 text-sm">
-                  {formatter2(eventDetail.eventStart)} ~{" "}
-                  {formatter2(eventDetail.eventEnd)}
+                  {dateToString(new Date(eventDetail.eventStart))} ~{" "}
+                  {dateToString(new Date(eventDetail.eventEnd))}
                 </div>
               </div>
-              <div className="flex gap-4">
+              <div className="flex gap-4 items-center">
                 <Button
                   roundedFull
                   disabled
@@ -110,20 +145,46 @@ export default function EventDetail() {
                 <div className="w-4/5 text-sm">
                   {eventDetail.eventFee === 0
                     ? "없음"
-                    : eventDetail.eventFee.toLocaleString()}
-                  원
+                    : `${eventDetail.eventFee.toLocaleString()}원`}
                 </div>
               </div>
-              <div className="flex gap-4">
-                <Button
-                  roundedFull
-                  disabled
-                  className="!bg-dark2 text-xs !w-20 !px-0 !py-2"
-                >
-                  상세
-                </Button>
-                <div className="w-4/5 text-sm">{eventDetail.eventContent}</div>
-              </div>
+              {eventDetail.eventType === "응모" && (
+                <div className="flex gap-4 items-center">
+                  <Button
+                    roundedFull
+                    disabled
+                    className="!bg-dark2 text-xs !w-20 !px-0 !py-2"
+                  >
+                    당첨인원
+                    <br />및 상품
+                  </Button>
+                  <div className="w-4/5 text-sm pr-20">
+                    {eventDetail.eventPrizeList.map((prize, index) => (
+                      <div className="flex justify-between">
+                        <div>{index + 1}등</div>
+                        <div className="max-w-20 break-words">
+                          {prize.prizeName}
+                        </div>
+                        <div>{prize.prizeLimit}명</div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+              {eventDetail.eventContent !== "" && (
+                <div className="flex gap-4 items-center">
+                  <Button
+                    roundedFull
+                    disabled
+                    className="!bg-dark2 text-xs !w-20 !px-0 !py-2"
+                  >
+                    상세
+                  </Button>
+                  <div className="w-4/5 text-sm">
+                    {eventDetail.eventContent}
+                  </div>
+                </div>
+              )}
             </div>
 
             {/* 버튼 */}
@@ -171,12 +232,27 @@ export default function EventDetail() {
           </div>
         </div>
       </Modal>
-      <Modal show={delModalOpen} onClose={() => navigate("/event/ing")}>
+      <Modal show={delModalOpen} onClose={() => handleMoveToList(true)}>
         <div className="flex flex-col items-center px-5">
           <div className="mx-5 mb-7 text-lg">삭제되었습니다</div>
           <Button
             gray
-            onClick={() => navigate("/event/ing")}
+            onClick={() => handleMoveToList(true)}
+            className="w-full"
+          >
+            확인
+          </Button>
+        </div>
+      </Modal>
+      <Modal show={delFailModalOpen} onClose={() => handleMoveToList(false)}>
+        <div className="flex flex-col items-center px-5">
+          <div className="mx-5 mb-7 text-lg">
+            진행되지 않은 이벤트만 <br />
+            삭제할 수 있어요
+          </div>
+          <Button
+            gray
+            onClick={() => handleMoveToList(false)}
             className="w-full"
           >
             확인

@@ -32,8 +32,7 @@ class ApiClient
     >({
       method: "post",
       url: "/member/login",
-      data: { password },
-      headers: FCMTOKEN ? { Authorization: `${FCMTOKEN}` } : {},
+      data: { password, fcmToken: FCMTOKEN },
     });
     return response.data;
   }
@@ -60,12 +59,12 @@ class ApiClient
   }
 
   // --------------------------------------event
-  async getEventList(eventReqData: EventListReqType) {
+  async getEventList(eventListData: EventListReqType) {
     const response = await this.axiosInstance.request<
       DataResponseType<EventListType[]>
     >({
       method: "get",
-      url: `/events?value=${eventReqData.value}&isEnd=${eventReqData.isEnd}&page=${eventReqData.page}`,
+      url: `/events?value=${eventListData.value}&isEnd=${eventListData.isEnd}&page=${eventListData.page}`,
     });
     return response.data;
   }
@@ -75,6 +74,16 @@ class ApiClient
       DataResponseType<EventDetailType>
     >({
       method: "get",
+      url: `/events/${eventIdx}`,
+    });
+    return response.data;
+  }
+
+  async deleteEvent(eventIdx: number) {
+    const response = await this.axiosInstance.request<
+      DataResponseType<unknown>
+    >({
+      method: "delete",
       url: `/events/${eventIdx}`,
     });
     return response.data;

@@ -6,7 +6,7 @@ import { Button } from "../../components/common/Button";
 import { FiPlus } from "react-icons/fi";
 import { useNavigate } from "react-router-dom";
 import { IoSearch } from "react-icons/io5";
-import { formatter2 } from "../../utils/dateTimeformat";
+import { dateToString } from "../../utils/date";
 
 export default function EventIng() {
   const navigate = useNavigate();
@@ -69,7 +69,7 @@ export default function EventIng() {
                 category={list.eventType}
                 title={list.eventTitle}
                 type={list.eventType}
-                date={formatter2(list.eventStart)}
+                date={dateToString(new Date(list.eventStart))}
               />
             </div>
           ))}
