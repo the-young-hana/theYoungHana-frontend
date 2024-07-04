@@ -22,7 +22,6 @@ export const generateToken = async () => {
     const token = await getToken(messaging, {
       vapidKey: import.meta.env.VITE_VAPID_KEY,
     });
-    console.log(token);
     setCookie("fcm", token);
   }
 };

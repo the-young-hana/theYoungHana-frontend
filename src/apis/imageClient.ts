@@ -13,6 +13,17 @@ export class ImageClient {
     return this.instance || (this.instance = new this());
   }
 
+  async postEvent(eventPostData: FormData) {
+    const response = await this.axiosInstance.request<
+      DataResponseType<EventPostResType>
+    >({
+      method: "post",
+      url: "/events",
+      data: eventPostData,
+    });
+    return response.data;
+  }
+
   // registerToken(newToken: string) {
   //   this.axiosInstance = this.createAxiosInstance(newToken);
   // }
@@ -27,7 +38,7 @@ export class ImageClient {
     };
 
     const newInstance = axios.create({
-      baseURL: import.meta.env.API_BASE_URL,
+      baseURL: import.meta.env.VITE_API_BASE_URL,
       withCredentials: true,
       timeout: 100000,
       headers,

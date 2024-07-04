@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import ApiClient from "../../apis/apiClient";
 import { TopBar } from "../../components/common/TopBar";
-import { useLocation, useParams } from "react-router-dom";
-import { formatter2 } from "../../utils/dateTimeformat";
+import { useParams } from "react-router-dom";
+import { dateToString } from "../../utils/date";
 
 export default function KnowledgeDetail() {
   const [, setLoading] = useState<boolean>(false);
@@ -38,7 +38,9 @@ export default function KnowledgeDetail() {
               <p className="font-semibold text-2xl">
                 {knowledgeDetail.knowledgeTitle}
               </p>
-              <p>by 하나은행 {formatter2(knowledgeDetail.createdAt)}</p>
+              <p>
+                by 하나은행 {dateToString(new Date(knowledgeDetail.createdAt))}
+              </p>
             </div>
 
             <div

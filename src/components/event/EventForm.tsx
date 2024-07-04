@@ -1,4 +1,4 @@
-import { FC, useEffect, useRef, useState } from "react";
+import { FC, useContext, useEffect, useRef, useState } from "react";
 import { Button } from "../common/Button";
 import { FiPlus } from "react-icons/fi";
 import { IoIosClose } from "react-icons/io";
@@ -7,6 +7,7 @@ import cn from "../../utils/cn";
 import Schedule from "../common/Schedule";
 import { dateToString } from "../../utils/date";
 import Modal from "../common/Modal";
+import { EventContext } from "../../context/EventContext";
 
 interface IProps {
   type: string;
@@ -14,12 +15,16 @@ interface IProps {
 }
 
 export const EventForm: FC<IProps> = ({ type, eventDetail }) => {
-  // 신청날짜, 발표날짜, 입금날짜
-  const [startDate, setStartDate] = useState<string>("");
-  const [endDate, setEndDate] = useState<string>("");
-  const [announceDate, setAnnounceDate] = useState<string>("");
-  const [depositStartDate, setDepositStartDate] = useState<string>("");
-  const [depositEndDate, setDepositEndDate] = useState<string>("");
+  const { event, setEvent } = useContext(EventContext);
+  const titleRef = useRef<HTMLInputElement | null>(null);
+  const feeRef = useRef<HTMLInputElement | null>(null);
+  const limitRef = useRef<HTMLInputElement | null>(null);
+
+  const [isStart, setIsStart] = useState<boolean>(false);
+  const [isEnd, setIsEnd] = useState<boolean>(false);
+  const [isDt, setIsDt] = useState<boolean>(false);
+  const [isFeeStart, setIsFeeStart] = useState<boolean>(false);
+  const [isFeeEnd, setIsFeeEnd] = useState<boolean>(false);
 
   // 캘린터 모달 state
   const [isShow, setIsShow] = useState({
@@ -30,16 +35,33 @@ export const EventForm: FC<IProps> = ({ type, eventDetail }) => {
     calendar: false,
   });
 
-  const [winning, setWinning] = useState<string[][]>([["", ""]]);
   const prizeRef = useRef<HTMLInputElement[]>([]);
   const winnumRef = useRef<HTMLInputElement[]>([]);
 
-  useEffect(() => {
-    if (eventDetail) {
-      setStartDate(dateToString(new Date(eventDetail.eventStart)));
-      setEndDate(dateToString(new Date(eventDetail.eventEnd)));
-    }
-  }, [eventDetail]);
+  // useEffect(() => {
+  //   if (eventDetail) {
+  //     setEvent((prevEvent) => ({
+  //       ...prevEvent,
+  //       eventStart: new Date(eventDetail.eventStart),
+  //     }));
+  //     setEvent((prevEvent) => ({
+  //       ...prevEvent,
+  //       eventEnd: new Date(eventDetail.eventEnd),
+  //     }));
+  //     setEvent((prevEvent) => ({
+  //       ...prevEvent,
+  //       eventDt: new Date(eventDetail.eventDt),
+  //     }));
+  //     setEvent((prevEvent) => ({
+  //       ...prevEvent,
+  //       eventFeeStart: new Date(eventDetail.eventFeeStart),
+  //     }));
+  //     setEvent((prevEvent) => ({
+  //       ...prevEvent,
+  //       eventFeeEnd: new Date(eventDetail.eventFeeEnd),
+  //     }));
+  //   }
+  // }, [eventDetail]);
 
   // 캘린더 모달
   const handleCalendarModal = () => {
@@ -51,12 +73,59 @@ export const EventForm: FC<IProps> = ({ type, eventDetail }) => {
 
   // 날짜 선택
   const handleDateChange = (newDate: Date) => {
-    if (isShow.type === "신청시작") setStartDate(dateToString(newDate));
-    if (isShow.type === "신청마감") setEndDate(dateToString(newDate));
-    if (isShow.type === "발표날짜") setAnnounceDate(dateToString(newDate));
-    if (isShow.type === "입금시작") setDepositStartDate(dateToString(newDate));
-    if (isShow.type === "입금마감") setDepositEndDate(dateToString(newDate));
+    if (isShow.type === "신청시작") {
+      setEvent((prevEvent) => ({
+        ...prevEvent,
+        eventStart: newDate,
+      }));
+      !isStart && setIsStart(true);
+    }
 
+    if (isShow.type === "신청마감") {
+      setEvent((prevEvent) => ({
+        ...prevEvent,
+        eventEnd: newDate,
+      }));
+      if (event.eventType === "신청") {
+        setEvent((prevEvent) => ({
+          ...prevEvent,
+          eventDt: newDate,
+        }));
+      }
+      if (event.eventFee === 0) {
+        setEvent((prevEvent) => ({
+          ...prevEvent,
+          eventFeeStart: newDate,
+        }));
+        setEvent((prevEvent) => ({
+          ...prevEvent,
+          eventFeeEnd: newDate,
+        }));
+      }
+      !isEnd && setIsEnd(true);
+    }
+    if (isShow.type === "발표날짜") {
+      setEvent((prevEvent) => ({
+        ...prevEvent,
+        eventDt: newDate,
+      }));
+
+      !isDt && setIsDt(true);
+    }
+    if (isShow.type === "입금시작") {
+      setEvent((prevEvent) => ({
+        ...prevEvent,
+        eventFeeStart: newDate,
+      }));
+      !isFeeStart && setIsFeeStart(true);
+    }
+    if (isShow.type === "입금마감") {
+      setEvent((prevEvent) => ({
+        ...prevEvent,
+        eventFeeEnd: newDate,
+      }));
+      !isFeeEnd && setIsFeeEnd(true);
+    }
     setIsShow((prev) => ({ ...prev, isCalendarModalOpen: false }));
   };
 
@@ -69,27 +138,41 @@ export const EventForm: FC<IProps> = ({ type, eventDetail }) => {
     return isNaN(parsedDate.getTime()) ? new Date() : parsedDate;
   };
 
-  // 상품
+  /// 상품 추가
   const addInput = () => {
-    setWinning((winning) => [...winning, ["", ""]]);
+    setEvent((prevEvent) => ({
+      ...prevEvent,
+      eventPrizeList: [
+        ...prevEvent.eventPrizeList,
+        { prizeRank: 0, prizeName: "", prizeLimit: 0 },
+      ],
+    }));
   };
-  const popWinning = () => {
-    setWinning((win) => win.slice(0, -1));
-    if (prizeRef.current && winnumRef.current) {
-      prizeRef.current[prizeRef.current.length - 1].value =
-        winning[winning.length - 1][0];
-      winnumRef.current[winnumRef.current.length - 1].value =
-        winning[winning.length - 1][1];
-    }
+
+  // 상품 삭제
+  const popWinning = (index: number) => {
+    setEvent((prevEvent) => ({
+      ...prevEvent,
+      eventPrizeList: prevEvent.eventPrizeList.filter(
+        (_, prizeIndex) => prizeIndex !== index,
+      ),
+    }));
   };
+
   const modifyWinning = (index: number, type: string) => {
-    const updatedWinning = [...winning];
+    const updatedEventPrizeList = [...event.eventPrizeList];
     if (type === "prize") {
-      updatedWinning[index][0] = prizeRef.current[index].value;
+      updatedEventPrizeList[index].prizeName = prizeRef.current[index].value;
     } else if (type === "num") {
-      updatedWinning[index][1] = winnumRef.current[index].value;
+      updatedEventPrizeList[index].prizeLimit = parseInt(
+        winnumRef.current[index].value,
+        10,
+      );
     }
-    setWinning(updatedWinning);
+    setEvent((prevEvent) => ({
+      ...prevEvent,
+      eventPrizeList: updatedEventPrizeList,
+    }));
   };
 
   return (
@@ -101,6 +184,13 @@ export const EventForm: FC<IProps> = ({ type, eventDetail }) => {
           placeholder="제목"
           className="text-end font-medium w-56"
           defaultValue={eventDetail?.eventTitle}
+          ref={titleRef}
+          onBlur={() => {
+            setEvent((prevEvent) => ({
+              ...prevEvent,
+              eventTitle: titleRef.current!.value,
+            }));
+          }}
         />
       </div>
       <div className="flex justify-between items-center">
@@ -113,9 +203,9 @@ export const EventForm: FC<IProps> = ({ type, eventDetail }) => {
               isCalendarModalOpen: !prev.isCalendarModalOpen,
             }));
           }}
-          className="cursor-pointer"
+          className="cursor-pointer border-b-2 px-2"
         >
-          {startDate ? startDate : "신청시작일 선택"}
+          {isStart ? dateToString(event.eventStart) : "신청 시작일 선택"}
         </div>
       </div>
       <div className="flex justify-between items-center">
@@ -128,9 +218,9 @@ export const EventForm: FC<IProps> = ({ type, eventDetail }) => {
               isCalendarModalOpen: !prev.isCalendarModalOpen,
             }));
           }}
-          className="cursor-pointer"
+          className="cursor-pointer border-b-2 px-2"
         >
-          {endDate ? endDate : "신청마감일 선택"}
+          {isEnd ? dateToString(event.eventEnd) : "신청 마감일 선택"}
         </div>
       </div>
       {type !== "신청" && (
@@ -144,9 +234,9 @@ export const EventForm: FC<IProps> = ({ type, eventDetail }) => {
                 isCalendarModalOpen: !prev.isCalendarModalOpen,
               }));
             }}
-            className="cursor-pointer"
+            className="cursor-pointer border-b-2 px-2"
           >
-            {announceDate ? announceDate : "발표날짜 선택"}
+            {isDt ? dateToString(event.eventDt) : "발표 날짜 선택"}
           </div>
         </div>
       )}
@@ -158,6 +248,13 @@ export const EventForm: FC<IProps> = ({ type, eventDetail }) => {
             placeholder="0"
             className="text-end font-medium w-52"
             defaultValue={eventDetail?.eventFee}
+            ref={feeRef}
+            onBlur={() => {
+              setEvent((prevEvent) => ({
+                ...prevEvent,
+                eventFee: Number(feeRef.current!.value),
+              }));
+            }}
           />
           <span>원</span>
         </div>
@@ -173,9 +270,9 @@ export const EventForm: FC<IProps> = ({ type, eventDetail }) => {
                 isCalendarModalOpen: !prev.isCalendarModalOpen,
               }));
             }}
-            className="cursor-pointer"
+            className="cursor-pointer border-b-2 px-2"
           >
-            {depositStartDate ? depositStartDate : "입금시작일 선택"}
+            {isFeeStart ? dateToString(event.eventFeeStart) : "입금 날짜 선택"}
           </div>
           ~
           <div
@@ -186,25 +283,25 @@ export const EventForm: FC<IProps> = ({ type, eventDetail }) => {
                 isCalendarModalOpen: !prev.isCalendarModalOpen,
               }));
             }}
-            className="cursor-pointer"
+            className="cursor-pointer border-b-2 px-2"
           >
-            {depositEndDate ? depositEndDate : "입금마감일 선택"}
+            {isFeeEnd ? dateToString(event.eventFeeEnd) : "입금 날짜 선택"}
           </div>
         </div>
       </div>
       {type === "응모" && (
         <>
           <p className="font-bold">당첨 인원 및 상품</p>
-          {winning.map(([prize, num], index) => (
+          {event.eventPrizeList.map((list, index) => (
             <div
               key={index}
               className="relative flex justify-between items-center text-nowrap border rounded-2xl py-5 px-3 text-center"
             >
-              {winning.length > 1 && (
+              {event.eventPrizeList.length > 1 && (
                 <Button
                   roundedFull
                   className="absolute -top-2 right-0 !p-0 bg-white !text-hanaGray2 border border-hanaGray2"
-                  onClick={popWinning}
+                  onClick={() => popWinning(index)}
                 >
                   <IoIosClose size={15} />
                 </Button>
@@ -213,19 +310,22 @@ export const EventForm: FC<IProps> = ({ type, eventDetail }) => {
               <input
                 type="text"
                 placeholder="상품"
-                defaultValue={prize}
+                defaultValue={list.prizeName}
                 ref={(el) => el && (prizeRef.current[index] = el)}
                 onBlur={() => modifyWinning(index, "prize")}
                 className="w-28 text-center"
               />
-              <input
-                type="number"
-                placeholder="당첨 인원"
-                defaultValue={num}
-                ref={(el) => el && (winnumRef.current[index] = el)}
-                onBlur={() => modifyWinning(index, "num")}
-                className="w-20 text-center"
-              />
+              <div>
+                <input
+                  type="number"
+                  placeholder="당첨 인원"
+                  defaultValue={list.prizeLimit}
+                  ref={(el) => el && (winnumRef.current[index] = el)}
+                  onBlur={() => modifyWinning(index, "num")}
+                  className="w-20 text-center"
+                />
+                명
+              </div>
             </div>
           ))}
           <div className="w-full flex justify-center">
@@ -249,6 +349,13 @@ export const EventForm: FC<IProps> = ({ type, eventDetail }) => {
               type="text"
               placeholder="0"
               className="text-end font-medium w-52"
+              ref={limitRef}
+              onBlur={() => {
+                setEvent((prevEvent) => ({
+                  ...prevEvent,
+                  eventFee: Number(limitRef.current!.value),
+                }));
+              }}
             />
             <span>명</span>
           </div>
@@ -263,15 +370,15 @@ export const EventForm: FC<IProps> = ({ type, eventDetail }) => {
           <Schedule
             value={
               isShow.type === "입금시작"
-                ? parseDate(startDate)
+                ? parseDate(event.eventStart)
                 : isShow.type === "입금마감"
-                  ? parseDate(endDate)
+                  ? parseDate(event.eventEnd)
                   : isShow.type === "발표날짜"
-                    ? parseDate(announceDate)
+                    ? parseDate(event.eventDt)
                     : isShow.type === "입금시작"
-                      ? parseDate(depositStartDate)
+                      ? parseDate(event.eventFeeStart)
                       : isShow.type === "입금마감"
-                        ? parseDate(depositEndDate)
+                        ? parseDate(event.eventFeeEnd)
                         : new Date()
             }
             onDateChange={handleDateChange}

@@ -21,6 +21,7 @@ export default function Home() {
     removeCookie("accessToken");
     removeCookie("deptIdx");
     removeCookie("refreshToken");
+    removeCookie("fcmToken");
     navigate("/");
   };
 
