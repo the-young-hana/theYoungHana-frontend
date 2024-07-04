@@ -24,6 +24,9 @@ class ApiClient
   constructor() {
     this.axiosInstance = this.createAxiosInstance();
   }
+  deleteEvent(eventIdx: number): Promise<DataResponseType<unknown>> {
+    throw new Error("Method not implemented.");
+  }
 
   // --------------------------------------user
   async postLogin(password: string) {
@@ -82,9 +85,19 @@ class ApiClient
   // --------------------------------------notice
 
   // --------------------------------------story
-  async getTransactions(filter: GetTransactionsReqType) {
+  async getAccountInfo(deptIdx: number) {
     const response = await this.axiosInstance.request<
-      DataResponseType<GetTransactionsResType>
+      DataResponseType<AccountInfoType>
+    >({
+      method: "get",
+      url: `dept/${deptIdx}`,
+    });
+    return response.data;
+  }
+
+  async getTransactions(filter: TransactionsReqType) {
+    const response = await this.axiosInstance.request<
+      DataResponseType<TransactionsResType>
     >({
       method: "get",
       url: `transactions/${filter.deptIdx}?start=${filter.start}&end=${filter.end}&type=${filter.type}&sort=${filter.sort}&page=${filter.page}`,
@@ -94,7 +107,7 @@ class ApiClient
 
   async getStories(deptIdx: number, page: number) {
     const response = await this.axiosInstance.request<
-      DataResponseType<GetStoriesResType[]>
+      DataResponseType<StoriesResType[]>
     >({
       method: "get",
       url: `stories/${deptIdx}?page=${page}`,
@@ -104,7 +117,7 @@ class ApiClient
 
   async getStoryDetail(storyIdx: number) {
     const response = await this.axiosInstance.request<
-      DataResponseType<getStoryDetailResType>
+      DataResponseType<StoryDetailResType>
     >({
       method: "get",
       url: `stories/${storyIdx}/detail`,
@@ -114,7 +127,7 @@ class ApiClient
 
   async addLikeNum(storyIdx: number) {
     const response = await this.axiosInstance.request<
-      DataResponseType<getStoryDetailResType>
+      DataResponseType<StoryDetailResType>
     >({
       method: "post",
       url: `stories/${storyIdx}/likes`,

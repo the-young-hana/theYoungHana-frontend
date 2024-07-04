@@ -3,13 +3,13 @@ import ReactDOM from "react-dom/client";
 import App from "./App.tsx";
 import "./index.css";
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
-
 import IPhoneFrame from "./components/common/IPhoneFrame.tsx";
-import StoryDetail from "./pages/story/StoryDetail.tsx";
+import { EventContextProvider } from "./context/EventContext.tsx";
 
 const Home = lazy(() => import("./pages/Home"));
 const StudentCard = lazy(() => import("./pages/studentCard/StudentCard"));
 const Story = lazy(() => import("./pages/story/Story"));
+const PostStory = lazy(() => import("./pages/story/PostStory.tsx"));
 const Reward = lazy(() => import("./pages/reward/Reward"));
 const Knowledge = lazy(() => import("./pages/knowledge/Knowledge"));
 const Event = lazy(() => import("./pages/event/Event"));
@@ -18,6 +18,7 @@ const PostEvent = lazy(() => import("./pages/event/PostEvent"));
 const EventWinner = lazy(() => import("./pages/event/EventWinner"));
 const Login = lazy(() => import("./pages/Login"));
 const Stories = lazy(() => import("./pages/story/Stories"));
+const StoryDetail = lazy(() => import("./pages/story/StoryDetail.tsx"));
 const Transactions = lazy(() => import("./pages/story/Transactions"));
 const Ranking = lazy(() => import("./pages/reward/Ranking"));
 const Gift = lazy(() => import("./pages/reward/Gift"));
@@ -59,6 +60,7 @@ const router = createBrowserRouter([
             ],
           },
           { path: "story/detail/:storyIdx", element: <StoryDetail /> },
+          { path: "story/post", element: <PostStory /> },
           { path: "reward", element: <Reward /> },
           { path: "reward/ranking", element: <Ranking /> },
           { path: "reward/gift", element: <Gift /> },
@@ -77,6 +79,8 @@ const router = createBrowserRouter([
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
-    <RouterProvider router={router} />
+    <EventContextProvider>
+      <RouterProvider router={router} />
+    </EventContextProvider>
   </React.StrictMode>,
 );

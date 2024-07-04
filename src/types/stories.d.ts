@@ -1,4 +1,4 @@
-interface GetTransactionsReqType {
+interface TransactionsReqType {
   deptIdx: number;
   start: string;
   end: string;
@@ -18,17 +18,23 @@ interface TransactionType {
   transactionDate: string;
 }
 
-interface GetTransactionsResType {
+interface TransactionListType {
+  date: string;
+  transactions: TransactionType[];
+}
+
+interface AccountInfoType {
   deptAccountBalance: number;
   deptAccountNumber: string;
   deptName: string;
-  deptAccountTransactionsByDate: {
-    date: string;
-    transactions: TransactionType[];
-  }[];
 }
 
-interface GetStoriesResType {
+interface TransactionsResType {
+  deptAccountInfo: AccountInfoType;
+  transactionList: TransactionListType[];
+}
+
+interface StoriesResType {
   storyIdx: number;
   storyTitle: string;
   storyLikeNum: number;
@@ -38,19 +44,10 @@ interface GetStoriesResType {
   isLiked: boolean;
   createdAt: string;
   totalAmount: number;
-  transactionList: {
-    transactionIdx: number;
-    transactionId: string;
-    transactionName: string;
-    transactionAmount: number;
-    transactionBalance: number;
-    transactionType: string;
-    transactionIsUsed: boolean;
-    transactionDate: string;
-  }[];
+  transactionList: TransactionType[];
 }
 
-interface getStoryDetailResType {
+interface StoryDetailResType {
   storyIdx: number;
   storyTitle: string;
   storyLikeNum: 0;
@@ -63,15 +60,6 @@ interface getStoryDetailResType {
     createdAt: string;
   };
   storyImageList: string[];
-  transactionList: {
-    transactionIdx: number;
-    transactionId: string;
-    transactionName: string;
-    transactionAmount: 0;
-    transactionBalance: 0;
-    transactionType: string;
-    transactionIsUsed: true;
-    transactionDate: string;
-  }[];
+  transactionList: TransactionListType[];
   createdAt: string;
 }
