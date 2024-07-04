@@ -92,12 +92,52 @@ class ApiClient
   // --------------------------------------notice
 
   // --------------------------------------story
-  async getTransactions(filter: GetTransactionsReqType) {
+  async getAccountInfo(deptIdx: number) {
     const response = await this.axiosInstance.request<
-      DataResponseType<GetTransactionsResType>
+      DataResponseType<AccountInfoType>
+    >({
+      method: "get",
+      url: `dept/${deptIdx}`,
+    });
+    return response.data;
+  }
+
+  async getTransactions(filter: TransactionsReqType) {
+    const response = await this.axiosInstance.request<
+      DataResponseType<TransactionsResType>
     >({
       method: "get",
       url: `transactions/${filter.deptIdx}?start=${filter.start}&end=${filter.end}&type=${filter.type}&sort=${filter.sort}&page=${filter.page}`,
+    });
+    return response.data;
+  }
+
+  async getStories(deptIdx: number, page: number) {
+    const response = await this.axiosInstance.request<
+      DataResponseType<StoriesResType[]>
+    >({
+      method: "get",
+      url: `stories/${deptIdx}?page=${page}`,
+    });
+    return response.data;
+  }
+
+  async getStoryDetail(storyIdx: number) {
+    const response = await this.axiosInstance.request<
+      DataResponseType<StoryDetailResType>
+    >({
+      method: "get",
+      url: `stories/${storyIdx}/detail`,
+    });
+    return response.data;
+  }
+
+  async addLikeNum(storyIdx: number) {
+    const response = await this.axiosInstance.request<
+      DataResponseType<StoryDetailResType>
+    >({
+      method: "post",
+      url: `stories/${storyIdx}/likes`,
     });
     return response.data;
   }
