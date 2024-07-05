@@ -1,0 +1,8 @@
+.swiper-pagination {
+  position: absolute;
+  top: 17rem !important;
+}
+
+.swiper-pagination-bullet-active {
+  background: #008485 !important; /* 선택된 페이지네이션 색상 변경 */
+}

@@ -37,7 +37,7 @@ export const today = () => {
   return `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, "0")}-${String(now.getDate()).padStart(2, "0")}`;
 };
 
-export const ago = (date: Date, period: number) => {
+export const monthAgo = (date: Date, period: number) => {
   const calDate = new Date(date.setMonth(date.getMonth() - period));
   return `${calDate.getFullYear()}-${String(calDate.getMonth() + 1).padStart(2, "0")}-${String(calDate.getDate()).padStart(2, "0")}`;
 };
@@ -54,4 +54,41 @@ export function dateTimeToString(date: Date): string {
   const hours = String(dateFromat.getHours()).padStart(2, "0");
   const minutes = String(dateFromat.getMinutes()).padStart(2, "0");
   return `${year}-${month}-${day} ${hours}:${minutes}`;
+}
+
+export function agoConverter(publishedAt: string) {
+  const publishedDate = new Date(publishedAt);
+  const milliSecounds = new Date() - publishedDate;
+  const seconds = milliSecounds / 1000;
+  if (seconds < 60) {
+    return "방금 전";
+  }
+
+  const minutes = seconds / 60;
+  if (minutes < 60) {
+    return `${Math.floor(minutes)}분 전`;
+  }
+
+  const hours = minutes / 60;
+  if (hours < 24) {
+    return `${Math.floor(hours)}시간 전`;
+  }
+
+  const days = hours / 24;
+  if (days < 7) {
+    return `${Math.floor(days)}일 전`;
+  }
+
+  const weeks = days / 7;
+  if (weeks < 5) {
+    return `${Math.floor(weeks)}주 전`;
+  }
+
+  const months = days / 30;
+  if (months < 12) {
+    return `${Math.floor(months)}달 전`;
+  }
+
+  const years = days / 365;
+  return `${Math.floor(years)}년 전`;
 }
