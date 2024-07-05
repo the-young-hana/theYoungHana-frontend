@@ -7,12 +7,18 @@ import { FiPlus } from "react-icons/fi";
 import { useNavigate } from "react-router-dom";
 import { IoSearch } from "react-icons/io5";
 import { dateToString } from "../../utils/date";
+import useInfiniteScroll from "../../hooks/useInfiniteScroll";
 
 export default function EventIng() {
   const navigate = useNavigate();
   const [, setLoading] = useState<boolean>(false);
-  const [eventList, setEventList] = useState<EventListType[]>();
+  const [eventList, setEventList] = useState<EventListType[]>([]);
   const searchRef = useRef<HTMLInputElement | null>(null);
+  const observer = useRef<IntersectionObserver | null>(null);
+
+  const { lastStoryElementRef, page, setPage } = useInfiniteScroll({
+    observer,
+  });
 
   const getEventList = async (keyword: string) => {
     try {
@@ -20,10 +26,12 @@ export default function EventIng() {
       const res = await ApiClient.getInstance().getEventList({
         value: keyword,
         isEnd: false,
-        page: 1,
+        page: page.page,
       });
       if (res.data) {
-        setEventList(res.data);
+        if (page.page === 1) setEventList(res.data);
+        else setEventList((prevList) => [...prevList, ...(res.data || [])]);
+        setPage((prev) => ({ ...prev, hasMore: res.data?.length! >= 10 }));
       }
     } catch (error) {
     } finally {
@@ -33,10 +41,12 @@ export default function EventIng() {
 
   useEffect(() => {
     getEventList("");
-  }, []);
+  }, [page.page]);
 
   const onClickSearch = () => {
     const keyword = searchRef.current!.value;
+    setEventList([]);
+    setPage({ page: 1, hasMore: true });
     getEventList(keyword);
   };
 
@@ -61,7 +71,10 @@ export default function EventIng() {
 
         {eventList &&
           eventList.map((list, index) => (
-            <div key={index}>
+            <div
+              key={index}
+              ref={eventList.length === index + 1 ? lastStoryElementRef : null}
+            >
               <EventList
                 eventId={list.eventIdx}
                 category={list.eventType}
