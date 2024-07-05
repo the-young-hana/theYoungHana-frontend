@@ -25,8 +25,7 @@ const Gift = lazy(() => import("./pages/reward/Gift"));
 const Quiz = lazy(() => import("./pages/reward/Quiz"));
 const KnowledgeList = lazy(() => import("./pages/knowledge/KnowledgeList"));
 const KnowledgeDetail = lazy(() => import("./pages/knowledge/KnowledgeDetail"));
-const EventIng = lazy(() => import("./pages/event/EventIng"));
-const EventEnd = lazy(() => import("./pages/event/EventEnd"));
+const EventList = lazy(() => import("./pages/event/EventList"));
 
 const router = createBrowserRouter([
   {
@@ -43,8 +42,8 @@ const router = createBrowserRouter([
             path: "event",
             element: <Event />,
             children: [
-              { path: "ing", element: <EventIng /> },
-              { path: "end", element: <EventEnd /> },
+              { path: "ing", element: <EventList /> },
+              { path: "end", element: <EventList /> },
             ],
           },
 
