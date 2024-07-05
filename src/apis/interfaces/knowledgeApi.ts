@@ -1,5 +1,5 @@
 export interface knowledgeApi {
-  getKnowledge(): Promise<DataResponseType<KnowledgeType[]>>;
+  getKnowledge(page: number): Promise<DataResponseType<KnowledgeType[]>>;
   getKnowledgeDetail(
     knowledgeIdx: number,
   ): Promise<DataResponseType<KnowledgeDetailType>>;
