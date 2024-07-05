@@ -236,12 +236,12 @@ class ApiClient
   }
 
   // --------------------------------------knowledge
-  async getKnowledge() {
+  async getKnowledge(page: number) {
     const response = await this.axiosInstance.request<
       DataResponseType<KnowledgeType[]>
     >({
       method: "get",
-      url: "/knowledges",
+      url: `/knowledges?lastKnowledgeIdx=${page}`,
     });
     return response.data;
   }

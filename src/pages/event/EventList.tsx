@@ -4,26 +4,41 @@ import { NavigationBar } from "../../components/common/NavigationBar";
 import { EventList } from "../../components/event/EventList";
 import { Button } from "../../components/common/Button";
 import { FiPlus } from "react-icons/fi";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { IoSearch } from "react-icons/io5";
 import { dateToString } from "../../utils/date";
+import useInfiniteScroll from "../../hooks/useInfiniteScroll";
 
 export default function EventIng() {
+  const location = useLocation();
   const navigate = useNavigate();
   const [, setLoading] = useState<boolean>(false);
-  const [eventList, setEventList] = useState<EventListType[]>();
+  const [eventList, setEventList] = useState<EventListType[]>([]);
   const searchRef = useRef<HTMLInputElement | null>(null);
+  const observer = useRef<IntersectionObserver | null>(null);
 
-  const getEventList = async (keyword: string) => {
+  useEffect(() => {
+    setPage({ page: 1, hasMore: true });
+    setEventList([]);
+    getEventList("", location.pathname.includes("end"));
+  }, [location.pathname]);
+
+  const { lastStoryElementRef, page, setPage } = useInfiniteScroll({
+    observer,
+  });
+
+  const getEventList = async (keyword: string, end: boolean) => {
     try {
       setLoading(true);
       const res = await ApiClient.getInstance().getEventList({
         value: keyword,
-        isEnd: false,
-        page: 1,
+        isEnd: end,
+        page: page.page,
       });
       if (res.data) {
-        setEventList(res.data);
+        if (page.page === 1) setEventList(res.data);
+        else setEventList((prevList) => [...prevList, ...(res.data || [])]);
+        setPage((prev) => ({ ...prev, hasMore: res.data?.length! >= 10 }));
       }
     } catch (error) {
     } finally {
@@ -32,12 +47,14 @@ export default function EventIng() {
   };
 
   useEffect(() => {
-    getEventList("");
-  }, []);
+    getEventList("", location.pathname.includes("end"));
+  }, [page.page]);
 
   const onClickSearch = () => {
     const keyword = searchRef.current!.value;
-    getEventList(keyword);
+    setEventList([]);
+    setPage({ page: 1, hasMore: true });
+    getEventList(keyword, location.pathname.includes("end"));
   };
 
   return (
@@ -61,7 +78,10 @@ export default function EventIng() {
 
         {eventList &&
           eventList.map((list, index) => (
-            <div key={index}>
+            <div
+              key={index}
+              ref={eventList.length === index + 1 ? lastStoryElementRef : null}
+            >
               <EventList
                 eventId={list.eventIdx}
                 category={list.eventType}

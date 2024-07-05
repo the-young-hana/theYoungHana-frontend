@@ -58,6 +58,8 @@ export const EventForm: FC<IProps> = ({ type, setIsActive, isModify }) => {
     if (isStart && isEnd) {
       if (event.eventFee > 0 && isFeeStart && isFeeEnd) {
         setIsActive(true);
+      } else if (event.eventFee === 0) {
+        setIsActive(true);
       }
     }
   }, [isStart, isEnd, isDt, event.eventFee, isFeeStart, isFeeEnd]);

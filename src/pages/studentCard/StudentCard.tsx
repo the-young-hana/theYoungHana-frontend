@@ -6,6 +6,7 @@ import ApiClient from "../../apis/apiClient";
 import { NavigationBar } from "../../components/common/NavigationBar";
 import { TopBar } from "../../components/common/TopBar";
 import "./StudentCard.css"; // 추가된 CSS 파일
+import cn from "../../utils/cn";
 
 export default function StudentCard() {
   const SECONDS = 30000;
@@ -99,11 +100,21 @@ export default function StudentCard() {
           >
             <div className="card relative">
               <div className="card-front flex flex-col items-center">
-                <img src={studentCard?.studentCardFrontImage} />
+                <img
+                  src={studentCard?.studentCardFrontImage}
+                  className={cn(studentCard?.isVertical ? "w-60" : "")}
+                />
                 <p className="font-bold mt-1">터치해서 QR보기</p>
               </div>
               <div className="card-back flex flex-col items-center">
-                <div className="absolute left-0 flex justify-between items-end w-full px-10">
+                <div
+                  className={cn(
+                    "absolute left-0 px-10 flex ",
+                    studentCard?.isVertical
+                      ? "flex-col items-center left-[50px] gap-5"
+                      : "w-full justify-between items-end ",
+                  )}
+                >
                   <div>
                     <img src={studentQR?.qrImage} className="w-24" />
                     <p className="text-white text-[12px] flex items-center mt-1">
@@ -115,14 +126,22 @@ export default function StudentCard() {
                       />
                     </p>
                   </div>
-                  <div className="text-end text-white">
+                  <div
+                    className={cn(
+                      studentCard?.isVertical ? "text-center" : "text-end",
+                      "text-white",
+                    )}
+                  >
                     <p>
                       {studentCard?.studentName}({studentCard?.studentId})
                     </p>
                     <p>{studentCard?.studentDept}</p>
                   </div>
                 </div>
-                <img src={studentCard?.studentCardBackImage} />
+                <img
+                  src={studentCard?.studentCardBackImage}
+                  className={cn(studentCard?.isVertical ? "w-60" : "")}
+                />
                 <p className="font-bold mt-2">터치해서 카드보기</p>
               </div>
             </div>

@@ -129,8 +129,12 @@ const Schedule: FC<ScheduleType> = ({
                   </div>
                 ) : (
                   <select id="hour" size={5} onChange={handleHourChange}>
-                    <option className="h-11"> </option>
-                    <option className="h-11"> </option>
+                    <option className="h-11" disabled>
+                      {" "}
+                    </option>
+                    <option className="h-11" disabled>
+                      {" "}
+                    </option>
                     {Array(23)
                       .fill(0)
                       .map((_, index) => {
@@ -146,8 +150,12 @@ const Schedule: FC<ScheduleType> = ({
                           </option>
                         );
                       })}
-                    <option className="h-11"> </option>
-                    <option className="h-11"> </option>
+                    <option className="h-11" disabled>
+                      {" "}
+                    </option>
+                    <option className="h-11" disabled>
+                      {" "}
+                    </option>
                   </select>
                 )}{" "}
                 <div className="font-bold">시</div>
@@ -162,8 +170,12 @@ const Schedule: FC<ScheduleType> = ({
                   </div>
                 ) : (
                   <select id="minute" size={5} onChange={handleMinuteChange}>
-                    <option className="h-11"> </option>
-                    <option className="h-11"> </option>
+                    <option className="h-11" disabled>
+                      {" "}
+                    </option>
+                    <option className="h-11" disabled>
+                      {" "}
+                    </option>
                     {Array(59)
                       .fill(0)
                       .map((_, index) => {
@@ -179,8 +191,12 @@ const Schedule: FC<ScheduleType> = ({
                           </option>
                         );
                       })}
-                    <option className="h-11"> </option>
-                    <option className="h-11"> </option>
+                    <option className="h-11" disabled>
+                      {" "}
+                    </option>
+                    <option className="h-11" disabled>
+                      {" "}
+                    </option>
                   </select>
                 )}
                 <div className="font-bold">분</div>

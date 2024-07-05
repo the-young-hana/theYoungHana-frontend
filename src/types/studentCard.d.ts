@@ -7,5 +7,5 @@ interface StudentCardType {
   studentDept: string;
   studentCardFrontImage: string;
   studentCardBackImage: string;
-  isVertical: true;
+  isVertical: boolean;
 }
