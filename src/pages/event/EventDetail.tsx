@@ -19,6 +19,7 @@ export default function EventDetail() {
   const [, setLoading] = useState<boolean>(false);
   const [eventDetail, setEventDetail] = useState<EventDetailType>();
   const [delFailModalOpen, setDelFailModalOpen] = useState<boolean>(false);
+  const [alreadyModal, setAlreadyModal] = useState<boolean>(false);
 
   const getEventDetail = async () => {
     try {
@@ -42,6 +43,28 @@ export default function EventDetail() {
       setDelModalOpen(true);
     } catch (error) {
       setDelFailModalOpen(true);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const postEventJoin = async () => {
+    try {
+      setLoading(true);
+      await ApiClient.getInstance().postEventJoin(Number(params.eventId));
+      handleModal();
+    } catch (error) {
+      setAlreadyModal(true);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const postEventPush = async () => {
+    try {
+      setLoading(true);
+      await ApiClient.getInstance().postEventPush(Number(params.eventId));
+    } catch (error) {
     } finally {
       setLoading(false);
     }
@@ -73,6 +96,15 @@ export default function EventDetail() {
     deleteEvent();
   };
 
+  const onClickJoin = () => {
+    postEventJoin();
+  };
+
+  const onClickPushAlram = () => {
+    postEventPush();
+    handleModal();
+  };
+
   return (
     <>
       <TopBar path={"/event/ing"} />
@@ -80,23 +112,33 @@ export default function EventDetail() {
         {eventDetail && (
           <>
             {/* 이미지 */}
-            <div className="mt-12 pt-5">
-              <Swiper
-                slidesPerView={1}
-                centeredSlides
-                scrollbar
-                modules={[Scrollbar]}
-              >
-                {eventDetail.eventImageList.map((img, index) => (
-                  <SwiperSlide key={index}>
-                    <img
-                      src={img}
-                      className="flex w-full h-full object-contain"
-                    />
-                  </SwiperSlide>
-                ))}
-              </Swiper>
-            </div>
+            {eventDetail.eventImageList.length === 0 ? (
+              <div className="w-full pt-7 flex items-center justify-center">
+                <div className="w-[300px] h-[300px] bg-gray-50 flex items-center justify-center">
+                  <img
+                    src="/images/logo2.png"
+                    className="h-[250px] object-cover"
+                  />
+                </div>
+              </div>
+            ) : (
+              <div className="mt-12 pt-5">
+                <Swiper
+                  slidesPerView={1}
+                  centeredSlides
+                  scrollbar
+                  modules={[Scrollbar]}
+                >
+                  {eventDetail.eventImageList.map((img, index) => (
+                    <SwiperSlide key={index}>
+                      <div className="w-full flex items-center justify-center">
+                        <img src={img} className="flex w-4/5 object-contain" />
+                      </div>
+                    </SwiperSlide>
+                  ))}
+                </Swiper>
+              </div>
+            )}
 
             {/* 내용 */}
             <div className="relative flex flex-col gap-4 px-5 pt-8">
@@ -158,11 +200,11 @@ export default function EventDetail() {
                     당첨인원
                     <br />및 상품
                   </Button>
-                  <div className="w-4/5 text-sm pr-20">
+                  <div className="w-4/5 text-sm pr-2">
                     {eventDetail.eventPrizeList.map((prize, index) => (
-                      <div className="flex justify-between">
+                      <div className="flex gap-3">
                         <div>{index + 1}등</div>
-                        <div className="max-w-20 break-words">
+                        <div className="max-w-40 break-words">
                           {prize.prizeName}
                         </div>
                         <div>{prize.prizeLimit}명</div>
@@ -189,13 +231,34 @@ export default function EventDetail() {
 
             {/* 버튼 */}
             <div className="absolute bottom-10 left-1/2 -translate-x-1/2">
-              <Button
-                roundedFull
-                className="font-bold text-xl !px-28 py-4 drop-shadow-3xl"
-                onClick={handleModal}
-              >
-                신청
-              </Button>
+              {eventDetail.isEnd === 0 ? (
+                <Button
+                  roundedFull
+                  className="font-bold text-xl !px-28 py-4 drop-shadow-3xl"
+                  onClick={onClickJoin}
+                >
+                  신청
+                </Button>
+              ) : eventDetail.isEnd === 1 ||
+                eventDetail.eventType !== "응모" ? (
+                <Button
+                  roundedFull
+                  disabled
+                  className="font-bold text-xl !px-28 py-4 drop-shadow-3xl"
+                >
+                  마감
+                </Button>
+              ) : (
+                <Button
+                  roundedFull
+                  className="font-bold text-xl !px-28 py-4 drop-shadow-3xl"
+                  onClick={() =>
+                    navigate(`/event/winner/${eventDetail.eventIdx}`)
+                  }
+                >
+                  당첨자보기
+                </Button>
+              )}
             </div>
           </>
         )}
@@ -226,12 +289,13 @@ export default function EventDetail() {
             <Button gray className="!py-3" onClick={handleModal}>
               닫기
             </Button>
-            <Button className="!py-3" onClick={handleModal}>
+            <Button className="!py-3" onClick={onClickPushAlram}>
               네, 알려주세요
             </Button>
           </div>
         </div>
       </Modal>
+
       <Modal show={delModalOpen} onClose={() => handleMoveToList(true)}>
         <div className="flex flex-col items-center px-5">
           <div className="mx-5 mb-7 text-lg">삭제되었습니다</div>
@@ -253,6 +317,20 @@ export default function EventDetail() {
           <Button
             gray
             onClick={() => handleMoveToList(false)}
+            className="w-full"
+          >
+            확인
+          </Button>
+        </div>
+      </Modal>
+      <Modal show={alreadyModal} onClose={() => setAlreadyModal(false)}>
+        <div className="flex flex-col items-center px-5">
+          <div className="mx-5 mb-7 text-lg">
+            이미 해당 이벤트에 참가 신청을 하였습니다.
+          </div>
+          <Button
+            gray
+            onClick={() => setAlreadyModal(false)}
             className="w-full"
           >
             확인

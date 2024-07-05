@@ -45,3 +45,13 @@ export const ago = (date: Date, period: number) => {
 export const dateToString = (date: Date) => {
   return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, "0")}-${String(date.getDate()).padStart(2, "0")}`;
 };
+
+export function dateTimeToString(date: Date): string {
+  const dateFromat = new Date(date);
+  const year = dateFromat.getFullYear();
+  const month = String(dateFromat.getMonth() + 1).padStart(2, "0");
+  const day = String(dateFromat.getDate()).padStart(2, "0");
+  const hours = String(dateFromat.getHours()).padStart(2, "0");
+  const minutes = String(dateFromat.getMinutes()).padStart(2, "0");
+  return `${year}-${month}-${day} ${hours}:${minutes}`;
+}
