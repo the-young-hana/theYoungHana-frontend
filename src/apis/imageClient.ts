@@ -24,6 +24,7 @@ export class ImageClient {
     return response.data;
   }
 
+
   // registerToken(newToken: string) {
   //   this.axiosInstance = this.createAxiosInstance(newToken);
   // }

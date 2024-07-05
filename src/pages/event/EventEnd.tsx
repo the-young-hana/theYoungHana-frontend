@@ -23,7 +23,6 @@ export default function EventEnd() {
         page: 1,
       });
       if (res.data) {
-        console.log(res.data);
         setEventList(res.data);
       }
     } catch (error) {

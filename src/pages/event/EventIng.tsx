@@ -23,7 +23,6 @@ export default function EventIng() {
         page: 1,
       });
       if (res.data) {
-        console.log(res.data);
         setEventList(res.data);
       }
     } catch (error) {
@@ -34,7 +33,6 @@ export default function EventIng() {
 
   useEffect(() => {
     getEventList("");
-    console.log(eventList);
   }, []);
 
   const onClickSearch = () => {

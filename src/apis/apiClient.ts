@@ -89,6 +89,47 @@ class ApiClient
     return response.data;
   }
 
+  async postEventJoin(eventIdx: number) {
+    const response = await this.axiosInstance.request<
+      DataResponseType<unknown>
+    >({
+      method: "post",
+      url: `/events/${eventIdx}/join`,
+    });
+    return response.data;
+  }
+
+  async postEventPush(eventIdx: number) {
+    const response = await this.axiosInstance.request<
+      DataResponseType<unknown>
+    >({
+      method: "post",
+      url: `/events/${eventIdx}/push`,
+    });
+    return response.data;
+  }
+
+  async getEventWinners(eventIdx: number) {
+    const response = await this.axiosInstance.request<
+      DataResponseType<WinnerListType[]>
+    >({
+      method: "get",
+      url: `/events/${eventIdx}/winners`,
+    });
+    return response.data;
+  }
+
+  async putEvent(eventIdx: number, eventPutData: EventPostReqType) {
+    const response = await this.axiosInstance.request<
+      DataResponseType<EventPostResType>
+    >({
+      method: "put",
+      url: `/events/${eventIdx}`,
+      data: eventPutData,
+    });
+    return response.data;
+  }
+
   // --------------------------------------notice
 
   // --------------------------------------story

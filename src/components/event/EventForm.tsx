@@ -3,18 +3,18 @@ import { Button } from "../common/Button";
 import { FiPlus } from "react-icons/fi";
 import { IoIosClose } from "react-icons/io";
 import cn from "../../utils/cn";
-
 import Schedule from "../common/Schedule";
-import { dateToString } from "../../utils/date";
+import { dateTimeToString } from "../../utils/date";
 import Modal from "../common/Modal";
 import { EventContext } from "../../context/EventContext";
 
 interface IProps {
   type: string;
-  eventDetail?: EventDetailType;
+  setIsActive: React.Dispatch<React.SetStateAction<boolean>>;
+  isModify: boolean;
 }
 
-export const EventForm: FC<IProps> = ({ type, eventDetail }) => {
+export const EventForm: FC<IProps> = ({ type, setIsActive, isModify }) => {
   const { event, setEvent } = useContext(EventContext);
   const titleRef = useRef<HTMLInputElement | null>(null);
   const feeRef = useRef<HTMLInputElement | null>(null);
@@ -38,30 +38,29 @@ export const EventForm: FC<IProps> = ({ type, eventDetail }) => {
   const prizeRef = useRef<HTMLInputElement[]>([]);
   const winnumRef = useRef<HTMLInputElement[]>([]);
 
-  // useEffect(() => {
-  //   if (eventDetail) {
-  //     setEvent((prevEvent) => ({
-  //       ...prevEvent,
-  //       eventStart: new Date(eventDetail.eventStart),
-  //     }));
-  //     setEvent((prevEvent) => ({
-  //       ...prevEvent,
-  //       eventEnd: new Date(eventDetail.eventEnd),
-  //     }));
-  //     setEvent((prevEvent) => ({
-  //       ...prevEvent,
-  //       eventDt: new Date(eventDetail.eventDt),
-  //     }));
-  //     setEvent((prevEvent) => ({
-  //       ...prevEvent,
-  //       eventFeeStart: new Date(eventDetail.eventFeeStart),
-  //     }));
-  //     setEvent((prevEvent) => ({
-  //       ...prevEvent,
-  //       eventFeeEnd: new Date(eventDetail.eventFeeEnd),
-  //     }));
-  //   }
-  // }, [eventDetail]);
+  console.log(event);
+
+  useEffect(() => {
+    if (isModify) {
+      setIsStart(true);
+      setIsEnd(true);
+      if (event.eventFee !== 0) {
+        setIsFeeStart(true);
+        setIsFeeEnd(true);
+      }
+      if (event.eventType !== "신청") {
+        setIsDt(true);
+      }
+    }
+  }, [event]);
+
+  useEffect(() => {
+    if (isStart && isEnd) {
+      if (event.eventFee > 0 && isFeeStart && isFeeEnd) {
+        setIsActive(true);
+      }
+    }
+  }, [isStart, isEnd, isDt, event.eventFee, isFeeStart, isFeeEnd]);
 
   // 캘린더 모달
   const handleCalendarModal = () => {
@@ -183,7 +182,7 @@ export const EventForm: FC<IProps> = ({ type, eventDetail }) => {
           type="text"
           placeholder="제목"
           className="text-end font-medium w-56"
-          defaultValue={eventDetail?.eventTitle}
+          defaultValue={event.eventTitle}
           ref={titleRef}
           onBlur={() => {
             setEvent((prevEvent) => ({
@@ -195,59 +194,74 @@ export const EventForm: FC<IProps> = ({ type, eventDetail }) => {
       </div>
       <div className="flex justify-between items-center">
         <p className="font-bold">신청 시작</p>
-        <div
-          onClick={() => {
-            setIsShow((prev) => ({
-              ...prev,
-              type: "신청시작",
-              isCalendarModalOpen: !prev.isCalendarModalOpen,
-            }));
-          }}
-          className="cursor-pointer border-b-2 px-2"
-        >
-          {isStart ? dateToString(event.eventStart) : "신청 시작일 선택"}
-        </div>
-      </div>
-      <div className="flex justify-between items-center">
-        <p className="font-bold">신청 마감</p>
-        <div
-          onClick={() => {
-            setIsShow((prev) => ({
-              ...prev,
-              type: "신청마감",
-              isCalendarModalOpen: !prev.isCalendarModalOpen,
-            }));
-          }}
-          className="cursor-pointer border-b-2 px-2"
-        >
-          {isEnd ? dateToString(event.eventEnd) : "신청 마감일 선택"}
-        </div>
-      </div>
-      {type !== "신청" && (
-        <div className="flex justify-between items-center">
-          <p className="font-bold">발표 날짜</p>
+        <div className="flex gap-2">
           <div
             onClick={() => {
               setIsShow((prev) => ({
                 ...prev,
-                type: "발표날짜",
+                type: "신청시작",
                 isCalendarModalOpen: !prev.isCalendarModalOpen,
               }));
             }}
             className="cursor-pointer border-b-2 px-2"
           >
-            {isDt ? dateToString(event.eventDt) : "발표 날짜 선택"}
+            {isStart
+              ? dateTimeToString(new Date(event.eventStart))
+              : "신청 시작일 선택"}
           </div>
         </div>
+      </div>
+
+      <div className="flex justify-between items-center">
+        <p className="font-bold">신청 마감</p>
+        <div className="flex gap-2">
+          <div
+            onClick={() => {
+              setIsShow((prev) => ({
+                ...prev,
+                type: "신청마감",
+                isCalendarModalOpen: !prev.isCalendarModalOpen,
+              }));
+            }}
+            className="cursor-pointer border-b-2 px-2"
+          >
+            {isEnd
+              ? dateTimeToString(new Date(event.eventEnd))
+              : "신청 마감일 선택"}
+          </div>
+        </div>
+      </div>
+
+      {type !== "신청" && (
+        <>
+          <div className="flex justify-between items-center">
+            <p className="font-bold">발표 날짜</p>
+            <div className="flex gap-2">
+              <div
+                onClick={() => {
+                  setIsShow((prev) => ({
+                    ...prev,
+                    type: "발표날짜",
+                    isCalendarModalOpen: !prev.isCalendarModalOpen,
+                  }));
+                }}
+                className="cursor-pointer border-b-2 px-2"
+              >
+                {isDt
+                  ? dateTimeToString(new Date(event.eventDt))
+                  : "발표 날짜 선택"}
+              </div>
+            </div>
+          </div>
+        </>
       )}
       <div className="flex justify-between text-nowrap">
         <p className="font-bold">참가비</p>
         <div>
           <input
             type="number"
-            placeholder="0"
             className="text-end font-medium w-52"
-            defaultValue={eventDetail?.eventFee}
+            placeholder={event.eventFee.toString()}
             ref={feeRef}
             onBlur={() => {
               setEvent((prevEvent) => ({
@@ -261,31 +275,39 @@ export const EventForm: FC<IProps> = ({ type, eventDetail }) => {
       </div>
       <div className="flex justify-between items-center">
         <p className="font-bold">입금기간</p>
-        <div className="flex gap-3">
-          <div
-            onClick={() => {
-              setIsShow((prev) => ({
-                ...prev,
-                type: "입금시작",
-                isCalendarModalOpen: !prev.isCalendarModalOpen,
-              }));
-            }}
-            className="cursor-pointer border-b-2 px-2"
-          >
-            {isFeeStart ? dateToString(event.eventFeeStart) : "입금 날짜 선택"}
+        <div className="flex flex-col">
+          <div className="flex gap-3">
+            <div
+              onClick={() => {
+                setIsShow((prev) => ({
+                  ...prev,
+                  type: "입금시작",
+                  isCalendarModalOpen: !prev.isCalendarModalOpen,
+                }));
+              }}
+              className="cursor-pointer border-b-2 px-2"
+            >
+              {isFeeStart
+                ? dateTimeToString(new Date(event.eventFeeStart))
+                : "입금 날짜 선택"}
+            </div>
           </div>
-          ~
-          <div
-            onClick={() => {
-              setIsShow((prev) => ({
-                ...prev,
-                type: "입금마감",
-                isCalendarModalOpen: !prev.isCalendarModalOpen,
-              }));
-            }}
-            className="cursor-pointer border-b-2 px-2"
-          >
-            {isFeeEnd ? dateToString(event.eventFeeEnd) : "입금 날짜 선택"}
+          <div className="text-center">~</div>
+          <div className="flex gap-3">
+            <div
+              onClick={() => {
+                setIsShow((prev) => ({
+                  ...prev,
+                  type: "입금마감",
+                  isCalendarModalOpen: !prev.isCalendarModalOpen,
+                }));
+              }}
+              className="cursor-pointer border-b-2 px-2"
+            >
+              {isFeeEnd
+                ? dateTimeToString(new Date(event.eventFeeEnd))
+                : "입금 날짜 선택"}
+            </div>
           </div>
         </div>
       </div>
@@ -347,13 +369,13 @@ export const EventForm: FC<IProps> = ({ type, eventDetail }) => {
           <div>
             <input
               type="text"
-              placeholder="0"
               className="text-end font-medium w-52"
+              placeholder={event.eventLimit.toString()}
               ref={limitRef}
               onBlur={() => {
                 setEvent((prevEvent) => ({
                   ...prevEvent,
-                  eventFee: Number(limitRef.current!.value),
+                  eventLimit: Number(limitRef.current!.value),
                 }));
               }}
             />
@@ -369,9 +391,9 @@ export const EventForm: FC<IProps> = ({ type, eventDetail }) => {
         <div className="-translate-y-6">
           <Schedule
             value={
-              isShow.type === "입금시작"
+              isShow.type === "신청시작"
                 ? parseDate(event.eventStart)
-                : isShow.type === "입금마감"
+                : isShow.type === "신청마감"
                   ? parseDate(event.eventEnd)
                   : isShow.type === "발표날짜"
                     ? parseDate(event.eventDt)
@@ -382,7 +404,15 @@ export const EventForm: FC<IProps> = ({ type, eventDetail }) => {
                         : new Date()
             }
             onDateChange={handleDateChange}
-            isDisabled={false}
+            disabledPastDate={
+              isShow.type === "신청마감"
+                ? dateTimeToString(event.eventStart)
+                : isShow.type === "입금마감"
+                  ? dateTimeToString(event.eventFeeStart)
+                  : ""
+            }
+            time={true}
+            isOpen={isShow.isCalendarModalOpen}
           />
         </div>
       </Modal>

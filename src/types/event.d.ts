@@ -77,3 +77,13 @@ interface EventPostResType {
   eventLimit: number;
   eventPrizeList: PrizeType[];
 }
+
+interface WinnerType {
+  memberId: string;
+  memberName: string;
+}
+interface WinnerListType {
+  prizeRank: number;
+  prizeName: string;
+  winnerList: WinnerType[];
+}
