@@ -39,13 +39,13 @@ export const MenuBar: FC<IProps> = ({ menu1, menu2, path1, path2 }) => {
   });
 
   return (
-    <div className="flex w-full justify-around pt-2 bg-hanaBgGray border-b border-hanaGray2">
+    <div className="flex w-full justify-around pt-2 bg-hanaBgGray border-b border-r-hanaGray2">
       <button
         name="menu1"
         type="button"
         className={cn(
           isSelected
-            ? "font-bold border-b-[3px] text-hanaGreen border-hanaGreen"
+            ? "font-bold border-b-[3px] py-1 text-hanaGreen border-hanaGreen"
             : "",
           "cursor-pointer",
         )}
@@ -58,7 +58,7 @@ export const MenuBar: FC<IProps> = ({ menu1, menu2, path1, path2 }) => {
         type="button"
         className={cn(
           !isSelected
-            ? "font-bold border-b-[3px] text-hanaGreen border-hanaGreen"
+            ? "font-bold border-b-[3px]  py-1 text-hanaGreen border-hanaGreen"
             : "",
           "cursor-pointer",
         )}
