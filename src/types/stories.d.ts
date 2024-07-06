@@ -63,3 +63,36 @@ interface StoryDetailResType {
   transactionList: TransactionListType[];
   createdAt: string;
 }
+
+interface PostStoryReqType {
+  storyCreateReqDto: {
+    storyTitle: string;
+    storyContent: string;
+    deptIdx: number;
+    transactionList: number[];
+  };
+  imgs: string[];
+}
+
+interface UpdateStryReqType {
+  storyTitle: string;
+  storyContent: string;
+  transactionList: number[];
+}
+
+interface StoryCommentReqType {
+  commentParentIdx: number;
+  commentContent: string;
+}
+
+interface ReplyCommentType {
+  commentIdx: number;
+  commentContent: string;
+  commentParentIdx: number;
+}
+
+interface StoryCommentResType {
+  commentIdx: number;
+  commentContent: string;
+  replyList: ReplyCommentType[];
+}

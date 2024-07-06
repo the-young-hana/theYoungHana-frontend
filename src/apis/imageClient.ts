@@ -1,7 +1,8 @@
 import axios, { AxiosInstance } from "axios";
 import { getCookie } from "../utils/cookie";
+import storiesApi from "./interfaces/storiesApi";
 
-export class ImageClient {
+export class ImageClient implements storiesApi {
   private static instance: ImageClient;
   private axiosInstance: AxiosInstance;
 
@@ -24,13 +25,13 @@ export class ImageClient {
     return response.data;
   }
 
-
-  // registerToken(newToken: string) {
-  //   this.axiosInstance = this.createAxiosInstance(newToken);
-  // }
-
-  logout() {
-    this.axiosInstance = this.createAxiosInstance();
+  async postStory(newStory: FormData) {
+    const response = await this.axiosInstance.request<BaseResponseType>({
+      method: "post",
+      url: "stories",
+      data: newStory,
+    });
+    return response.data;
   }
 
   private createAxiosInstance = () => {

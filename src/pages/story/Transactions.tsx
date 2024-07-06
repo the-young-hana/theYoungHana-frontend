@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
 import ApiClient from "../../apis/apiClient";
 import TransactionList from "../../components/story/TransactionList";
+import { getCookie } from "../../utils/cookie";
 
 const Transactions = () => {
-  const { deptIdx } = useParams();
   const [account, setAccount] = useState<AccountInfoType>();
+
+  const deptIdx = getCookie("deptIdx");
 
   // 서버 통신
   const getAccountInfo = async () => {

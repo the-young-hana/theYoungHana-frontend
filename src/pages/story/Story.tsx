@@ -6,11 +6,11 @@ import { TopBar } from "../../components/common/TopBar";
 import { getCookie } from "../../utils/cookie";
 
 export default function Story() {
-  const { deptIdx } = getCookie("deptIdx");
+  const deptIdx = getCookie("deptIdx");
 
   return (
     <>
-      <TopBar title="스토리" />
+      <TopBar title="스토리" path="/studentCard" />
       <div className="min-h-bottom-screen mt-12 mb-[107px]">
         <MenuBar
           menu1="스토리"

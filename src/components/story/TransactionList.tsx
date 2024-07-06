@@ -4,11 +4,11 @@ import { IoIosArrowDown } from "react-icons/io";
 import { dateToString, monthAgo, today } from "../../utils/date";
 import cn from "../../utils/cn";
 import ApiClient from "../../apis/apiClient";
+import { getCookie } from "../../utils/cookie";
 import Transaction from "./Transaction";
 import Modal from "../common/Modal";
 import { Button } from "../common/Button";
 import Schedule from "../common/Schedule";
-import { getCookie } from "../../utils/cookie";
 
 const TransactionList = () => {
   const deptIdx = getCookie("deptIdx");
@@ -17,7 +17,7 @@ const TransactionList = () => {
     deptIdx: Number(deptIdx),
     start: monthAgo(new Date(), 1),
     end: today(),
-    type: "출금",
+    type: "전체",
     sort: "최신순",
     page: 1,
   });
@@ -47,17 +47,25 @@ const TransactionList = () => {
   const getTransactions = async () => {
     try {
       const res = await ApiClient.getInstance().getTransactions(filter);
-      setTransactions(res.data);
-      // setTransactions(data);
 
-      const sum = transactions?.transactionList.reduce(
+      if (res.data) {
+        if (filter.page === 1) setTransactions(res.data);
+        else
+          setTransactions((prev) => ({
+            ...prev!,
+            transactionList: [
+              ...prev!.transactionList,
+              ...res.data!.transactionList,
+            ],
+          }));
+      }
+
+      const sum = res.data!.transactionList.reduce(
         (acc, transaction) => acc + transaction.transactions.length,
         0,
       );
 
-      setIsShow({ ...isShow, moreBtn: sum! >= 20 });
-
-      // console.log(res);
+      setIsShow({ ...isShow, moreBtn: sum >= 20 });
     } catch (error) {
       console.log(error);
     }

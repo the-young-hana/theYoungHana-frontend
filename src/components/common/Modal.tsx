@@ -84,7 +84,7 @@ function Modal(modalProps: ModalProps) {
         <div className={modalClassName} {...props}>
           {xButton && (
             <button onClick={onClose} className={XButtonClassName}>
-              <IoClose size={17} />
+              <IoClose size={20} />
             </button>
           )}
           {children}

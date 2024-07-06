@@ -5,11 +5,16 @@ import "./index.css";
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import IPhoneFrame from "./components/common/IPhoneFrame.tsx";
 import { EventContextProvider } from "./context/EventContext.tsx";
+import { TransactionProvider } from "./context/TransactionContext.tsx";
 
 const Home = lazy(() => import("./pages/Home"));
 const StudentCard = lazy(() => import("./pages/studentCard/StudentCard"));
 const Story = lazy(() => import("./pages/story/Story"));
-const PostStory = lazy(() => import("./pages/story/PostStory.tsx"));
+const PostStory1 = lazy(() => import("./pages/story/PostStory1.tsx"));
+const PostStory2 = lazy(() => import("./pages/story/PostStory2.tsx"));
+const StoryCompletion = lazy(() => import("./pages/story/StoryCompletion.tsx"));
+const StoryUpdate1 = lazy(() => import("./pages/story/StoryUpdate1.tsx"));
+const StoryUpdate2 = lazy(() => import("./pages/story/StoryUpdate2.tsx"));
 const Reward = lazy(() => import("./pages/reward/Reward"));
 const Knowledge = lazy(() => import("./pages/knowledge/Knowledge"));
 const Event = lazy(() => import("./pages/event/Event"));
@@ -59,7 +64,11 @@ const router = createBrowserRouter([
             ],
           },
           { path: "story/detail/:storyIdx", element: <StoryDetail /> },
-          { path: "story/post", element: <PostStory /> },
+          { path: "story/post/1", element: <PostStory1 /> },
+          { path: "story/post/2", element: <PostStory2 /> },
+          { path: "story/completion", element: <StoryCompletion /> },
+          { path: "story/update/:storyIdx/1", element: <StoryUpdate1 /> },
+          { path: "story/update/:storyIdx/2", element: <StoryUpdate2 /> },
           { path: "reward", element: <Reward /> },
           { path: "reward/ranking", element: <Ranking /> },
           { path: "reward/gift", element: <Gift /> },
@@ -78,8 +87,10 @@ const router = createBrowserRouter([
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
-    <EventContextProvider>
-      <RouterProvider router={router} />
-    </EventContextProvider>
+    <TransactionProvider>
+      <EventContextProvider>
+        <RouterProvider router={router} />
+      </EventContextProvider>
+    </TransactionProvider>
   </React.StrictMode>,
 );
