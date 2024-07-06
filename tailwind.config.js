@@ -25,6 +25,7 @@ export default {
         "2.5xl": ["2px 4px 3px rgba(0, 0, 0, 0.1)"],
         "3xl": ["2px 4px 3px rgba(0, 0, 0, 0.4)"],
         base: ["2px 4px 3px rgba(0, 0, 0, 0.1)"],
+        top: ["0 -5px 5px -5px #333"],
       },
       animation: {
         tada: "tada 1.3s ease-in-out 0.5s infinite",

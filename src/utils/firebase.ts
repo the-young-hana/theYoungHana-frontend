@@ -1,6 +1,6 @@
 import { initializeApp } from "firebase/app";
 import { getMessaging, getToken } from "firebase/messaging";
-import { setCookie } from "./cookie";
+import { getCookie, setCookie } from "./cookie";
 
 const firebaseConfig = {
   apiKey: import.meta.env.VITE_API_KEY,
@@ -22,6 +22,8 @@ export const generateToken = async () => {
     const token = await getToken(messaging, {
       vapidKey: import.meta.env.VITE_VAPID_KEY,
     });
-    setCookie("fcm", token);
+    if (!getCookie("fcmToken")) {
+      setCookie("fcmToken", token);
+    }
   }
 };

@@ -1,0 +1,26 @@
+.checkbox {
+  display: none;
+}
+
+.checkbox + label {
+  cursor: pointer;
+}
+
+.checkbox + label:before {
+  content: "";
+  display: inline-block;
+  width: 17px;
+  height: 17px;
+  border: 2px solid #008485;
+  border-radius: 100%;
+  vertical-align: middle;
+}
+
+.checkbox:checked + label:before {
+  content: "";
+  background-color: #008485;
+  border-color: #008485;
+  background-image: url("/images/check.png");
+  background-repeat: no-repeat;
+  background-position: 50%;
+}

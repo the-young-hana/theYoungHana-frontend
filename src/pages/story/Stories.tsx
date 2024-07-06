@@ -1,8 +1,9 @@
 import React, { useEffect, useRef, useState } from "react";
 import { FaRegHeart } from "react-icons/fa";
 import { HiOutlineChatBubbleBottomCenterText } from "react-icons/hi2";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import ApiClient from "../../apis/apiClient";
+import { getCookie } from "../../utils/cookie";
 import { dateToString } from "../../utils/date";
 import { Loading } from "../../components/common/Loading";
 import { Button } from "../../components/common/Button";
@@ -10,7 +11,6 @@ import { FiPlus } from "react-icons/fi";
 import useInfiniteScroll from "../../hooks/useInfiniteScroll";
 
 function Stories() {
-  const { deptIdx } = useParams();
   const navigate = useNavigate();
   const [stories, setStories] = useState<StoriesResType[]>();
   const [expandedCard, setExpendedCard] = useState<number | null>();
@@ -20,6 +20,8 @@ function Stories() {
     observer,
   });
 
+  const deptIdx = getCookie("deptIdx");
+
   const getStories = async () => {
     try {
       const res = await ApiClient.getInstance().getStories(
@@ -27,7 +29,6 @@ function Stories() {
         page.page,
       );
       setStories(res.data);
-      console.log(res.data);
       setPage((prev) => ({ ...prev, hasMore: res.data?.length! >= 10 }));
     } catch (error) {
       console.log(error);
@@ -161,7 +162,7 @@ function Stories() {
       <Button
         roundedFull
         className="absolute bottom-32 right-5 !p-2 drop-shadow-3xl"
-        onClick={() => navigate("/story/post")}
+        onClick={() => navigate("/story/post/1")}
       >
         <FiPlus size={52} />
       </Button>

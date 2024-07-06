@@ -173,12 +173,69 @@ class ApiClient
     return response.data;
   }
 
+  async editStory(storyIdx: number, updatedStory: UpdateStryReqType) {
+    const response = await this.axiosInstance.request<BaseResponseType>({
+      method: "put",
+      url: `stories/${storyIdx}`,
+      data: updatedStory,
+    });
+    return response.data;
+  }
+
+  async deleteStory(storyIdx: number) {
+    const response = await this.axiosInstance.request<BaseResponseType>({
+      method: "delete",
+      url: `stories/${storyIdx}`,
+    });
+    return response.data;
+  }
+
   async addLikeNum(storyIdx: number) {
     const response = await this.axiosInstance.request<
       DataResponseType<StoryDetailResType>
     >({
       method: "post",
       url: `stories/${storyIdx}/likes`,
+    });
+    return response.data;
+  }
+
+  async getStoryComments(storyIdx: number, lastCommentIdx: number) {
+    const response = await this.axiosInstance.request<
+      DataResponseType<StoryCommentResType[]>
+    >({
+      method: "get",
+      url: `stories/${storyIdx}/comments?lastCommentIdx=${lastCommentIdx}`,
+    });
+    return response.data;
+  }
+
+  async addStoryComments(storyIdx: number, newComment: StoryCommentReqType) {
+    const response = await this.axiosInstance.request<BaseResponseType>({
+      method: "post",
+      url: `stories/${storyIdx}/comments`,
+      data: newComment,
+    });
+    return response.data;
+  }
+
+  async editStoryComments(
+    storyIdx: number,
+    commentIdx: number,
+    newComment: StoryCommentReqType,
+  ) {
+    const response = await this.axiosInstance.request<BaseResponseType>({
+      method: "put",
+      url: `stories/${storyIdx}/comments/${commentIdx}`,
+      data: newComment,
+    });
+    return response.data;
+  }
+
+  async deleteStoryComments(storyIdx: number, commentIdx: number) {
+    const response = await this.axiosInstance.request<BaseResponseType>({
+      method: "delete",
+      url: `stories/${storyIdx}/comments/${commentIdx}`,
     });
     return response.data;
   }
@@ -259,10 +316,6 @@ class ApiClient
   static getInstance(): ApiClient {
     return this.instance || (this.instance = new this());
   }
-
-  // registerToken(newToken: string) {
-  //   this.axiosInstance = this.createAxiosInstance(newToken);
-  // }
 
   logout() {
     this.axiosInstance = this.createAxiosInstance();
