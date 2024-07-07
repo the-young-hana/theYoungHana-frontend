@@ -1,4 +1,4 @@
-interface storiesApi {
+interface storyApi {
   getAccountInfo(deptIdx: number): Promise<DataResponseType<AccountInfoType>>;
   getTransactions(
     filter: TransactionsReqType,
@@ -33,4 +33,4 @@ interface storiesApi {
   ): Promise<BaseResponseType>;
 }
 
-export default storiesApi;
+export default storyApi;

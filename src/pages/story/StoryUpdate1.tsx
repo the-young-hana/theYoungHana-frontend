@@ -5,7 +5,7 @@ import { useTransaction } from "../../context/TransactionContext";
 import TransactionList from "../../components/story/TransactionList";
 import TotalPrice from "../../components/story/TotalPrice";
 
-const StoryUpdate1 = () => {
+function StoryUpdate1() {
   const { storyIdx } = useParams();
 
   const { updateTransaction } = useTransaction();
@@ -21,6 +21,6 @@ const StoryUpdate1 = () => {
       </div>
     </>
   );
-};
+}
 
 export default StoryUpdate1;
