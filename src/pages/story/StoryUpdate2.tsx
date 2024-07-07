@@ -6,7 +6,7 @@ import { useTransaction } from "../../context/TransactionContext";
 import { Button } from "../../components/common/Button";
 import ApiClient from "../../apis/apiClient";
 
-const StoryUpdate2 = () => {
+function StoryUpdate2() {
   const { storyIdx } = useParams();
   const navigate = useNavigate();
 
@@ -77,6 +77,6 @@ const StoryUpdate2 = () => {
       </div>
     </>
   );
-};
+}
 
 export default StoryUpdate2;
