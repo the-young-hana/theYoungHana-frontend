@@ -1,0 +1,27 @@
+.line {
+  display: flex;
+  flex-basis: 100%;
+  align-items: center;
+  font-size: 16px;
+  margin: 24px 0px;
+}
+
+.line::before {
+  content: "";
+  flex-grow: 1;
+  margin: 0px 16px;
+  background: #b5b5b5;
+  height: 1px;
+  font-size: 0px;
+  line-height: 0px;
+}
+
+.line::after {
+  content: "";
+  flex-grow: 1;
+  margin: 0px 16px;
+  background: #b5b5b5;
+  height: 1px;
+  font-size: 0px;
+  line-height: 0px;
+}

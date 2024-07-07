@@ -1,22 +1,24 @@
 import axios, { AxiosInstance } from "axios";
 import { getCookie } from "../utils/cookie";
-import { usersApi } from "./interfaces/usersApi";
+import { userApi } from "./interfaces/userApi";
+import storyApi from "./interfaces/storyApi";
 import { studentCardApi } from "./interfaces/studentCardApi";
 import { knowledgeApi } from "./interfaces/knowledgeApi";
 import { rewardApi } from "./interfaces/rewardApi";
-import storiesApi from "./interfaces/storiesApi";
 import { eventApi } from "./interfaces/eventApi";
+import notificationApi from "./interfaces/notificationApi";
 
 const FCMTOKEN = getCookie("fcm");
 
 class ApiClient
   implements
-    usersApi,
+    userApi,
     studentCardApi,
     knowledgeApi,
     rewardApi,
-    storiesApi,
-    eventApi
+    storyApi,
+    eventApi,
+    notificationApi
 {
   private static instance: ApiClient;
   private axiosInstance: AxiosInstance;
@@ -309,6 +311,17 @@ class ApiClient
     >({
       method: "get",
       url: `knowledges/${knowledgeIdx}`,
+    });
+    return response.data;
+  }
+
+  // --------------------------------------notification
+  async notification() {
+    const response = await this.axiosInstance.request<
+      DataResponseType<notificationResType[]>
+    >({
+      method: "get",
+      url: "/member/notice",
     });
     return response.data;
   }
