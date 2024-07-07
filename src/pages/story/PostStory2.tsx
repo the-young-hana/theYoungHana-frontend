@@ -1,12 +1,12 @@
 import React, { useState } from "react";
-import { TopBar } from "../../components/common/TopBar";
+import { useNavigate } from "react-router-dom";
 import { getCookie } from "../../utils/cookie";
-import ImageUpload from "../../components/common/ImageUpload";
-import { Button } from "../../components/common/Button";
 import { ImageClient } from "../../apis/imageClient";
 import { useTransaction } from "../../context/TransactionContext";
-import { useNavigate } from "react-router-dom";
-import PostStoryForm from "../../components/story/\bPostStoryForm";
+import { TopBar } from "../../components/common/TopBar";
+import ImageUpload from "../../components/common/ImageUpload";
+import { Button } from "../../components/common/Button";
+import PostStoryForm from "../../components/story/PostStoryForm";
 
 function PostStory2() {
   const navigate = useNavigate();
