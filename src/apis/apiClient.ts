@@ -1,12 +1,13 @@
 import axios, { AxiosInstance } from "axios";
 import { getCookie } from "../utils/cookie";
 import { userApi } from "./interfaces/userApi";
-import storyApi from "./interfaces/storyApi";
 import { studentCardApi } from "./interfaces/studentCardApi";
 import { knowledgeApi } from "./interfaces/knowledgeApi";
 import { rewardApi } from "./interfaces/rewardApi";
 import { eventApi } from "./interfaces/eventApi";
 import notificationApi from "./interfaces/notificationApi";
+import storyApi from "./interfaces/storyApi";
+import { transferApi } from "./interfaces/transferApi";
 
 const FCMTOKEN = getCookie("fcm");
 
@@ -18,7 +19,8 @@ class ApiClient
     rewardApi,
     storyApi,
     eventApi,
-    notificationApi
+    notificationApi,
+    transferApi
 {
   private static instance: ApiClient;
   private axiosInstance: AxiosInstance;
@@ -322,6 +324,18 @@ class ApiClient
     >({
       method: "get",
       url: "/member/notice",
+    });
+    return response.data;
+  }
+
+  // --------------------------------------transfer
+  async postTransfer(transferData: TransferReqType) {
+    const response = await this.axiosInstance.request<
+      DataResponseType<TransferResType>
+    >({
+      method: "post",
+      url: "/transactions",
+      data: transferData,
     });
     return response.data;
   }
