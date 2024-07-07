@@ -4,8 +4,8 @@ import StatusBar from "./StatusBar";
 import { Outlet, useLocation } from "react-router-dom";
 import { generateToken, messaging } from "../../utils/firebase";
 import { onMessage } from "firebase/messaging";
-import Notification from "./Notification";
 import { Loading } from "./Loading";
+import PushNotification from "./PushNotification";
 
 interface IPhoneFrameProps extends HTMLAttributes<HTMLDivElement> {}
 
@@ -38,7 +38,7 @@ function IPhoneFrame({ className = "", children, ...props }: IPhoneFrameProps) {
   }, []);
 
   return (
-    <div className="w-screen h-screen-support-safari flex flex-col bg-hanaGray justify-center items-center overflow-hidden">
+    <div className="w-screen h-screen-support-safari flex flex-col bg-hanaBg justify-center items-center overflow-hidden">
       <div className={processedClassName} {...props}>
         <Suspense fallback={<Loading show={true} back={false} />}>
           {/* 다이나믹 아일랜드 */}
@@ -57,7 +57,7 @@ function IPhoneFrame({ className = "", children, ...props }: IPhoneFrameProps) {
         > */}
           <div className="sm:mt-12 w-full h-full overflow-auto">
             {showNotification && (
-              <Notification
+              <PushNotification
                 title={notification.title}
                 body={notification.body}
               />

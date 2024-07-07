@@ -1,11 +1,11 @@
 import React, { FC } from "react";
 
-interface NotificationProps {
+interface PushNotificationProps {
   title: string;
   body: string;
 }
 
-const Notification: FC<NotificationProps> = ({ title, body }) => {
+const PushNotification: FC<PushNotificationProps> = ({ title, body }) => {
   return (
     <div className="flex justify-center">
       <div className="absolute top-14 w-11/12 flex items-center gap-6 p-4 z-50 bg-white/75 backdrop-blur-md shadow-lg rounded-3xl">
@@ -19,4 +19,4 @@ const Notification: FC<NotificationProps> = ({ title, body }) => {
   );
 };
 
-export default Notification;
+export default PushNotification;

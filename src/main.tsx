@@ -31,6 +31,9 @@ const Quiz = lazy(() => import("./pages/reward/Quiz"));
 const KnowledgeList = lazy(() => import("./pages/knowledge/KnowledgeList"));
 const KnowledgeDetail = lazy(() => import("./pages/knowledge/KnowledgeDetail"));
 const EventList = lazy(() => import("./pages/event/EventList"));
+const Notification = lazy(
+  () => import("./pages/notification/Notification.tsx"),
+);
 
 const router = createBrowserRouter([
   {
@@ -78,6 +81,10 @@ const router = createBrowserRouter([
           {
             path: "knowledge/detail/:knowledgeIdx",
             element: <KnowledgeDetail />,
+          },
+          {
+            path: "notification",
+            element: <Notification />,
           },
         ],
       },

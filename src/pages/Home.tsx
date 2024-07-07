@@ -9,6 +9,8 @@ import { Button } from "../components/common/Button";
 import { Link, useNavigate } from "react-router-dom";
 import { getCookie, removeCookie } from "../utils/cookie";
 import { AiOutlineUser } from "react-icons/ai";
+import { FaBell } from "react-icons/fa";
+import { IoLogOut } from "react-icons/io5";
 
 export default function Home() {
   // 스크롤 감지해서 탭바 보여주기
@@ -44,11 +46,16 @@ export default function Home() {
             </div>
           </div>
           {isExistToken && (
-            <div
-              className="underline text-gray-400 text-sm font-medium cursor-pointer"
-              onClick={logout}
-            >
-              로그아웃
+            <div className="flex gap-2 items-center">
+              <div
+                className=" text-gray-400 cursor-pointer"
+                onClick={() => navigate("/notification")}
+              >
+                <FaBell size={24} />
+              </div>
+              <div className=" text-gray-400 cursor-pointer" onClick={logout}>
+                <IoLogOut size={24} />
+              </div>
             </div>
           )}
         </div>
