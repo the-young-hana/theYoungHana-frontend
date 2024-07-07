@@ -10,24 +10,28 @@ interface storyApi {
   getStoryDetail(
     storyIdx: number,
   ): Promise<DataResponseType<StoryDetailResType>>;
-  addLikeNum(storyIdx: number): Promise<DataResponseType<StoryDetailResType>>;
-  postStory(newStory: FormData): Promise<BaseResponseType>;
-  updateStory(updateStory: UpdateStryReqType): Promise<BaseResponseType>;
+  editStory(
+    storyIdx: number,
+    updatedStory: UpdateStryReqType,
+  ): Promise<BaseResponseType>;
   deleteStory(storyIdx: number): Promise<BaseResponseType>;
-  getStoryComment(
+  addLikeNum(storyIdx: number): Promise<DataResponseType<StoryDetailResType>>;
+  // postStory(newStory: FormData): Promise<BaseResponseType>;
+  // updateStory(updateStory: UpdateStryReqType): Promise<BaseResponseType>;
+  getStoryComments(
     storyIdx: number,
     lastCommentIdx: number,
   ): Promise<DataResponseType<StoryCommentResType[]>>;
-  addStoryComment(
+  addStoryComments(
     storyIdx: number,
     newComment: StoryCommentReqType,
   ): Promise<BaseResponseType>;
-  editStoryComment(
+  editStoryComments(
     storyIdx: number,
     commentIdx: number,
     newComment: StoryCommentReqType,
   ): Promise<BaseResponseType>;
-  deleteStoryComment(
+  deleteStoryComments(
     storyIdx: number,
     commentIdx: number,
   ): Promise<BaseResponseType>;
