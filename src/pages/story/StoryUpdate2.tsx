@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { TopBar } from "../../components/common/TopBar";
 import { useNavigate, useParams } from "react-router-dom";
-import PostStoryForm from "../../components/story/\bPostStoryForm";
 import { useTransaction } from "../../context/TransactionContext";
 import { Button } from "../../components/common/Button";
 import ApiClient from "../../apis/apiClient";
+import PostStoryForm from "../../components/story/PostStoryForm";
 
 function StoryUpdate2() {
   const { storyIdx } = useParams();
