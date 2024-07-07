@@ -8,10 +8,8 @@ import Check from "../components/common/Check";
 import cn from "../utils/cn";
 import StatusBar from "../components/common/StatusBar";
 import { setCookie } from "../utils/cookie";
-import { useNavigate } from "react-router-dom";
 
 export default function Login() {
-  const navigate = useNavigate();
   const { password, append, remove, clear } = usePassword();
   const [autoLogin, toggleAutoLogin] = useState<boolean>(true);
   const [loading, setLoading] = useState<boolean>(false);
@@ -26,7 +24,7 @@ export default function Login() {
         setCookie("deptIdx", res.data.deptIdx.toString());
         setCookie("accessToken", res.data.accessToken);
         setCookie("refreshToken", res.data.refreshToken);
-        navigate("/");
+        location.replace("/");
       }
     } catch (error) {
       setWrong(true);

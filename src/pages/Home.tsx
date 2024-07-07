@@ -24,7 +24,7 @@ export default function Home() {
     removeCookie("deptIdx");
     removeCookie("refreshToken");
     removeCookie("fcmToken");
-    navigate("/");
+    location.replace("/");
   };
 
   return (
