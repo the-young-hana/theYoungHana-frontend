@@ -53,7 +53,7 @@ function Modal(modalProps: ModalProps) {
     modal: show ? "opacity-100" : "translate-y-10 opacity-0",
     sheet: show ? "opacity-100" : "translate-y-20 opacity-0",
   }[modalType];
-  const modalDarkClassName = dark ? "bg-secondary" : "bg-white";
+  const modalDarkClassName = dark ? "bg-dark" : "bg-white";
   const modalClassName = cn(
     modalBaseClassName,
     modalTypeClassName,

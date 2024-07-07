@@ -409,9 +409,13 @@ export const EventForm: FC<IProps> = ({ type, setIsActive, isModify }) => {
             disabledPastDate={
               isShow.type === "신청마감"
                 ? dateTimeToString(event.eventStart)
-                : isShow.type === "입금마감"
-                  ? dateTimeToString(event.eventFeeStart)
-                  : ""
+                : isShow.type === "발표날짜"
+                  ? dateTimeToString(event.eventEnd)
+                  : isShow.type === "입금시작"
+                    ? dateTimeToString(event.eventDt)
+                    : isShow.type === "입금마감"
+                      ? dateTimeToString(event.eventFeeStart)
+                      : ""
             }
             time={true}
             isOpen={isShow.isCalendarModalOpen}

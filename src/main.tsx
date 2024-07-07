@@ -6,6 +6,7 @@ import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import IPhoneFrame from "./components/common/IPhoneFrame.tsx";
 import { EventContextProvider } from "./context/EventContext.tsx";
 import { TransactionProvider } from "./context/TransactionContext.tsx";
+import TransferSuccess from "./pages/transfer/TransferSuccess.tsx";
 
 const Home = lazy(() => import("./pages/Home"));
 const StudentCard = lazy(() => import("./pages/studentCard/StudentCard"));
@@ -34,6 +35,7 @@ const EventList = lazy(() => import("./pages/event/EventList"));
 const Notification = lazy(
   () => import("./pages/notification/Notification.tsx"),
 );
+const Transfer = lazy(() => import("./pages/transfer/Transfer.tsx"));
 
 const router = createBrowserRouter([
   {
@@ -86,6 +88,8 @@ const router = createBrowserRouter([
             path: "notification",
             element: <Notification />,
           },
+          { path: "transfer", element: <Transfer /> },
+          { path: "transfer/success", element: <TransferSuccess /> },
         ],
       },
     ],

@@ -22,6 +22,7 @@ export default {
       },
       minHeight: {
         "bottom-screen": "calc(100% - 155px)",
+        "bottom-screen2": "calc(100% - 48px)",
       },
       dropShadow: {
         "2.5xl": ["2px 4px 3px rgba(0, 0, 0, 0.1)"],
