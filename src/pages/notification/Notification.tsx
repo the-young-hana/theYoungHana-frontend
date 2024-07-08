@@ -35,7 +35,7 @@ function Notification() {
   return (
     <>
       <TopBar title="알림" path="/" />
-      <div className="pt-14 mb-12 mx-4">
+      <div className="pt-16 mb-12 mx-4">
         <ul className="flex justify-evenly items-center mb-8">
           {category.map((item, idx) => (
             <li
@@ -106,7 +106,7 @@ function Notification() {
                       {item.noticeContent.includes("입금") && (
                         <div
                           className="flex items-center gap-1 my-4 cursor-pointer"
-                          onClick={() => navigate("")}
+                          onClick={() => navigate("/transfer")}
                         >
                           <div className="text-xs">입금하기</div>
                           <IoIosArrowForward size={12} />

@@ -11,20 +11,20 @@ function StoryCompletion() {
   return (
     <>
       <TopBar title="스토리 추가" />
-      <div className="bg-white h-full">
-        <div className="absolute top-36 left-[5.5rem] flex flex-col items-center">
+      <div className="flex justify-center h-full">
+        <div className="flex flex-col justify-center items-center h-5/6 gap-8 mx-4">
           <img src="/images/storycompletion.png" alt="storycompletion" />
-          <div className="text-xl font-bold">
+          <div className="flex flex-col items-center text-xl font-bold">
             {location.state === "postStory"
               ? "스토리 저장 완료"
               : "스토리 수정 완료"}
           </div>
         </div>
         <Button
-          className="absolute bottom-8 w-full"
+          className="absolute bottom-8 !px-28"
           onClick={() => navigate(`/story/${getCookie("deptIdx")}/stories`)}
         >
-          스토리 바로가기
+          메인으로 가기
         </Button>
       </div>
     </>
