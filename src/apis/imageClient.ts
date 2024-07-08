@@ -1,8 +1,7 @@
 import axios, { AxiosInstance } from "axios";
 import { getCookie } from "../utils/cookie";
-import storyApi from "./interfaces/storyApi";
 
-export class ImageClient implements storyApi {
+export class ImageClient {
   private static instance: ImageClient;
   private axiosInstance: AxiosInstance;
 
