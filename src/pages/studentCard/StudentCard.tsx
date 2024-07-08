@@ -30,7 +30,8 @@ export default function StudentCard() {
       const res = await ApiClient.getInstance().getStudentCard();
       if (res.data) {
         setStudentCard(res.data);
-        setCookie("isAdmin", res.data.isAdmin);
+        setCookie("isAdmin", String(res.data.isAdmin));
+        setCookie("memberIdx", String(res.data.memberIdx));
       }
     } catch (error) {
     } finally {

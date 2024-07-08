@@ -9,6 +9,7 @@ import Modal from "../../components/common/Modal";
 import "swiper/css";
 import { dateToString } from "../../utils/date";
 import { GoKebabHorizontal } from "react-icons/go";
+import { getCookie } from "../../utils/cookie";
 
 export default function EventDetail() {
   const navigate = useNavigate();
@@ -139,7 +140,7 @@ export default function EventDetail() {
 
             {/* 내용 */}
             <div className="relative flex flex-col gap-4 px-5 pt-8">
-              {eventDetail.isMine && (
+              {getCookie("isAdmin") && (
                 <div className="w-full flex justify-end">
                   <GoKebabHorizontal
                     size={20}

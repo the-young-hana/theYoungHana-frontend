@@ -159,13 +159,15 @@ function Stories() {
           </li>
         ))}
       </ul>
-      <Button
-        roundedFull
-        className="absolute bottom-32 right-5 !p-2 drop-shadow-3xl"
-        onClick={() => navigate("/story/post/1")}
-      >
-        <FiPlus size={52} />
-      </Button>
+      {getCookie("isAdmin") && (
+        <Button
+          roundedFull
+          className="absolute bottom-32 right-5 !p-2 drop-shadow-3xl"
+          onClick={() => navigate("/story/post/1")}
+        >
+          <FiPlus size={52} />
+        </Button>
+      )}
     </div>
   );
 }

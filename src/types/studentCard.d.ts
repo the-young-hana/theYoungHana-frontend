@@ -9,6 +9,8 @@ interface StudentCardType {
   studentDeptIdx: number;
   studentCardFrontImage: string;
   studentCardBackImage: string;
-  isVertical: true;
-  isAdmin: true;
+  isVertical: boolean;
+  isAdmin: boolean;
+  memberIdx: number;
+  studentDeptIdx: number;
 }
