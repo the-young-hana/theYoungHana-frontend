@@ -7,6 +7,7 @@ import Schedule from "../common/Schedule";
 import { dateTimeToString } from "../../utils/date";
 import Modal from "../common/Modal";
 import { EventContext } from "../../context/EventContext";
+import moment from "moment";
 
 interface IProps {
   type: string;
@@ -37,8 +38,6 @@ export const EventForm: FC<IProps> = ({ type, setIsActive, isModify }) => {
 
   const prizeRef = useRef<HTMLInputElement[]>([]);
   const winnumRef = useRef<HTMLInputElement[]>([]);
-
-  console.log(event);
 
   useEffect(() => {
     if (isModify) {
@@ -73,7 +72,8 @@ export const EventForm: FC<IProps> = ({ type, setIsActive, isModify }) => {
   };
 
   // 날짜 선택
-  const handleDateChange = (newDate: Date) => {
+  const handleDateChange = (date: Date) => {
+    const newDate = moment(date).format("YYYY-MM-DD HH:mm:ss");
     if (isShow.type === "신청시작") {
       setEvent((prevEvent) => ({
         ...prevEvent,
@@ -408,13 +408,13 @@ export const EventForm: FC<IProps> = ({ type, setIsActive, isModify }) => {
             onDateChange={handleDateChange}
             disabledPastDate={
               isShow.type === "신청마감"
-                ? dateTimeToString(event.eventStart)
+                ? event.eventStart
                 : isShow.type === "발표날짜"
-                  ? dateTimeToString(event.eventEnd)
+                  ? event.eventEnd
                   : isShow.type === "입금시작"
-                    ? dateTimeToString(event.eventDt)
+                    ? event.eventDt
                     : isShow.type === "입금마감"
-                      ? dateTimeToString(event.eventFeeStart)
+                      ? event.eventFeeStart
                       : ""
             }
             time={true}

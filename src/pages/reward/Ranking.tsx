@@ -1,21 +1,28 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import ApiClient from "../../apis/apiClient";
 import cn from "../../utils/cn";
 import { getCookie } from "../../utils/cookie";
 import { TopBar } from "../../components/common/TopBar";
+import useInfiniteScroll from "../../hooks/useInfiniteScroll";
 
 export default function Ranking() {
   const deptIdx = getCookie("deptIdx");
   const [, setLoading] = useState<boolean>(false);
-  const [ranking, setRanking] = useState<RankingType[]>();
+  const [ranking, setRanking] = useState<RankingType[]>([]);
+  const observer = useRef<IntersectionObserver | null>(null);
 
-  const getRanking = async (page: number) => {
+  const { lastStoryElementRef, page, setPage } = useInfiniteScroll({
+    observer,
+  });
+
+  const getRanking = async () => {
     try {
       setLoading(true);
-      const res = await ApiClient.getInstance().getRanking(page);
+      const res = await ApiClient.getInstance().getRanking(page.page);
       if (res.data) {
-        console.log(res.data);
-        setRanking(res.data);
+        if (page.page === 1) setRanking(res.data);
+        else setRanking((prevList) => [...prevList, ...(res.data || [])]);
+        setPage((prev) => ({ ...prev, hasMore: res.data?.length! >= 10 }));
       }
     } catch (error) {
     } finally {
@@ -24,8 +31,8 @@ export default function Ranking() {
   };
 
   useEffect(() => {
-    getRanking(1);
-  }, []);
+    getRanking();
+  }, [page.page]);
 
   return (
     <>
@@ -34,37 +41,38 @@ export default function Ranking() {
         {ranking && (
           <>
             <img src="/images/reward_trophy.svg" className="" />
-            {ranking.map((ranking) => (
+            {ranking.map((rank, index) => (
               <div
-                key={ranking.deptIdx}
+                key={index}
                 className={cn(
-                  "w-full flex justify-between items-center bg-white rounded-2xl px-4 py-3 font-bold text-lg",
-                  ranking.deptIdx === deptIdx
-                    ? "border-4 border-pink-400 bg-red-50"
+                  "w-full flex justify-between items-center bg-white border rounded-2xl px-4 py-3 font-bold text-lg",
+                  rank.deptIdx === deptIdx
+                    ? "border-4 border-[#f3508c] !bg-[#FBF1F5]"
                     : "",
                 )}
+                ref={ranking.length === index + 1 ? lastStoryElementRef : null}
               >
                 <div className="relative">
                   <img
-                    src={`/images/rank${ranking.rankIdx > 4 ? 4 : ranking.rankIdx}.svg`}
+                    src={`/images/rank${index + 1 > 4 ? 4 : index + 1}.svg`}
                   />
                   <p
                     className={cn(
                       "absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2",
-                      ranking.rankIdx === 1
+                      index === 0
                         ? "text-orange-600"
-                        : ranking.rankIdx === 2
+                        : index === 1
                           ? "text-gray-700"
-                          : ranking.rankIdx === 3
+                          : index === 2
                             ? "text-amber-700"
                             : "",
                     )}
                   >
-                    {ranking.rankIdx}
+                    {index + 1}
                   </p>
                 </div>
-                <div className="text-center">{ranking.deptName}</div>
-                <div>{ranking.deptReward}P</div>
+                <div className="text-center">{rank.deptName}</div>
+                <div>{rank.deptReward}P</div>
               </div>
             ))}
           </>

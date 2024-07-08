@@ -1,16 +1,13 @@
 import { useEffect, useState } from "react";
 import { AiOutlineThunderbolt } from "react-icons/ai";
 import { GrPowerReset } from "react-icons/gr";
-import { FiSearch } from "react-icons/fi";
 import cn from "../../utils/cn";
-import { getCookie, setCookie } from "../../utils/cookie";
+import { setCookie } from "../../utils/cookie";
 import ApiClient from "../../apis/apiClient";
 import { NavigationBar } from "../../components/common/NavigationBar";
 import { TopBar } from "../../components/common/TopBar";
 import "./StudentCard.css"; // 추가된 CSS 파일
 import { useNavigate } from "react-router-dom";
-
-const ACCESS_TOKEN = getCookie("accessToken");
 
 export default function StudentCard() {
   const navigate = useNavigate();
@@ -23,6 +20,7 @@ export default function StudentCard() {
   const [, setLoading] = useState<boolean>(false);
   const [studentCard, setStudentCard] = useState<StudentCardType>();
   const [studentQR, setStudentQR] = useState<{ qrImage: string }>();
+  const [isExpired, setIsExpired] = useState<boolean>(false);
 
   const second = String(Math.floor((timeLeft / 1000) % 60)).padStart(2, "0");
 
@@ -32,6 +30,7 @@ export default function StudentCard() {
       const res = await ApiClient.getInstance().getStudentCard();
       if (res.data) {
         setStudentCard(res.data);
+        setCookie("isAdmin", res.data.isAdmin);
       }
     } catch (error) {
     } finally {
@@ -64,20 +63,25 @@ export default function StudentCard() {
   const handleRefreshClick = (event: React.MouseEvent) => {
     event.stopPropagation();
     setIsRefresh((prev) => !prev);
-    console.log("새로고침");
   };
 
   useEffect(() => {
+    setIsExpired(false);
     setTimeLeft(SECONDS);
+    getStudentQR();
   }, [isFlipped, isRefresh]);
 
   useEffect(() => {
     const timer = setInterval(() => {
       setTimeLeft((prevTime) => prevTime - INTERVAL);
     }, INTERVAL);
-    if (timeLeft <= 0 || !isFlipped) {
+    if (!isFlipped) {
       clearInterval(timer);
       setIsRefresh((prev) => !prev);
+    }
+    if (timeLeft <= 0) {
+      clearInterval(timer);
+      setIsExpired(true);
     }
     return () => clearInterval(timer);
   }, [isFlipped, timeLeft]);
@@ -88,15 +92,12 @@ export default function StudentCard() {
       <div className="flex flex-col justify-between items-center pt-2 min-h-bottom-screen  mt-12 mb-[107px]">
         <div className="flex justify-between items-center px-5 w-full">
           <img src="/images/logo.png" className="h-10" />
-          <div className="flex gap-2 items-center">
-            <div className="flex items-center gap-0.5">
-              <FiSearch size={20} />
-              <p>조회</p>
-            </div>
-            <div className="flex items-center gap-0.5">
-              <AiOutlineThunderbolt size={20} />
-              <p>이체</p>
-            </div>
+          <div
+            className="flex items-center gap-0.5 cursor-pointer"
+            onClick={() => navigate("/transfer")}
+          >
+            <AiOutlineThunderbolt size={20} />
+            <p>이체</p>
           </div>
         </div>
         <div className="flex flex-col items-center">
@@ -123,8 +124,9 @@ export default function StudentCard() {
                 >
                   <div>
                     <img src={studentQR?.qrImage} className="w-24" />
-                    <p className="text-white text-[12px] flex items-center mt-1">
-                      {second}초 남았습니다{" "}
+
+                    <p className="text-white text-[12px] items-center justify-center mt-1 flex gap-1">
+                      {isExpired ? "만료되었습니다." : `${second}초 남았습니다`}
                       <GrPowerReset
                         size={15}
                         className=""

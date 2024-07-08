@@ -10,12 +10,14 @@ import Modal from "../../components/common/Modal";
 import { EventContext } from "../../context/EventContext";
 import { ImageClient } from "../../apis/imageClient";
 import ImageUpload from "../../components/common/ImageUpload";
+import { dateToString } from "../../utils/date";
+import { Loading } from "../../components/common/Loading";
 
 export default function PostEvent() {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
-  const [, setLoading] = useState<boolean>(false);
+  const [loading, setLoading] = useState<boolean>(false);
   const eventId = searchParams.get("id");
   const contentRef = useRef<HTMLTextAreaElement | null>(null);
   const [success, setSuccess] = useState<boolean>(false);
@@ -29,17 +31,16 @@ export default function PostEvent() {
     try {
       setLoading(true);
       const res = await ApiClient.getInstance().getEventDetail(Number(eventId));
-      console.log(res.data);
       setEvent((prev) => ({
         ...prev,
         eventTitle: res.data!.eventTitle,
         eventType: res.data!.eventType,
-        eventStart: new Date(res.data!.eventStart),
-        eventEnd: new Date(res.data!.eventEnd),
-        eventDt: new Date(res.data!.eventDt),
+        eventStart: dateToString(res.data!.eventStart),
+        eventEnd: dateToString(res.data!.eventEnd),
+        eventDt: dateToString(res.data!.eventDt),
         eventFee: res.data!.eventFee,
-        eventFeeStart: new Date(res.data!.eventFeeStart),
-        eventFeeEnd: new Date(res.data!.eventFeeEnd),
+        eventFeeStart: dateToString(res.data!.eventFeeStart),
+        eventFeeEnd: dateToString(res.data!.eventFeeEnd),
         eventContent: res.data!.eventContent,
         eventLimit: res.data!.eventLimit,
         eventPrizeList: res.data!.eventPrizeList,
@@ -87,12 +88,12 @@ export default function PostEvent() {
     setEvent({
       eventTitle: "",
       eventType: "신청",
-      eventStart: new Date(),
-      eventEnd: new Date(),
-      eventDt: new Date(),
+      eventStart: "",
+      eventEnd: "",
+      eventDt: "",
       eventFee: 0,
-      eventFeeStart: new Date(),
-      eventFeeEnd: new Date(),
+      eventFeeStart: "",
+      eventFeeEnd: "",
       eventContent: "",
       eventLimit: 0,
       eventPrizeList: [
@@ -269,7 +270,6 @@ export default function PostEvent() {
                   {!eventId ? "등록되었습니다." : "수정되었습니다."}
                 </div>
                 <Button
-                  gray
                   onClick={() => navigate(`/event/eventDetail/${postIdx}`)}
                   className="w-full"
                 >
@@ -280,6 +280,7 @@ export default function PostEvent() {
           </>
         )}
       </div>
+      <Loading show={loading} />
     </>
   );
 }

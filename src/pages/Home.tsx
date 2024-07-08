@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Scrollbar } from "swiper/modules";
 import { IoIosArrowForward } from "react-icons/io";
@@ -20,14 +20,34 @@ export default function Home() {
   const [lastScrollTop, setLastScrollTop] = useState<number>(0);
   const [showTabBar, setShowTabBar] = useState<boolean>(true);
   const isExistToken = getCookie("accessToken");
+  const [loading, setLoading] = useState<boolean>(false);
+  const [myAccounts, setMyAccounts] = useState<AccountsType[]>([]);
+
+  const getAccounts = async () => {
+    try {
+      setLoading(true);
+      const res = await ApiClient.getInstance().getAccounts();
+      if (res.data) {
+        setMyAccounts(res.data);
+      }
+    } catch (error) {
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const logout = () => {
     removeCookie("accessToken");
     removeCookie("deptIdx");
     removeCookie("refreshToken");
     removeCookie("fcmToken");
+    removeCookie("isAdmin");
     location.replace("/");
   };
+
+  useEffect(() => {
+    if (isExistToken) getAccounts();
+  }, []);
 
   const handleClick = async () => {
     if (isExistToken) {
@@ -102,21 +122,27 @@ export default function Home() {
           >
             <SwiperSlide className="!h-fit">
               <div className="mt-4 mx-2 mb-8 bg-white rounded-2xl shadow">
-                {true ? (
+                {isExistToken && myAccounts ? (
                   <div className="flex flex-col p-6">
                     <div className="flex flex-row gap-1 items-end w-full">
-                      <span className="font-extrabold">영하나플러스통장</span>
+                      <span className="font-extrabold">
+                        {myAccounts[0] ? myAccounts[0].accountName : ""}
+                      </span>
                       <div className="flex-grow" />
                       <span className="text-sm underline text-gray-400">
                         한도계좌
                       </span>
                     </div>
                     <span className="text-sm text-gray-400">
-                      입출금 211-910769-98907{" "}
+                      입출금 {myAccounts[0] ? myAccounts[0].accountNumber : ""}{" "}
                       <span className="underline"> 복사 </span>
                     </span>
                     <div className="flex flex-row gap-1 items-center my-2">
-                      <span className="font-bold text-2xl">120,678</span>
+                      <span className="font-bold text-2xl">
+                        {myAccounts[0]
+                          ? myAccounts[0].accountBalance.toLocaleString()
+                          : ""}
+                      </span>
                       <span className="font-bold text-xl">원</span>
                       <span className="bg-gray-200 text-sm rounded-full px-1">
                         숨김
@@ -150,11 +176,11 @@ export default function Home() {
                       <IoIosArrowForward />
                     </div>
                     <img
-                      className="h-24"
-                      src={`/images/account.png`}
+                      className="h-16 my-1"
+                      src={`/images/main_account.jpg`}
                       alt="account"
                     />
-                    <div className="flex flex-row w-full gap-1 font-bold mt-2">
+                    <div className="flex flex-row justify-center w-full gap-1 font-bold mt-2">
                       <Button className="w-1/2 !bg-gray-200 !text-black">
                         가져오기
                       </Button>
@@ -214,15 +240,24 @@ export default function Home() {
               <IoIosArrowForward className="text-white" />
               <div className="flex-grow" />
             </div>
-            <div className="flex flex-row items-end gap-0 mb-2 text-white">
-              <span className="text-3xl font-bold">{0}</span>
-              <div className="flex flex-row items-center">
-                <span className="text-xl font-bold"> 원 </span>
-                <span className="bg-indigo-700 text-sm rounded-full px-2 ml-2">
-                  숨김
-                </span>
+            {isExistToken ? (
+              <>
+                <div className="flex flex-row items-end gap-0 mb-2 text-white">
+                  <span className="text-3xl font-bold">{0}</span>
+                  <div className="flex flex-row items-center">
+                    <span className="text-xl font-bold"> 원 </span>
+                    <span className="bg-indigo-700 text-sm rounded-full px-2 ml-2">
+                      숨김
+                    </span>
+                  </div>
+                </div>
+              </>
+            ) : (
+              <div className="text-center my-3 text-white text-lg">
+                로그인 후 <br /> 자산을 확인해 보세요
               </div>
-            </div>
+            )}
+
             <div className="flex flex-row items-center pt-4 font-bold text-white border-t border-indigo-200 justify-evenly">
               <button className="">투자관리</button>
               <span className="text-indigo-200">|</span>
@@ -235,14 +270,6 @@ export default function Home() {
           <div className="w-full h-32 px-6 py-4 rounded-2xl bg-sky-500" />
           {/* 카드 3 */}
           <div className="w-full h-32 px-6 py-4 rounded-2xl bg-emerald-400" />
-          {/* 카드 4 */}
-          <div className="w-full h-32 px-6 py-4 bg-orange-400 rounded-2xl" />
-          {/* 카드 5 */}
-          <div className="w-full h-32 px-6 py-4 bg-red-400 rounded-2xl" />
-          {/* 카드 6 */}
-          <div className="w-full h-32 px-6 py-4 bg-pink-400 rounded-2xl" />
-          {/* 카드 7 */}
-          <div className="w-full h-32 px-6 py-4 bg-fuchsia-400 rounded-2xl" />
         </div>
       </div>
 

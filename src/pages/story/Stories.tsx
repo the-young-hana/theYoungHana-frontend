@@ -139,7 +139,7 @@ function Stories() {
                       </span>
                       <span className="text-lg">
                         {" "}
-                        {transaction.totalAmount.toLocaleString("KR-kr")}원
+                        {history.transactionAmount.toLocaleString("KR-kr")}원
                       </span>
                     </div>
                   </li>

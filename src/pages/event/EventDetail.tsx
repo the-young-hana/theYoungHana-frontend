@@ -6,9 +6,9 @@ import { Scrollbar } from "swiper/modules";
 import { Button } from "../../components/common/Button";
 import { useEffect, useState } from "react";
 import Modal from "../../components/common/Modal";
-import { CiMenuKebab } from "react-icons/ci";
 import "swiper/css";
 import { dateToString } from "../../utils/date";
+import { GoKebabHorizontal } from "react-icons/go";
 
 export default function EventDetail() {
   const navigate = useNavigate();
@@ -115,10 +115,7 @@ export default function EventDetail() {
             {eventDetail.eventImageList.length === 0 ? (
               <div className="w-full pt-7 flex items-center justify-center">
                 <div className="w-[300px] h-[300px] bg-gray-50 flex items-center justify-center">
-                  <img
-                    src="/images/logo2.png"
-                    className="h-[250px] object-cover"
-                  />
+                  <div>등록된 이미지가 없습니다.</div>
                 </div>
               </div>
             ) : (
@@ -144,7 +141,7 @@ export default function EventDetail() {
             <div className="relative flex flex-col gap-4 px-5 pt-8">
               {eventDetail.isMine && (
                 <div className="w-full flex justify-end">
-                  <CiMenuKebab
+                  <GoKebabHorizontal
                     size={20}
                     onClick={handelUDModal}
                     className="cursor-pointer"
@@ -202,7 +199,7 @@ export default function EventDetail() {
                   </Button>
                   <div className="w-4/5 text-sm pr-2">
                     {eventDetail.eventPrizeList.map((prize, index) => (
-                      <div className="flex gap-3">
+                      <div className="flex gap-3" key={index}>
                         <div>{index + 1}등</div>
                         <div className="max-w-40 break-words">
                           {prize.prizeName}
@@ -299,11 +296,7 @@ export default function EventDetail() {
       <Modal show={delModalOpen} onClose={() => handleMoveToList(true)}>
         <div className="flex flex-col items-center px-5">
           <div className="mx-5 mb-7 text-lg">삭제되었습니다</div>
-          <Button
-            gray
-            onClick={() => handleMoveToList(true)}
-            className="w-full"
-          >
+          <Button onClick={() => handleMoveToList(true)} className="w-full">
             확인
           </Button>
         </div>
@@ -314,11 +307,7 @@ export default function EventDetail() {
             진행되지 않은 이벤트만 <br />
             삭제할 수 있어요
           </div>
-          <Button
-            gray
-            onClick={() => handleMoveToList(false)}
-            className="w-full"
-          >
+          <Button onClick={() => handleMoveToList(false)} className="w-full">
             확인
           </Button>
         </div>
@@ -328,11 +317,7 @@ export default function EventDetail() {
           <div className="mx-5 mb-7 text-lg">
             이미 해당 이벤트에 참가 신청을 하였습니다.
           </div>
-          <Button
-            gray
-            onClick={() => setAlreadyModal(false)}
-            className="w-full"
-          >
+          <Button onClick={() => setAlreadyModal(false)} className="w-full">
             확인
           </Button>
         </div>
