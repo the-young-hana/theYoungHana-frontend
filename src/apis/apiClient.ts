@@ -1,27 +1,9 @@
 import axios, { AxiosInstance } from "axios";
 import { getCookie } from "../utils/cookie";
-import { userApi } from "./interfaces/userApi";
-import { studentCardApi } from "./interfaces/studentCardApi";
-import { knowledgeApi } from "./interfaces/knowledgeApi";
-import { rewardApi } from "./interfaces/rewardApi";
-import { eventApi } from "./interfaces/eventApi";
-import notificationApi from "./interfaces/notificationApi";
-import storyApi from "./interfaces/storyApi";
-import { transferApi } from "./interfaces/transferApi";
 
 const FCMTOKEN = getCookie("fcm");
 
-class ApiClient
-  implements
-    userApi,
-    studentCardApi,
-    knowledgeApi,
-    rewardApi,
-    storyApi,
-    eventApi,
-    notificationApi,
-    transferApi
-{
+class ApiClient {
   private static instance: ApiClient;
   private axiosInstance: AxiosInstance;
 
@@ -133,16 +115,13 @@ class ApiClient
     });
     return response.data;
   }
-
-  // --------------------------------------notice
-
   // --------------------------------------story
-  async getAccountInfo(deptIdx: number) {
+  async getAccountInfo() {
     const response = await this.axiosInstance.request<
       DataResponseType<AccountInfoType>
     >({
       method: "get",
-      url: `dept/${deptIdx}`,
+      url: `dept`,
     });
     return response.data;
   }
@@ -336,6 +315,28 @@ class ApiClient
       method: "post",
       url: "/transactions",
       data: transferData,
+    });
+    return response.data;
+  }
+
+  // --------------------------------------account
+  async getAccounts() {
+    const response = await this.axiosInstance.request<
+      DataResponseType<AccountsType[]>
+    >({
+      method: "get",
+      url: "/accounts",
+    });
+    return response.data;
+  }
+
+  async postAccountsPwd(accountPwdReqData: AccountsPwdType) {
+    const response = await this.axiosInstance.request<
+      DataResponseType<{ isPwCorrect: boolean }>
+    >({
+      method: "post",
+      url: "/accounts",
+      data: accountPwdReqData,
     });
     return response.data;
   }

@@ -6,12 +6,10 @@ import { getCookie } from "../../utils/cookie";
 const Transactions = () => {
   const [account, setAccount] = useState<AccountInfoType>();
 
-  const deptIdx = getCookie("deptIdx");
-
   // 서버 통신
   const getAccountInfo = async () => {
     try {
-      const res = await ApiClient.getInstance().getAccountInfo(Number(deptIdx));
+      const res = await ApiClient.getInstance().getAccountInfo();
       setAccount(res.data);
     } catch (error) {
       console.log(error);
