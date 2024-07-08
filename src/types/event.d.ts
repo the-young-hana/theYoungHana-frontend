@@ -22,7 +22,6 @@ interface EventDetailType {
   eventEnd: Date;
   isEnd: number;
   isMine: boolean;
-
   eventIdx: number;
   isEnd: number;
   isMine: boolean;
@@ -49,12 +48,12 @@ interface PrizeType {
 interface EventPostReqType {
   eventTitle: string;
   eventType: string;
-  eventStart: Date;
-  eventEnd: Date;
-  eventDt: Date;
+  eventStart: string;
+  eventEnd: string;
+  eventDt: string;
   eventFee: number;
-  eventFeeStart: Date;
-  eventFeeEnd: Date;
+  eventFeeStart: string;
+  eventFeeEnd: string;
   eventContent: string;
   eventLimit: number;
   eventPrizeList: PrizeType[];

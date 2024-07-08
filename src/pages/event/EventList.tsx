@@ -8,6 +8,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { IoSearch } from "react-icons/io5";
 import { dateToString } from "../../utils/date";
 import useInfiniteScroll from "../../hooks/useInfiniteScroll";
+import { IoAlertCircleOutline } from "react-icons/io5";
 
 export default function EventIng() {
   const location = useLocation();
@@ -76,7 +77,12 @@ export default function EventIng() {
           </div>
         </div>
 
-        {eventList &&
+        {eventList && eventList.length === 0 ? (
+          <div className="flex flex-col items-center gap-2 bg-white py-8 min-h-[640px]">
+            <IoAlertCircleOutline size={48} color="gray" />
+            <p>조회 결과가 없어요.</p>
+          </div>
+        ) : (
           eventList.map((list, index) => (
             <div
               key={index}
@@ -90,7 +96,8 @@ export default function EventIng() {
                 date={dateToString(new Date(list.eventStart))}
               />
             </div>
-          ))}
+          ))
+        )}
 
         <Button
           roundedFull
