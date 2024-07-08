@@ -1,12 +1,20 @@
-import React, { lazy } from "react";
+import React, { lazy, ReactNode } from "react";
 import ReactDOM from "react-dom/client";
 import App from "./App.tsx";
 import "./index.css";
-import { RouterProvider, createBrowserRouter } from "react-router-dom";
+import {
+  Navigate,
+  RouterProvider,
+  createBrowserRouter,
+} from "react-router-dom";
 import IPhoneFrame from "./components/common/IPhoneFrame.tsx";
 import { EventContextProvider } from "./context/EventContext.tsx";
 import { TransactionProvider } from "./context/TransactionContext.tsx";
 import TransferSuccess from "./pages/transfer/TransferSuccess.tsx";
+import { getCookie } from "./utils/cookie.ts";
+
+const ACCESS_TOKEN = getCookie("accessToken");
+const DEPT_IDX = getCookie("deptIdx");
 
 const Home = lazy(() => import("./pages/Home"));
 const StudentCard = lazy(() => import("./pages/studentCard/StudentCard"));
@@ -36,6 +44,16 @@ const Notification = lazy(
   () => import("./pages/notification/Notification.tsx"),
 );
 const Transfer = lazy(() => import("./pages/transfer/Transfer.tsx"));
+const NotFoundStudent = lazy(
+  () => import("./pages/studentCard/NotFoundStudent.tsx"),
+);
+
+const protectedRoute = (Component: ReactNode) =>
+  ACCESS_TOKEN && DEPT_IDX ? (
+    Component
+  ) : (
+    <Navigate replace to="/notfoundstudent" />
+  );
 
 const router = createBrowserRouter([
   {
@@ -47,42 +65,69 @@ const router = createBrowserRouter([
         children: [
           { path: "", element: <Home /> },
           { path: "login", element: <Login /> },
-          { path: "studentCard", element: <StudentCard /> },
+          { path: "studentCard", element: protectedRoute(<StudentCard />) },
           {
             path: "event",
-            element: <Event />,
+            element: protectedRoute(<Event />),
             children: [
-              { path: "ing", element: <EventList /> },
-              { path: "end", element: <EventList /> },
+              { path: "ing", element: protectedRoute(<EventList />) },
+              { path: "end", element: protectedRoute(<EventList />) },
             ],
           },
 
-          { path: "event/eventDetail/:eventId", element: <EventDetail /> },
-          { path: "event/post", element: <PostEvent /> },
-          { path: "event/winner/:eventId", element: <EventWinner /> },
+          {
+            path: "event/eventDetail/:eventId",
+            element: protectedRoute(<EventDetail />),
+          },
+          { path: "event/post", element: protectedRoute(<PostEvent />) },
+          {
+            path: "event/winner/:eventId",
+            element: protectedRoute(<EventWinner />),
+          },
           {
             path: "story",
             element: <Story />,
             children: [
-              { path: ":deptIdx/stories", element: <Stories /> },
-              { path: ":deptIdx/transactions", element: <Transactions /> },
+              {
+                path: ":deptIdx/stories",
+                element: protectedRoute(<Stories />),
+              },
+              {
+                path: ":deptIdx/transactions",
+                element: protectedRoute(<Transactions />),
+              },
             ],
           },
-          { path: "story/detail/:storyIdx", element: <StoryDetail /> },
-          { path: "story/post/1", element: <PostStory1 /> },
-          { path: "story/post/2", element: <PostStory2 /> },
-          { path: "story/completion", element: <StoryCompletion /> },
-          { path: "story/update/:storyIdx/1", element: <StoryUpdate1 /> },
-          { path: "story/update/:storyIdx/2", element: <StoryUpdate2 /> },
-          { path: "reward", element: <Reward /> },
-          { path: "reward/ranking", element: <Ranking /> },
-          { path: "reward/gift", element: <Gift /> },
-          { path: "reward/quiz", element: <Quiz /> },
-          { path: "knowledge", element: <Knowledge /> },
-          { path: "knowledge/list", element: <KnowledgeList /> },
+          {
+            path: "story/detail/:storyIdx",
+            element: protectedRoute(<StoryDetail />),
+          },
+          { path: "story/post/1", element: protectedRoute(<PostStory1 />) },
+          { path: "story/post/2", element: protectedRoute(<PostStory2 />) },
+          {
+            path: "story/completion",
+            element: protectedRoute(<StoryCompletion />),
+          },
+          {
+            path: "story/update/:storyIdx/1",
+            element: protectedRoute(<StoryUpdate1 />),
+          },
+          {
+            path: "story/update/:storyIdx/2",
+            element: protectedRoute(<StoryUpdate2 />),
+          },
+          { path: "reward", element: protectedRoute(<Reward />) },
+          { path: "reward/ranking", element: protectedRoute(<Ranking />) },
+          { path: "reward/gift", element: protectedRoute(<Gift />) },
+          { path: "reward/quiz", element: protectedRoute(<Quiz />) },
+          { path: "knowledge", element: protectedRoute(<Knowledge />) },
+          {
+            path: "knowledge/list",
+            element: protectedRoute(<KnowledgeList />),
+          },
           {
             path: "knowledge/detail/:knowledgeIdx",
-            element: <KnowledgeDetail />,
+            element: protectedRoute(<KnowledgeDetail />),
           },
           {
             path: "notification",
@@ -90,6 +135,7 @@ const router = createBrowserRouter([
           },
           { path: "transfer", element: <Transfer /> },
           { path: "transfer/success", element: <TransferSuccess /> },
+          { path: "notfoundstudent", element: <NotFoundStudent /> },
         ],
       },
     ],

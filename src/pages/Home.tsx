@@ -1,16 +1,18 @@
 import { useState } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Scrollbar } from "swiper/modules";
-import "swiper/css";
-import "swiper/css/scrollbar";
-import cn from "../utils/cn";
 import { IoIosArrowForward } from "react-icons/io";
-import { Button } from "../components/common/Button";
-import { Link, useNavigate } from "react-router-dom";
-import { getCookie, removeCookie } from "../utils/cookie";
 import { AiOutlineUser } from "react-icons/ai";
 import { FaBell } from "react-icons/fa";
 import { IoLogOut } from "react-icons/io5";
+import cn from "../utils/cn";
+import { getCookie, removeCookie, setCookie } from "../utils/cookie";
+import ApiClient from "../apis/apiClient";
+import { Button } from "../components/common/Button";
+import { Link, useNavigate } from "react-router-dom";
+
+import "swiper/css";
+import "swiper/css/scrollbar";
 
 export default function Home() {
   // 스크롤 감지해서 탭바 보여주기
@@ -25,6 +27,26 @@ export default function Home() {
     removeCookie("refreshToken");
     removeCookie("fcmToken");
     location.replace("/");
+  };
+
+  const handleClick = async () => {
+    if (isExistToken) {
+      try {
+        const res = await ApiClient.getInstance().theyounghanaLogin();
+        console.log(res);
+        if (res.status === 200) {
+          setCookie("deptIdx", String(res.data.data?.deptIdx));
+          if (getCookie("deptIdx")) {
+            location.replace("/studentCard");
+          }
+        }
+      } catch (error) {
+        console.log(error);
+        navigate("/notfoundstudent");
+      }
+    } else {
+      navigate("/login");
+    }
   };
 
   return (
@@ -175,11 +197,7 @@ export default function Home() {
 
           <div
             className="w-40 h-40 rounded-xl bg-white shadow-md p-5 cursor-pointer"
-            onClick={
-              isExistToken
-                ? () => navigate("/studentCard")
-                : () => navigate("/login")
-            }
+            onClick={handleClick}
           >
             <img src="images/backpack.svg" className="w-7 h-fit" />
             <div className="font-extrabold my-3">대학생활 동반자 더영하나</div>

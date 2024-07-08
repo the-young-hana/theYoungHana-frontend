@@ -23,6 +23,16 @@ class ApiClient {
     return response.data;
   }
 
+  async theyounghanaLogin() {
+    const response = await this.axiosInstance.request<
+      DataResponseType<{ deptIdx: number }>
+    >({
+      method: "post",
+      url: "/student/login",
+    });
+    return response;
+  }
+
   // --------------------------------------student
   async getStudentCard() {
     const response = await this.axiosInstance.request<

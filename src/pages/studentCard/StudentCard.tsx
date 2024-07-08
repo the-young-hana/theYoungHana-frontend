@@ -2,13 +2,19 @@ import { useEffect, useState } from "react";
 import { AiOutlineThunderbolt } from "react-icons/ai";
 import { GrPowerReset } from "react-icons/gr";
 import { FiSearch } from "react-icons/fi";
+import cn from "../../utils/cn";
+import { getCookie, setCookie } from "../../utils/cookie";
 import ApiClient from "../../apis/apiClient";
 import { NavigationBar } from "../../components/common/NavigationBar";
 import { TopBar } from "../../components/common/TopBar";
 import "./StudentCard.css"; // 추가된 CSS 파일
-import cn from "../../utils/cn";
+import { useNavigate } from "react-router-dom";
+
+const ACCESS_TOKEN = getCookie("accessToken");
 
 export default function StudentCard() {
+  const navigate = useNavigate();
+
   const SECONDS = 30000;
   const INTERVAL = 1000;
   const [isFlipped, setIsFlipped] = useState<boolean>(false);
