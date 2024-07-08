@@ -1,4 +1,4 @@
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { Button } from "../../components/common/Button";
 import { TopBar } from "../../components/common/TopBar";
 import { CiCircleCheck } from "react-icons/ci";
@@ -6,6 +6,12 @@ import { CiStar } from "react-icons/ci";
 
 export default function TransferSuccess() {
   const navigate = useNavigate();
+  const location = useLocation();
+
+  const locationState = location.state as {
+    receiverName: string;
+    amount: number;
+  };
 
   return (
     <>
@@ -16,11 +22,16 @@ export default function TransferSuccess() {
             <CiCircleCheck size={60} />
           </div>
           <span>
-            <span className="font-semibold">하나은행 컴퓨터공학과</span>
+            <span className="font-semibold">
+              {locationState ? locationState.receiverName : ""}
+            </span>
             님께
           </span>
           <span>
-            <span className="font-semibold">1</span>원이 이체되었습니다.
+            <span className="font-semibold">
+              {locationState ? locationState.amount : 0}
+            </span>
+            원이 이체되었습니다.
           </span>
 
           <div className="flex justify-center mt-20 gap-3 text-base border-b pb-8 w-5/6 ">
