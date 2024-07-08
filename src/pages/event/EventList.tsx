@@ -9,6 +9,7 @@ import { IoSearch } from "react-icons/io5";
 import { dateToString } from "../../utils/date";
 import useInfiniteScroll from "../../hooks/useInfiniteScroll";
 import { IoAlertCircleOutline } from "react-icons/io5";
+import { getCookie } from "../../utils/cookie";
 
 export default function EventIng() {
   const location = useLocation();
@@ -99,13 +100,15 @@ export default function EventIng() {
           ))
         )}
 
-        <Button
-          roundedFull
-          className="absolute bottom-32 right-5 !p-2 drop-shadow-3xl"
-          onClick={() => navigate("/event/post")}
-        >
-          <FiPlus size={52} />
-        </Button>
+        {getCookie("isAdmin") && (
+          <Button
+            roundedFull
+            className="absolute bottom-32 right-5 !p-2 drop-shadow-3xl"
+            onClick={() => navigate("/event/post")}
+          >
+            <FiPlus size={52} />
+          </Button>
+        )}
       </div>
 
       <NavigationBar />

@@ -3,6 +3,8 @@ import ApiClient from "../../apis/apiClient";
 import { useParams } from "react-router-dom";
 import { FiSend } from "react-icons/fi";
 import useInfiniteScroll from "../../hooks/useInfiniteScroll";
+import { getCookie } from "../../utils/cookie";
+import { dateToString } from "../../utils/date";
 
 const Comments = () => {
   const { storyIdx } = useParams();
@@ -23,13 +25,15 @@ const Comments = () => {
     lastIndex: true,
   });
 
-  const getComments = async () => {
+  const getComments = async (currentPage: number) => {
     try {
       const res = await ApiClient.getInstance().getStoryComments(
         Number(storyIdx),
-        page.page,
+        currentPage,
       );
+      console.log(res.data);
       if (res.data) {
+        setComments(res.data);
         if (page.page === 0) setComments(res.data);
         else setComments((prev) => [...prev, ...(res.data || [])]);
       }
@@ -49,6 +53,7 @@ const Comments = () => {
       );
       console.log(res);
       if (res.status === 200) {
+        console.log(page);
         setState((prev) => ({ ...prev, isAdd: true }));
         inputRef.current!.value = "";
         setCommentIdx(undefined);
@@ -74,8 +79,12 @@ const Comments = () => {
   };
 
   useEffect(() => {
-    getComments();
-  }, [state, page.page]);
+    getComments(0); // Always start with the first page when adding, updating, or deleting comments
+  }, [state]);
+
+  useEffect(() => {
+    getComments(page.page);
+  }, [page.page]);
 
   return (
     <div className="relative -translate-y-11">
@@ -98,23 +107,30 @@ const Comments = () => {
               />
               <div className="flex-grow">
                 <div className="flex justify-between items-center text-sm">
-                  <div>익명</div>
-                  <div className="text-hanaGray2">2024-04-25</div>
+                  <div className="font-bold">{comment.studentNickname}</div>
+                  <div className="text-hanaGray2">
+                    {dateToString(new Date(comment.createdAt))}
+                  </div>
                 </div>
                 <div className="text-sm">{comment.commentContent}</div>
                 <div className="flex gap-2 mt-1">
                   <button
                     className="text-xs text-hanaGray2 hover:underline"
-                    onClick={() => setCommentIdx(comment.commentIdx)}
+                    onClick={() => {
+                      setState((prev) => ({ ...prev, isReplyClicked: true }));
+                      setCommentIdx(comment.commentIdx);
+                    }}
                   >
                     댓글달기
                   </button>
-                  <button
-                    className="text-xs text-hanaGray2 hover:underline"
-                    onClick={() => handleDelete(comment.commentIdx)}
-                  >
-                    삭제
-                  </button>
+                  {comment.createdBy === getCookie("memberIdx") && (
+                    <button
+                      className="text-xs text-hanaGray2 hover:underline"
+                      onClick={() => handleDelete(comment.commentIdx)}
+                    >
+                      삭제
+                    </button>
+                  )}
                 </div>
               </div>
             </div>
@@ -130,10 +146,22 @@ const Comments = () => {
                     />
                     <div className="flex-grow">
                       <div className="flex justify-between items-center text-sm">
-                        <div>익명</div>
-                        <div className="text-hanaGray2">2024-04-25</div>
+                        <div className="font-bold">{reply.studentNickname}</div>
+                        <div className="text-hanaGray2">
+                          {dateToString(new Date(reply.createdAt))}
+                        </div>
                       </div>
                       <div className="text-sm">{reply.commentContent}</div>
+                      <div className="mt-1">
+                        {reply.createdBy === getCookie("memberIdx") && (
+                          <button
+                            className="text-xs text-hanaGray2 hover:underline"
+                            onClick={() => handleDelete(comment.commentIdx)}
+                          >
+                            삭제
+                          </button>
+                        )}
+                      </div>
                     </div>
                   </div>
                 </li>

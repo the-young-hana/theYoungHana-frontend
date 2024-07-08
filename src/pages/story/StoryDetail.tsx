@@ -142,11 +142,13 @@ function StoryDetail() {
           {/* 스토리 내용 */}
           <div className="flex justify-between items-start mx-4">
             <div>{storyDetail?.storyContent}</div>
-            <GoKebabHorizontal
-              onClick={() =>
-                setIsShow((prev) => ({ ...prev, isMenuModalOpen: true }))
-              }
-            />
+            {getCookie("isAdmin") && (
+              <GoKebabHorizontal
+                onClick={() =>
+                  setIsShow((prev) => ({ ...prev, isMenuModalOpen: true }))
+                }
+              />
+            )}
           </div>
 
           {/* 스토리 날짜 */}

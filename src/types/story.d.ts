@@ -89,10 +89,16 @@ interface ReplyCommentType {
   commentIdx: number;
   commentContent: string;
   commentParentIdx: number;
+  createdAt: string;
+  createdBy: string;
+  studentNickname: string;
 }
 
 interface StoryCommentResType {
   commentIdx: number;
   commentContent: string;
+  createdAt: string;
+  createdBy: string;
+  studentNickname: string;
   replyList: ReplyCommentType[];
 }
