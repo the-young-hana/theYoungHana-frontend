@@ -2,8 +2,9 @@ import { HTMLAttributes, Suspense, useEffect, useState } from "react";
 import cn from "../../utils/cn";
 import StatusBar from "./StatusBar";
 import { Outlet } from "react-router-dom";
-import { generateToken, messaging } from "../../utils/firebase";
+import { messaging } from "../../utils/firebase";
 import { onMessage } from "firebase/messaging";
+import "../../utils/firebase";
 import { Loading } from "./Loading";
 import PushNotification from "./PushNotification";
 
@@ -22,7 +23,6 @@ function IPhoneFrame({ className = "", children, ...props }: IPhoneFrameProps) {
   });
 
   useEffect(() => {
-    generateToken();
     onMessage(messaging, (payload) => {
       setShowNotification(true);
       setNotification({
@@ -45,14 +45,6 @@ function IPhoneFrame({ className = "", children, ...props }: IPhoneFrameProps) {
           {/* 시계, 배터리, 와이파이 */}
           <StatusBar className="hidden sm:flex absolute z-20" />
 
-          {/* <div
-          className={cn(
-            location.pathname === "/story" || location.pathname === "/event"
-              ? ""
-              : "mt-24",
-            "w-full h-full overflow-auto",
-          )}
-        > */}
           <div className="sm:mt-12 w-full h-full overflow-auto">
             {showNotification && (
               <PushNotification
