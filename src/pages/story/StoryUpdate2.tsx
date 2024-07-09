@@ -46,18 +46,17 @@ function StoryUpdate2() {
       textLength: 0,
     });
   }, []);
-  
+
   return (
     <>
       <TopBar title="스토리 추가" path={`/story/update/${storyIdx}/1`} />
       <div className="flex flex-col gap-6 mt-2 px-4 pt-14 bg-white h-full">
         <PostStoryForm story={story} setStory={setStory} />
-      </div>
-
-      <div className="absolute bottom-6 w-11/12">
-        <Button className="w-full mt-4" onClick={handleUpdateStory}>
-          스토리 수정하기
-        </Button>
+        <div className="absolute bottom-6 w-11/12">
+          <Button className="w-full mt-4" onClick={handleUpdateStory}>
+            스토리 수정하기
+          </Button>
+        </div>
       </div>
     </>
   );
