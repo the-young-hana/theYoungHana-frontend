@@ -3,10 +3,11 @@ import ApiClient from "../../apis/apiClient";
 import { TopBar } from "../../components/common/TopBar";
 import { useEffect, useRef, useState } from "react";
 import useInfiniteScroll from "../../hooks/useInfiniteScroll";
+import { Loading } from "../../components/common/Loading";
 
 export default function KnowledgeList() {
   const navigate = useNavigate();
-  const [, setLoading] = useState<boolean>(false);
+  const [loading, setLoading] = useState<boolean>(false);
   const [knowledges, setKnowledges] = useState<KnowledgeType[]>([]);
   const observer = useRef<IntersectionObserver | null>(null);
 
@@ -18,8 +19,6 @@ export default function KnowledgeList() {
         ? 0
         : knowledges[knowledges.length - 1].knowledgeIdx,
   });
-
-  console.log(knowledges);
 
   const getKnowledge = async () => {
     try {
@@ -62,6 +61,7 @@ export default function KnowledgeList() {
           </div>
         ))}
       </div>
+      <Loading show={loading} />
     </>
   );
 }

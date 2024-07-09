@@ -94,7 +94,6 @@ const TransactionList = () => {
 
   // 날짜 선택
   const handleDateChage = (newDate: Date) => {
-    console.log(newDate);
     if (isShow.isStartClicked) {
       setCondition((prev) => ({ ...prev, start: dateToString(newDate) }));
     }

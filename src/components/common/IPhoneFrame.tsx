@@ -1,7 +1,7 @@
 import { HTMLAttributes, Suspense, useEffect, useState } from "react";
 import cn from "../../utils/cn";
 import StatusBar from "./StatusBar";
-import { Outlet, useLocation } from "react-router-dom";
+import { Outlet } from "react-router-dom";
 import { generateToken, messaging } from "../../utils/firebase";
 import { onMessage } from "firebase/messaging";
 import { Loading } from "./Loading";
@@ -10,8 +10,6 @@ import PushNotification from "./PushNotification";
 interface IPhoneFrameProps extends HTMLAttributes<HTMLDivElement> {}
 
 function IPhoneFrame({ className = "", children, ...props }: IPhoneFrameProps) {
-  const location = useLocation();
-
   const baseClassName =
     "relative flex flex-col items-center w-iPhone h-screen-support-safari sm:!h-iPhone shadowed sm:rounded-3xl sm:border-2 border-black overflow-hidden box-content";
 

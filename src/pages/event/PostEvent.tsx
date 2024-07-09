@@ -10,8 +10,8 @@ import Modal from "../../components/common/Modal";
 import { EventContext } from "../../context/EventContext";
 import { ImageClient } from "../../apis/imageClient";
 import ImageUpload from "../../components/common/ImageUpload";
-import { dateToString } from "../../utils/date";
 import { Loading } from "../../components/common/Loading";
+import moment from "moment";
 
 export default function PostEvent() {
   const navigate = useNavigate();
@@ -35,12 +35,16 @@ export default function PostEvent() {
         ...prev,
         eventTitle: res.data!.eventTitle,
         eventType: res.data!.eventType,
-        eventStart: dateToString(res.data!.eventStart),
-        eventEnd: dateToString(res.data!.eventEnd),
-        eventDt: dateToString(res.data!.eventDt),
+        eventStart: moment(res.data!.eventStart).format("YYYY-MM-DD HH:mm:ss"),
+        eventEnd: moment(res.data!.eventEnd).format("YYYY-MM-DD HH:mm:ss"),
+        eventDt: moment(res.data!.eventDt).format("YYYY-MM-DD HH:mm:ss"),
         eventFee: res.data!.eventFee,
-        eventFeeStart: dateToString(res.data!.eventFeeStart),
-        eventFeeEnd: dateToString(res.data!.eventFeeEnd),
+        eventFeeStart: moment(res.data!.eventFeeStart).format(
+          "YYYY-MM-DD HH:mm:ss",
+        ),
+        eventFeeEnd: moment(res.data!.eventFeeEnd).format(
+          "YYYY-MM-DD HH:mm:ss",
+        ),
         eventContent: res.data!.eventContent,
         eventLimit: res.data!.eventLimit,
         eventPrizeList: res.data!.eventPrizeList,
@@ -88,12 +92,12 @@ export default function PostEvent() {
     setEvent({
       eventTitle: "",
       eventType: "신청",
-      eventStart: "",
-      eventEnd: "",
-      eventDt: "",
+      eventStart: moment(new Date()).format("YYYY-MM-DD HH:mm:ss"),
+      eventEnd: moment(new Date()).format("YYYY-MM-DD HH:mm:ss"),
+      eventDt: moment(new Date()).format("YYYY-MM-DD HH:mm:ss"),
       eventFee: 0,
-      eventFeeStart: "",
-      eventFeeEnd: "",
+      eventFeeStart: moment(new Date()).format("YYYY-MM-DD HH:mm:ss"),
+      eventFeeEnd: moment(new Date()).format("YYYY-MM-DD HH:mm:ss"),
       eventContent: "",
       eventLimit: 0,
       eventPrizeList: [

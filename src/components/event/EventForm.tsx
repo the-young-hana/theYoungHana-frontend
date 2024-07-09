@@ -1,13 +1,10 @@
 import { FC, useContext, useEffect, useRef, useState } from "react";
-import { Button } from "../common/Button";
-import { FiPlus } from "react-icons/fi";
-import { IoIosClose } from "react-icons/io";
-import cn from "../../utils/cn";
 import Schedule from "../common/Schedule";
 import { dateTimeToString } from "../../utils/date";
 import Modal from "../common/Modal";
 import { EventContext } from "../../context/EventContext";
 import moment from "moment";
+import EventPrize from "./EventPrize";
 
 interface IProps {
   type: string;
@@ -36,9 +33,6 @@ export const EventForm: FC<IProps> = ({ type, setIsActive, isModify }) => {
     calendar: false,
   });
 
-  const prizeRef = useRef<HTMLInputElement[]>([]);
-  const winnumRef = useRef<HTMLInputElement[]>([]);
-
   useEffect(() => {
     if (isModify) {
       setIsStart(true);
@@ -54,7 +48,7 @@ export const EventForm: FC<IProps> = ({ type, setIsActive, isModify }) => {
   }, [event]);
 
   useEffect(() => {
-    if (isStart && isEnd) {
+    if (isStart && isEnd && event.eventTitle !== "") {
       if (event.eventFee > 0 && isFeeStart && isFeeEnd) {
         setIsActive(true);
       } else if (event.eventFee === 0) {
@@ -74,6 +68,7 @@ export const EventForm: FC<IProps> = ({ type, setIsActive, isModify }) => {
   // 날짜 선택
   const handleDateChange = (date: Date) => {
     const newDate = moment(date).format("YYYY-MM-DD HH:mm:ss");
+
     if (isShow.type === "신청시작") {
       setEvent((prevEvent) => ({
         ...prevEvent,
@@ -128,52 +123,6 @@ export const EventForm: FC<IProps> = ({ type, setIsActive, isModify }) => {
       !isFeeEnd && setIsFeeEnd(true);
     }
     setIsShow((prev) => ({ ...prev, isCalendarModalOpen: false }));
-  };
-
-  // 날짜 검증 로직
-  const parseDate = (date: string | Date): Date => {
-    if (typeof date === "string" && date === "") {
-      return new Date();
-    }
-    const parsedDate = new Date(date);
-    return isNaN(parsedDate.getTime()) ? new Date() : parsedDate;
-  };
-
-  /// 상품 추가
-  const addInput = () => {
-    setEvent((prevEvent) => ({
-      ...prevEvent,
-      eventPrizeList: [
-        ...prevEvent.eventPrizeList,
-        { prizeRank: 0, prizeName: "", prizeLimit: 0 },
-      ],
-    }));
-  };
-
-  // 상품 삭제
-  const popWinning = (index: number) => {
-    setEvent((prevEvent) => ({
-      ...prevEvent,
-      eventPrizeList: prevEvent.eventPrizeList.filter(
-        (_, prizeIndex) => prizeIndex !== index,
-      ),
-    }));
-  };
-
-  const modifyWinning = (index: number, type: string) => {
-    const updatedEventPrizeList = [...event.eventPrizeList];
-    if (type === "prize") {
-      updatedEventPrizeList[index].prizeName = prizeRef.current[index].value;
-    } else if (type === "num") {
-      updatedEventPrizeList[index].prizeLimit = parseInt(
-        winnumRef.current[index].value,
-        10,
-      );
-    }
-    setEvent((prevEvent) => ({
-      ...prevEvent,
-      eventPrizeList: updatedEventPrizeList,
-    }));
   };
 
   return (
@@ -316,53 +265,7 @@ export const EventForm: FC<IProps> = ({ type, setIsActive, isModify }) => {
       {type === "응모" && (
         <>
           <p className="font-bold">당첨 인원 및 상품</p>
-          {event.eventPrizeList.map((list, index) => (
-            <div
-              key={index}
-              className="relative flex justify-between items-center text-nowrap border rounded-2xl py-5 px-3 text-center"
-            >
-              {event.eventPrizeList.length > 1 && (
-                <Button
-                  roundedFull
-                  className="absolute -top-2 right-0 !p-0 bg-white !text-hanaGray2 border border-hanaGray2"
-                  onClick={() => popWinning(index)}
-                >
-                  <IoIosClose size={15} />
-                </Button>
-              )}
-              <p className="text-center font-semibold w-10">{index + 1}등</p>
-              <input
-                type="text"
-                placeholder="상품"
-                defaultValue={list.prizeName}
-                ref={(el) => el && (prizeRef.current[index] = el)}
-                onBlur={() => modifyWinning(index, "prize")}
-                className="w-28 text-center"
-              />
-              <div>
-                <input
-                  type="number"
-                  placeholder="당첨 인원"
-                  defaultValue={list.prizeLimit}
-                  ref={(el) => el && (winnumRef.current[index] = el)}
-                  onBlur={() => modifyWinning(index, "num")}
-                  className="w-20 text-center"
-                />
-                명
-              </div>
-            </div>
-          ))}
-          <div className="w-full flex justify-center">
-            <Button
-              roundedFull
-              className={cn(
-                "!p-0 bg-white !text-hanaGreen border-2 border-hanaGreen",
-              )}
-              onClick={addInput}
-            >
-              <FiPlus size={20} />
-            </Button>
-          </div>
+          <EventPrize />
         </>
       )}
       {type === "선착" && (
@@ -394,15 +297,15 @@ export const EventForm: FC<IProps> = ({ type, setIsActive, isModify }) => {
           <Schedule
             value={
               isShow.type === "신청시작"
-                ? parseDate(event.eventStart)
+                ? new Date(event.eventStart)
                 : isShow.type === "신청마감"
-                  ? parseDate(event.eventEnd)
+                  ? new Date(event.eventEnd)
                   : isShow.type === "발표날짜"
-                    ? parseDate(event.eventDt)
+                    ? new Date(event.eventDt)
                     : isShow.type === "입금시작"
-                      ? parseDate(event.eventFeeStart)
+                      ? new Date(event.eventFeeStart)
                       : isShow.type === "입금마감"
-                        ? parseDate(event.eventFeeEnd)
+                        ? new Date(event.eventFeeEnd)
                         : new Date()
             }
             onDateChange={handleDateChange}

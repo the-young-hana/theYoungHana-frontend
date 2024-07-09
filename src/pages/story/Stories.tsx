@@ -39,7 +39,6 @@ function Stories() {
     if (expandedCard === index) {
       setExpendedCard(null);
     } else {
-      console.log(index);
       setExpendedCard(index);
     }
   };

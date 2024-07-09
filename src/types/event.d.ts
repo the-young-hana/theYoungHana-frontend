@@ -14,14 +14,6 @@ interface EventListType {
 }
 
 interface EventDetailType {
-  eventTitle: string;
-  eventFee: number;
-  eventContent: string;
-  eventImageList: string[];
-  eventStart: Date;
-  eventEnd: Date;
-  isEnd: number;
-  isMine: boolean;
   eventIdx: number;
   isEnd: number;
   isMine: boolean;
@@ -30,13 +22,14 @@ interface EventDetailType {
   eventStart: Data;
   eventEnd: Data;
   eventDt: Data;
-  eventFee: 0;
+  eventFee: number;
   eventFeeStart: Data;
   eventFeeEnd: Data;
   eventContent: string;
-  eventImageList: string;
+  eventImageList: string[];
   eventLimit: number;
   eventPrizeList: PrizeType[];
+  eventCreateAt: Data;
 }
 
 interface PrizeType {
@@ -72,9 +65,10 @@ interface EventPostResType {
   eventFeeStart: Date;
   eventFeeEnd: Date;
   eventContent: string;
-  eventImageList: string;
+  eventImageList: string[];
   eventLimit: number;
   eventPrizeList: PrizeType[];
+  eventCreateAt: Data;
 }
 
 interface WinnerType {

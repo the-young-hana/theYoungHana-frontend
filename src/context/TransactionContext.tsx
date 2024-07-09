@@ -1,15 +1,34 @@
 import { createContext, ReactNode, useContext, useState } from "react";
 
-interface updateTransactionType {
+interface UpdateTransactionType {
   transactionIdx: number[];
   storyTitle: string;
   storyContent: string;
 }
 
-const defaultValue = {
-  selectedTransactionList: [] as number[],
+interface TransactionContextType {
+  selectedTransactionList: number[];
+  totalPrice: number;
+  updateTransaction: UpdateTransactionType;
+  chosenTransaction: (
+    transactionIdx: number[],
+    transactionPrice: number,
+  ) => void;
+  storeUpdatedTransaction: (
+    transactionIdx: number[],
+    storyTitle: string,
+    storyContent: string,
+  ) => void;
+}
+
+const defaultValue: TransactionContextType = {
+  selectedTransactionList: [],
   totalPrice: 0,
-  updateTransaction: {},
+  updateTransaction: {
+    transactionIdx: [],
+    storyTitle: "",
+    storyContent: "",
+  },
   chosenTransaction: (transactionIdx: number[], transactionPrice: number) => {},
   storeUpdatedTransaction: (
     transactionIdx: number[],
@@ -18,7 +37,7 @@ const defaultValue = {
   ) => {},
 };
 
-const TransactionContext = createContext(defaultValue);
+const TransactionContext = createContext<TransactionContextType>(defaultValue);
 
 export const TransactionProvider = ({ children }: { children: ReactNode }) => {
   const [selectedTransactionList, setSelectedTransactionList] = useState(
@@ -26,7 +45,7 @@ export const TransactionProvider = ({ children }: { children: ReactNode }) => {
   );
   const [totalPrice, setTotalPrice] = useState<number>(defaultValue.totalPrice);
   const [updateTransaction, setUpdateTransaction] =
-    useState<updateTransactionType>({
+    useState<UpdateTransactionType>({
       transactionIdx: [],
       storyTitle: "",
       storyContent: "",

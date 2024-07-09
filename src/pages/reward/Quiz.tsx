@@ -17,7 +17,6 @@ export default function Quiz() {
       try {
         setLoading(true);
         const res = await ApiClient.getInstance().getQuiz();
-        console.log(res);
         if (res.data) {
           setQuiz(res.data);
         }
@@ -39,7 +38,6 @@ export default function Quiz() {
           quizIdx: quiz!.quizIdx,
           answer: answer,
         });
-        console.log(res);
         if (res.data) {
           setQuizAnswer(res.data);
         }

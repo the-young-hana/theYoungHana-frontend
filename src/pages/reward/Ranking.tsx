@@ -4,10 +4,11 @@ import cn from "../../utils/cn";
 import { getCookie } from "../../utils/cookie";
 import { TopBar } from "../../components/common/TopBar";
 import useInfiniteScroll from "../../hooks/useInfiniteScroll";
+import { Loading } from "../../components/common/Loading";
 
 export default function Ranking() {
   const deptIdx = getCookie("deptIdx");
-  const [, setLoading] = useState<boolean>(false);
+  const [loading, setLoading] = useState<boolean>(false);
   const [ranking, setRanking] = useState<RankingType[]>([]);
   const observer = useRef<IntersectionObserver | null>(null);
 
@@ -78,6 +79,7 @@ export default function Ranking() {
           </>
         )}
       </div>
+      <Loading show={loading} />
     </>
   );
 }

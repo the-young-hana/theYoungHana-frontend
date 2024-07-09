@@ -38,7 +38,6 @@ function StoryDetail() {
         Number(storyIdx),
       );
       setStoryDetail(res.data);
-      console.log(res.data);
     } catch (error) {
       console.log(error);
     }
@@ -74,7 +73,6 @@ function StoryDetail() {
     }));
     try {
       const res = await ApiClient.getInstance().deleteStory(Number(storyIdx));
-      console.log(res);
       if (res.status === 200) {
         navigate(`/story/${getCookie("deptIdx")}/stories`);
       }

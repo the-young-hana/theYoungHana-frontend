@@ -10,7 +10,7 @@ export const Loading = ({ show, label = "", back = true }: LoadingProps) => {
   return (
     <div
       className={cn(
-        "flex absolute top-0 left-0 w-iPhone h-iPhone z-30 rounded-3xl transition-opacity justify-center items-center",
+        "flex absolute top-0 left-0 w-iPhone h-screen sm:h-iPhone z-30 sm:rounded-3xl transition-opacity justify-center items-center",
         show
           ? "pointer-events-auto"
           : "pointer-events-none opacity-0 delay-500",

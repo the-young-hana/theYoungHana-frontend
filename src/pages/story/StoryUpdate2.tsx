@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { TopBar } from "../../components/common/TopBar";
 import { useNavigate, useParams } from "react-router-dom";
 import { useTransaction } from "../../context/TransactionContext";
@@ -10,7 +10,11 @@ function StoryUpdate2() {
   const { storyIdx } = useParams();
   const navigate = useNavigate();
 
-  const [story, setStory] = useState({
+  const [story, setStory] = useState<{
+    title: string;
+    content: string;
+    textLength: number;
+  }>({
     title: "스토리 제목",
     content: "",
     textLength: 0,
@@ -20,32 +24,12 @@ function StoryUpdate2() {
     useTransaction();
 
   const handleUpdateStory = async () => {
-    // const formData = new FormData();
-
-    // const storyInfo = new Blob(
-    //   [
-    //     JSON.stringify({
-    //       storyTitle: story.title,
-    //       storyContent: story.content,
-    //       deptIdx: getCookie("deptIdx"),
-    //       transactionList: [...selectedTransactionList],
-    //     }),
-    //   ],
-    //   { type: "application/json" },
-    // );
-    // formData.append("storyCreateReqDto", storyInfo);
-
-    // for (let i = 0; i < images.length; i += 1) {
-    //   formData.append("imgs", images[i]);
-    // }
-
     try {
       const res = await ApiClient.getInstance().editStory(Number(storyIdx), {
         storyTitle: story.title,
         storyContent: story.content,
         transactionList: selectedTransactionList,
       });
-      console.log(res);
       if (res.status === 200) {
         chosenTransaction([], 0);
         navigate("/story/completion", { state: "updateStory" });
@@ -56,13 +40,13 @@ function StoryUpdate2() {
   };
 
   useEffect(() => {
-    console.log(updateTransaction);
     setStory({
       title: updateTransaction.storyTitle,
       content: updateTransaction.storyContent,
       textLength: 0,
     });
   }, []);
+  
   return (
     <>
       <TopBar title="스토리 추가" path={`/story/update/${storyIdx}/1`} />
