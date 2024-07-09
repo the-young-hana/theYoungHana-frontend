@@ -1,7 +1,7 @@
 import axios, { AxiosInstance } from "axios";
 import { getCookie } from "../utils/cookie";
 
-const FCMTOKEN = getCookie("fcm");
+const FCMTOKEN = getCookie("fcmToken");
 
 class ApiClient {
   private static instance: ApiClient;
