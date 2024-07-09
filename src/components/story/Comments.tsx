@@ -5,6 +5,7 @@ import { FiSend } from "react-icons/fi";
 import useInfiniteScroll from "../../hooks/useInfiniteScroll";
 import { getCookie } from "../../utils/cookie";
 import { dateToString } from "../../utils/date";
+import cn from "../../utils/cn";
 
 const Comments = () => {
   const { storyIdx } = useParams();
@@ -19,8 +20,9 @@ const Comments = () => {
   const observer = useRef<IntersectionObserver | null>(null);
 
   const inputRef: RefObject<HTMLInputElement> = useRef<HTMLInputElement>(null);
+  const [isReplyClicked, setIsReplyClicked] = useState<boolean>(false);
 
-  const { lastStoryElementRef, page } = useInfiniteScroll({
+  const { lastStoryElementRef, page, setPage } = useInfiniteScroll({
     observer,
     lastIndex: true,
   });
@@ -33,7 +35,8 @@ const Comments = () => {
       );
       console.log(res.data);
       if (res.data) {
-        setComments(res.data);
+        if (res.data.length < 10)
+          setPage((prev) => ({ ...prev, hasMore: false }));
         if (page.page === 0) setComments(res.data);
         else setComments((prev) => [...prev, ...(res.data || [])]);
       }
@@ -79,7 +82,9 @@ const Comments = () => {
   };
 
   useEffect(() => {
-    getComments(0); // Always start with the first page when adding, updating, or deleting comments
+    setPage((prev) => ({ ...prev, hasMore: true }));
+    setComments([]);
+    getComments(0);
   }, [state]);
 
   useEffect(() => {
@@ -94,12 +99,19 @@ const Comments = () => {
       <ul className="h-[30rem] flex-grow overflow-y-auto">
         {comments?.map((comment, idx) => (
           <li
-            key={comment.commentIdx}
-            className="flex flex-col mb-6"
+            key={idx}
+            className="flex flex-col"
             ref={comments.length === idx + 1 ? lastStoryElementRef : null}
           >
             {/* 댓글 */}
-            <div className="flex items-start gap-4">
+            <div
+              className={cn(
+                "flex items-start gap-4 p-2",
+                commentIdx === comment.commentIdx && isReplyClicked
+                  ? "bg-hanaGreen bg-opacity-20"
+                  : "",
+              )}
+            >
               <img
                 src="/images/profile.png"
                 className="w-10 h-10"
@@ -117,8 +129,9 @@ const Comments = () => {
                   <button
                     className="text-xs text-hanaGray2 hover:underline"
                     onClick={() => {
-                      setState((prev) => ({ ...prev, isReplyClicked: true }));
+                      setIsReplyClicked(true);
                       setCommentIdx(comment.commentIdx);
+                      inputRef.current?.focus();
                     }}
                   >
                     댓글달기
@@ -175,7 +188,10 @@ const Comments = () => {
           ref={inputRef}
           type="text"
           className="border border-hanaGray2 rounded-lg indent-3 w-full h-10"
-          placeholder="댓글을 입력하세요..."
+          placeholder={
+            isReplyClicked ? "대댓글을 입력하세요..." : "댓글을 입력하세요..."
+          }
+          onBlur={() => setIsReplyClicked(false)}
         />
         <div
           className="absolute right-4 top-3 cursor-pointer"
