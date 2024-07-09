@@ -24,7 +24,9 @@ const Comments = () => {
 
   const { lastStoryElementRef, page, setPage } = useInfiniteScroll({
     observer,
-    lastIndex: true,
+    isOffset: false,
+    lastIndex:
+      comments.length <= 0 ? 0 : comments[comments.length - 1].commentIdx,
   });
 
   const getComments = async (currentPage: number) => {
@@ -35,8 +37,11 @@ const Comments = () => {
       );
       console.log(res.data);
       if (res.data) {
+        console.log(page.hasMore);
         if (res.data.length < 10)
           setPage((prev) => ({ ...prev, hasMore: false }));
+        else setPage((prev) => ({ ...prev, hasMore: true }));
+
         if (page.page === 0) setComments(res.data);
         else setComments((prev) => [...prev, ...(res.data || [])]);
       }
@@ -56,7 +61,6 @@ const Comments = () => {
       );
       console.log(res);
       if (res.status === 200) {
-        console.log(page);
         setState((prev) => ({ ...prev, isAdd: true }));
         inputRef.current!.value = "";
         setCommentIdx(undefined);
@@ -82,7 +86,6 @@ const Comments = () => {
   };
 
   useEffect(() => {
-    setPage((prev) => ({ ...prev, hasMore: true }));
     setComments([]);
     getComments(0);
   }, [state]);
@@ -119,13 +122,38 @@ const Comments = () => {
               />
               <div className="flex-grow">
                 <div className="flex justify-between items-center text-sm">
-                  <div className="font-bold">{comment.studentNickname}</div>
+                  <div
+                    className={cn(
+                      comment.commentContent.includes("삭제된 댓글입니다")
+                        ? "text-hanaGray2"
+                        : "",
+                      "font-bold",
+                    )}
+                  >
+                    {comment.studentNickname}
+                  </div>
                   <div className="text-hanaGray2">
                     {dateToString(new Date(comment.createdAt))}
                   </div>
                 </div>
-                <div className="text-sm">{comment.commentContent}</div>
-                <div className="flex gap-2 mt-1">
+                <div
+                  className={cn(
+                    comment.commentContent.includes("삭제된 댓글입니다")
+                      ? "text-hanaGray2"
+                      : "",
+                    "text-sm",
+                  )}
+                >
+                  {comment.commentContent}
+                </div>
+                <div
+                  className={cn(
+                    comment.commentContent.includes("삭제된 댓글입니다")
+                      ? "hidden"
+                      : "",
+                    "flex gap-2 mt-1",
+                  )}
+                >
                   <button
                     className="text-xs text-hanaGray2 hover:underline"
                     onClick={() => {
@@ -147,6 +175,7 @@ const Comments = () => {
                 </div>
               </div>
             </div>
+
             {/* 대댓글 */}
             <ul>
               {comment.replyList.map((reply) => (
@@ -159,21 +188,42 @@ const Comments = () => {
                     />
                     <div className="flex-grow">
                       <div className="flex justify-between items-center text-sm">
-                        <div className="font-bold">{reply.studentNickname}</div>
+                        <div
+                          className={cn(
+                            reply.commentContent.includes("삭제된 댓글입니다")
+                              ? "text-hanaGray2"
+                              : "",
+                            "font-bold",
+                          )}
+                        >
+                          {reply.studentNickname}
+                        </div>
                         <div className="text-hanaGray2">
                           {dateToString(new Date(reply.createdAt))}
                         </div>
                       </div>
-                      <div className="text-sm">{reply.commentContent}</div>
-                      <div className="mt-1">
-                        {reply.createdBy === getCookie("memberIdx") && (
-                          <button
-                            className="text-xs text-hanaGray2 hover:underline"
-                            onClick={() => handleDelete(comment.commentIdx)}
-                          >
-                            삭제
-                          </button>
+                      <div
+                        className={cn(
+                          reply.commentContent.includes("삭제된 댓글입니다")
+                            ? "text-hanaGray2"
+                            : "",
+                          "text-sm",
                         )}
+                      >
+                        {reply.commentContent}
+                      </div>
+                      <div className="mt-1">
+                        {reply.createdBy === getCookie("memberIdx") ||
+                          (!reply.commentContent.includes(
+                            "삭제된 댓글입니다",
+                          ) && (
+                            <button
+                              className="text-xs text-hanaGray2 hover:underline"
+                              onClick={() => handleDelete(reply.commentIdx)}
+                            >
+                              삭제
+                            </button>
+                          ))}
                       </div>
                     </div>
                   </div>

@@ -2,13 +2,15 @@ import { useCallback, useState } from "react";
 
 const useInfiniteScroll = ({
   observer,
-  lastIndex = false,
+  isOffset = true,
+  lastIndex = 0,
 }: {
   observer: React.MutableRefObject<IntersectionObserver | null>;
-  lastIndex?: boolean;
+  isOffset?: boolean;
+  lastIndex?: number;
 }) => {
   const [page, setPage] = useState({
-    page: lastIndex ? 0 : 1,
+    page: isOffset ? 1 : 0,
     hasMore: true,
   });
 
@@ -19,13 +21,13 @@ const useInfiniteScroll = ({
         if (entries[0].isIntersecting && page.hasMore) {
           setPage((prev) => ({
             ...prev,
-            page: lastIndex ? prev.page + 10 : prev.page + 1,
+            page: isOffset ? prev.page + 1 : lastIndex,
           }));
         }
       });
       if (node) observer.current.observe(node);
     },
-    [page.hasMore],
+    [page.hasMore, lastIndex],
   );
 
   return { page, setPage, lastStoryElementRef };

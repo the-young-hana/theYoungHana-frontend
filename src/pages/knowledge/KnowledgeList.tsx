@@ -12,16 +12,24 @@ export default function KnowledgeList() {
 
   const { lastStoryElementRef, page, setPage } = useInfiniteScroll({
     observer,
-    lastIndex: true,
+    isOffset: false,
+    lastIndex:
+      knowledges.length <= 0
+        ? 0
+        : knowledges[knowledges.length - 1].knowledgeIdx,
   });
+
+  console.log(knowledges);
 
   const getKnowledge = async () => {
     try {
       setLoading(true);
       const res = await ApiClient.getInstance().getKnowledge(page.page);
-      if (res.data) {
+      if (res.data && res.data[0].knowledgeIdx) {
         if (page.page === 0) setKnowledges(res.data);
         else setKnowledges((prevList) => [...prevList, ...(res.data || [])]);
+        if (res.data.length < 10)
+          setPage((prev) => ({ ...prev, hasMore: false }));
       }
     } catch (error) {
     } finally {
