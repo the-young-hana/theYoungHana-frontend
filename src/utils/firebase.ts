@@ -22,7 +22,7 @@ getToken(messaging, {
   .then((currentToken) => {
     console.log(currentToken);
     if (currentToken) {
-      if (getCookie("accessToken")) {
+      if (!getCookie("fcmToken")) {
         setCookie("fcmToken", currentToken);
       }
     } else {

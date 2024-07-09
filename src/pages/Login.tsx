@@ -24,7 +24,7 @@ export default function Login() {
       if (res.data) {
         setCookie("accessToken", res.data.accessToken);
         setCookie("refreshToken", res.data.refreshToken);
-        location.replace("/");
+        navigate("/");
       }
     } catch (error) {
       setWrong(true);
