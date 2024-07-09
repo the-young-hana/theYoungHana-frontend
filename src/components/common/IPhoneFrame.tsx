@@ -2,16 +2,15 @@ import { HTMLAttributes, Suspense, useEffect, useState } from "react";
 import cn from "../../utils/cn";
 import StatusBar from "./StatusBar";
 import { Outlet, useLocation } from "react-router-dom";
-import { generateToken, messaging } from "../../utils/firebase";
+import { messaging } from "../../utils/firebase";
 import { onMessage } from "firebase/messaging";
+import "../../utils/firebase";
 import { Loading } from "./Loading";
 import PushNotification from "./PushNotification";
 
 interface IPhoneFrameProps extends HTMLAttributes<HTMLDivElement> {}
 
 function IPhoneFrame({ className = "", children, ...props }: IPhoneFrameProps) {
-  const location = useLocation();
-
   const baseClassName =
     "relative flex flex-col items-center w-iPhone h-screen-support-safari sm:!h-iPhone shadowed sm:rounded-3xl sm:border-2 border-black overflow-hidden box-content";
 
@@ -24,7 +23,6 @@ function IPhoneFrame({ className = "", children, ...props }: IPhoneFrameProps) {
   });
 
   useEffect(() => {
-    generateToken();
     onMessage(messaging, (payload) => {
       setShowNotification(true);
       setNotification({
@@ -47,14 +45,6 @@ function IPhoneFrame({ className = "", children, ...props }: IPhoneFrameProps) {
           {/* 시계, 배터리, 와이파이 */}
           <StatusBar className="hidden sm:flex absolute z-20" />
 
-          {/* <div
-          className={cn(
-            location.pathname === "/story" || location.pathname === "/event"
-              ? ""
-              : "mt-24",
-            "w-full h-full overflow-auto",
-          )}
-        > */}
           <div className="sm:mt-12 w-full h-full overflow-auto">
             {showNotification && (
               <PushNotification
