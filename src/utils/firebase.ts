@@ -20,6 +20,7 @@ getToken(messaging, {
   vapidKey: import.meta.env.VITE_VAPID_KEY,
 })
   .then((currentToken) => {
+    console.log(currentToken);
     if (currentToken) {
       if (getCookie("accessToken")) {
         setCookie("fcmToken", currentToken);
