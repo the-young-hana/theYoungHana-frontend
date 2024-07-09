@@ -20,6 +20,7 @@ getToken(messaging, {
   vapidKey: import.meta.env.VITE_VAPID_KEY,
 })
   .then((currentToken) => {
+    console.log(currentToken);
     if (currentToken) {
       if (getCookie("accessToken")) {
         setCookie("fcmToken", currentToken);
@@ -30,8 +31,17 @@ getToken(messaging, {
       );
     }
   })
-  .catch((error) => {
-    console.log("토큰을 가져오는 동안 오류가 발생했습니다. ", error);
+  .catch((e: any) => {
+    console.log("토큰을 가져오는 동안 오류가 발생했습니다. ", e);
+    const error =
+      "DOMException: Failed to execute 'subscribe' on 'PushManager': Subscription failed - no active Service Worker";
+    if (e.toString() === error) {
+      return getToken(messaging, {
+        vapidKey: import.meta.env.VITE_VAPID_KEY,
+      });
+    } else {
+      throw e;
+    }
   });
 
 onMessage(messaging, (payload) => {
