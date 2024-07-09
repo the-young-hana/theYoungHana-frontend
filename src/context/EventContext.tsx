@@ -1,3 +1,4 @@
+import moment from "moment";
 import React, { createContext, useState, ReactNode, FC } from "react";
 
 interface EventContextType {
@@ -38,12 +39,12 @@ export const EventContextProvider: FC<EventContextProviderProps> = ({
   const [event, setEvent] = useState<EventPostReqType>({
     eventTitle: "",
     eventType: "신청",
-    eventStart: "",
-    eventEnd: "",
-    eventDt: "",
+    eventStart: moment(new Date()).format("YYYY-MM-DD HH:mm:ss"),
+    eventEnd: moment(new Date()).format("YYYY-MM-DD HH:mm:ss"),
+    eventDt: moment(new Date()).format("YYYY-MM-DD HH:mm:ss"),
     eventFee: 0,
-    eventFeeStart: "",
-    eventFeeEnd: "",
+    eventFeeStart: moment(new Date()).format("YYYY-MM-DD HH:mm:ss"),
+    eventFeeEnd: moment(new Date()).format("YYYY-MM-DD HH:mm:ss"),
     eventContent: "",
     eventLimit: 0,
     eventPrizeList: [

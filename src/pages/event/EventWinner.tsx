@@ -2,10 +2,11 @@ import { useParams } from "react-router-dom";
 import { TopBar } from "../../components/common/TopBar";
 import ApiClient from "../../apis/apiClient";
 import { useEffect, useState } from "react";
+import { Loading } from "../../components/common/Loading";
 
 export default function EventWinner() {
   const params = useParams();
-  const [, setLoading] = useState<boolean>(false);
+  const [loading, setLoading] = useState<boolean>(false);
   const [eventWinner, setEventWinner] = useState<WinnerListType[]>();
 
   const getEventWinner = async () => {
@@ -59,6 +60,7 @@ export default function EventWinner() {
           </>
         )}
       </div>
+      <Loading show={loading} />
     </>
   );
 }

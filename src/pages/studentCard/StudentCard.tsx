@@ -8,6 +8,7 @@ import { NavigationBar } from "../../components/common/NavigationBar";
 import { TopBar } from "../../components/common/TopBar";
 import "./StudentCard.css"; // 추가된 CSS 파일
 import { useNavigate } from "react-router-dom";
+import { Loading } from "../../components/common/Loading";
 
 export default function StudentCard() {
   const navigate = useNavigate();
@@ -17,7 +18,7 @@ export default function StudentCard() {
   const [isFlipped, setIsFlipped] = useState<boolean>(false);
   const [timeLeft, setTimeLeft] = useState<number>(SECONDS);
   const [isRefresh, setIsRefresh] = useState<boolean>(false);
-  const [, setLoading] = useState<boolean>(false);
+  const [loading, setLoading] = useState<boolean>(false);
   const [studentCard, setStudentCard] = useState<StudentCardType>();
   const [studentQR, setStudentQR] = useState<{ qrImage: string }>();
   const [isExpired, setIsExpired] = useState<boolean>(false);
@@ -41,7 +42,6 @@ export default function StudentCard() {
 
   const getStudentQR = async () => {
     try {
-      setLoading(true);
       const res = await ApiClient.getInstance().getStudentQR();
       if (res.data) {
         setStudentQR(res.data);
@@ -160,6 +160,7 @@ export default function StudentCard() {
         <img src={studentCard?.studentCollegeImage} className="h-12 mb-4" />
         <NavigationBar />
       </div>
+      <Loading show={loading} />
     </>
   );
 }

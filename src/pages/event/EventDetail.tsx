@@ -7,9 +7,11 @@ import { Button } from "../../components/common/Button";
 import { useEffect, useState } from "react";
 import Modal from "../../components/common/Modal";
 import "swiper/css";
-import { dateToString } from "../../utils/date";
+import { dateTimeToString } from "../../utils/date";
 import { GoKebabHorizontal } from "react-icons/go";
 import { getCookie } from "../../utils/cookie";
+import axios from "axios";
+import { Loading } from "../../components/common/Loading";
 
 export default function EventDetail() {
   const navigate = useNavigate();
@@ -17,10 +19,11 @@ export default function EventDetail() {
   const [isUDModalOpen, setIsUDModalOpen] = useState<boolean>(false);
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [delModalOpen, setDelModalOpen] = useState<boolean>(false);
-  const [, setLoading] = useState<boolean>(false);
+  const [loading, setLoading] = useState<boolean>(false);
   const [eventDetail, setEventDetail] = useState<EventDetailType>();
   const [delFailModalOpen, setDelFailModalOpen] = useState<boolean>(false);
-  const [alreadyModal, setAlreadyModal] = useState<boolean>(false);
+  const [joinFailModal, setJoinFailModal] = useState<boolean>(false);
+  const [errMsg, setErrMsg] = useState<string>("");
 
   const getEventDetail = async () => {
     try {
@@ -55,7 +58,10 @@ export default function EventDetail() {
       await ApiClient.getInstance().postEventJoin(Number(params.eventId));
       handleModal();
     } catch (error) {
-      setAlreadyModal(true);
+      if (axios.isAxiosError<ResponseDataType, any>(error)) {
+        setErrMsg(error.response!.data.message);
+      }
+      setJoinFailModal(true);
     } finally {
       setLoading(false);
     }
@@ -170,8 +176,8 @@ export default function EventDetail() {
                   신청기간
                 </Button>
                 <div className="w-4/5 text-sm">
-                  {dateToString(new Date(eventDetail.eventStart))} ~{" "}
-                  {dateToString(new Date(eventDetail.eventEnd))}
+                  {dateTimeToString(new Date(eventDetail.eventStart))} ~{" "}
+                  {dateTimeToString(new Date(eventDetail.eventEnd))}
                 </div>
               </div>
               <div className="flex gap-4 items-center">
@@ -231,17 +237,26 @@ export default function EventDetail() {
             <div className="absolute bottom-10 left-1/2 -translate-x-1/2">
               {eventDetail.isEnd === 0 ? (
                 <Button
+                  disabled
+                  roundedFull
+                  className="font-bold text-xl !px-16 py-4 drop-shadow-3xl"
+                >
+                  진행전입니다
+                </Button>
+              ) : eventDetail.isEnd === 1 ? (
+                <Button
                   roundedFull
                   className="font-bold text-xl !px-28 py-4 drop-shadow-3xl"
                   onClick={onClickJoin}
                 >
-                  신청
+                  {eventDetail.eventType === "응모" ? "응모" : "신청"}
                 </Button>
-              ) : eventDetail.isEnd === 1 ||
-                eventDetail.eventType !== "응모" ? (
+              ) : eventDetail.isEnd === 2 ||
+                (eventDetail.isEnd === 3 &&
+                  eventDetail.eventType !== "응모") ? (
                 <Button
-                  roundedFull
                   disabled
+                  roundedFull
                   className="font-bold text-xl !px-28 py-4 drop-shadow-3xl"
                 >
                   마감
@@ -254,7 +269,7 @@ export default function EventDetail() {
                     navigate(`/event/winner/${eventDetail.eventIdx}`)
                   }
                 >
-                  당첨자보기
+                  당첨자 조회
                 </Button>
               )}
             </div>
@@ -281,7 +296,7 @@ export default function EventDetail() {
         <div className="flex flex-col justify-center items-center gap-6">
           <div className="font-bold text-xl">응모가 완료되었습니다</div>
           <div className="text-hanaGray2 whitespace-pre-line text-center">
-            {"상점이 열리면\n앱푸시로 알려드릴까요?"}
+            {"앱푸시로 알려드릴까요?"}
           </div>
           <div className="flex gap-3">
             <Button gray className="!py-3" onClick={handleModal}>
@@ -313,16 +328,15 @@ export default function EventDetail() {
           </Button>
         </div>
       </Modal>
-      <Modal show={alreadyModal} onClose={() => setAlreadyModal(false)}>
+      <Modal show={joinFailModal} onClose={() => setJoinFailModal(false)}>
         <div className="flex flex-col items-center px-5">
-          <div className="mx-5 mb-7 text-lg">
-            이미 해당 이벤트에 참가 신청을 하였습니다.
-          </div>
-          <Button onClick={() => setAlreadyModal(false)} className="w-full">
+          <div className="mx-5 mb-7 text-lg text-center">{errMsg}</div>
+          <Button onClick={() => setJoinFailModal(false)} className="w-full">
             확인
           </Button>
         </div>
       </Modal>
+      <Loading show={loading} />
     </>
   );
 }

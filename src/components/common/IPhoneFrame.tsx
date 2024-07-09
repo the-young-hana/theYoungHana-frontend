@@ -1,7 +1,7 @@
 import { HTMLAttributes, Suspense, useEffect, useState } from "react";
 import cn from "../../utils/cn";
 import StatusBar from "./StatusBar";
-import { Outlet, useLocation } from "react-router-dom";
+import { Outlet } from "react-router-dom";
 import { messaging } from "../../utils/firebase";
 import { onMessage } from "firebase/messaging";
 import "../../utils/firebase";

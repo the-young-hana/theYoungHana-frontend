@@ -1,16 +1,10 @@
-import React from "react";
 import { TopBar } from "../../components/common/TopBar";
 import { useParams } from "react-router-dom";
-import { useTransaction } from "../../context/TransactionContext";
 import TransactionList from "../../components/story/TransactionList";
 import TotalPrice from "../../components/story/TotalPrice";
 
 function StoryUpdate1() {
   const { storyIdx } = useParams();
-
-  const { updateTransaction } = useTransaction();
-
-  console.log(updateTransaction);
 
   return (
     <>

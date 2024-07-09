@@ -29,7 +29,7 @@ export default function TransferSuccess() {
           </span>
           <span>
             <span className="font-semibold">
-              {locationState ? locationState.amount : 0}
+              {locationState ? locationState.amount.toLocaleString() : 0}
             </span>
             원이 이체되었습니다.
           </span>

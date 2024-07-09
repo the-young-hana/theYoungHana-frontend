@@ -42,6 +42,8 @@ export default function Home() {
     removeCookie("refreshToken");
     removeCookie("fcmToken");
     removeCookie("isAdmin");
+    removeCookie("memberIdx");
+    removeCookie("studentIdx");
     location.replace("/");
   };
 
@@ -53,7 +55,6 @@ export default function Home() {
     if (isExistToken) {
       try {
         const res = await ApiClient.getInstance().theyounghanaLogin();
-        console.log(res);
         if (res.status === 200) {
           setCookie("deptIdx", String(res.data.data?.deptIdx));
           if (getCookie("deptIdx")) {

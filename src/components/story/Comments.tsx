@@ -35,9 +35,7 @@ const Comments = () => {
         Number(storyIdx),
         currentPage,
       );
-      console.log(res.data);
       if (res.data) {
-        console.log(page.hasMore);
         if (res.data.length < 10)
           setPage((prev) => ({ ...prev, hasMore: false }));
         else setPage((prev) => ({ ...prev, hasMore: true }));
@@ -59,7 +57,6 @@ const Comments = () => {
           commentContent: inputRef.current!.value,
         },
       );
-      console.log(res);
       if (res.status === 200) {
         setState((prev) => ({ ...prev, isAdd: true }));
         inputRef.current!.value = "";
@@ -76,7 +73,6 @@ const Comments = () => {
         Number(storyIdx),
         commentIdx,
       );
-      console.log(res);
       if (res.status === 200) {
         setState((prev) => ({ ...prev, isDelete: true }));
       }

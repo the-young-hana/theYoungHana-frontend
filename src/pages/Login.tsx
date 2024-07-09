@@ -21,13 +21,10 @@ export default function Login() {
     try {
       setLoading(true);
       const res = await ApiClient.getInstance().postLogin(pwd);
-      console.log(res);
       if (res.data) {
-        // setCookie("deptIdx", res.data.deptIdx.toString());
         setCookie("accessToken", res.data.accessToken);
         setCookie("refreshToken", res.data.refreshToken);
         location.replace("/");
-        // navigate("/");
       }
     } catch (error) {
       setWrong(true);

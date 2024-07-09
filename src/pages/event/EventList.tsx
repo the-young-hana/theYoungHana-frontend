@@ -10,11 +10,12 @@ import { dateToString } from "../../utils/date";
 import useInfiniteScroll from "../../hooks/useInfiniteScroll";
 import { IoAlertCircleOutline } from "react-icons/io5";
 import { getCookie } from "../../utils/cookie";
+import { Loading } from "../../components/common/Loading";
 
 export default function EventIng() {
   const location = useLocation();
   const navigate = useNavigate();
-  const [, setLoading] = useState<boolean>(false);
+  const [loading, setLoading] = useState<boolean>(false);
   const [eventList, setEventList] = useState<EventListType[]>([]);
   const searchRef = useRef<HTMLInputElement | null>(null);
   const observer = useRef<IntersectionObserver | null>(null);
@@ -112,6 +113,7 @@ export default function EventIng() {
       </div>
 
       <NavigationBar />
+      <Loading show={loading} />
     </>
   );
 }

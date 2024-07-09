@@ -41,7 +41,6 @@ function PostStory2() {
 
     try {
       const res = await ImageClient.getInstance().postStory(formData);
-      console.log(res);
       if (res.status === 200) {
         chosenTransaction([], 0);
         navigate("/story/completion", { state: "postStory" });

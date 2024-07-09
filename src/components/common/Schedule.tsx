@@ -5,7 +5,7 @@ import { Button } from "./Button";
 import { dateToString } from "../../utils/date";
 
 interface ScheduleType {
-  value: Date;
+  value: Date | string;
   isEndClicked?: boolean;
   disabledDate?: string;
   disabledPastDate?: string;

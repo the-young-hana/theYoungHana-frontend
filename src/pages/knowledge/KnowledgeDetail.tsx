@@ -3,28 +3,28 @@ import ApiClient from "../../apis/apiClient";
 import { TopBar } from "../../components/common/TopBar";
 import { useParams } from "react-router-dom";
 import { dateToString } from "../../utils/date";
+import { Loading } from "../../components/common/Loading";
 
 export default function KnowledgeDetail() {
-  const [, setLoading] = useState<boolean>(false);
+  const [loading, setLoading] = useState<boolean>(false);
   const [knowledgeDetail, setKnowledgeDetail] = useState<KnowledgeDetailType>();
   const param = useParams();
 
-  useEffect(() => {
-    const getKnowledge = async () => {
-      try {
-        setLoading(true);
-        const res = await ApiClient.getInstance().getKnowledgeDetail(
-          Number(param.knowledgeIdx),
-        );
-        if (res.data) {
-          setKnowledgeDetail(res.data);
-        }
-      } catch (error) {
-      } finally {
-        setLoading(false);
+  const getKnowledge = async () => {
+    try {
+      setLoading(true);
+      const res = await ApiClient.getInstance().getKnowledgeDetail(
+        Number(param.knowledgeIdx),
+      );
+      if (res.data) {
+        setKnowledgeDetail(res.data);
       }
-    };
-
+    } catch (error) {
+    } finally {
+      setLoading(false);
+    }
+  };
+  useEffect(() => {
     getKnowledge();
   }, []);
 
@@ -52,6 +52,7 @@ export default function KnowledgeDetail() {
           </div>
         )}
       </div>
+      <Loading show={loading} />
     </>
   );
 }
