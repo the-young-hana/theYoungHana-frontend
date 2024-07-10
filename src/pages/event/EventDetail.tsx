@@ -18,6 +18,7 @@ export default function EventDetail() {
   const params = useParams();
   const [isUDModalOpen, setIsUDModalOpen] = useState<boolean>(false);
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+  const [isFCFSModalOpen, setIsFCFSModalOpen] = useState<boolean>(false);
   const [delModalOpen, setDelModalOpen] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
   const [eventDetail, setEventDetail] = useState<EventDetailType>();
@@ -56,8 +57,12 @@ export default function EventDetail() {
     try {
       setLoading(true);
       await ApiClient.getInstance().postEventJoin(Number(params.eventId));
-      handleModal();
+      if (eventDetail?.eventType !== "선착") handleModal();
+      else {
+        handleFCFSModal();
+      }
     } catch (error) {
+      console.error(error);
       if (axios.isAxiosError<ResponseDataType, any>(error)) {
         setErrMsg(error.response!.data.message);
       }
@@ -87,6 +92,9 @@ export default function EventDetail() {
 
   const handleModal = () => {
     setIsModalOpen((prev) => !prev);
+  };
+  const handleFCFSModal = () => {
+    setIsFCFSModalOpen((prev) => !prev);
   };
 
   const handleMoveToList = (success: boolean) => {
@@ -313,6 +321,16 @@ export default function EventDetail() {
         <div className="flex flex-col items-center px-5">
           <div className="mx-5 mb-7 text-lg">삭제되었습니다</div>
           <Button onClick={() => handleMoveToList(true)} className="w-full">
+            확인
+          </Button>
+        </div>
+      </Modal>
+      <Modal show={isFCFSModalOpen} onClose={handleFCFSModal}>
+        <div className="flex flex-col items-center px-5">
+          <div className="mx-5 mb-7 text-lg text-center">
+            신청에 성공했습니다!
+          </div>
+          <Button onClick={handleFCFSModal} className="w-full">
             확인
           </Button>
         </div>
